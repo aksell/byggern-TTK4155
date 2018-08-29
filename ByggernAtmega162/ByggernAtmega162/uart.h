@@ -9,7 +9,20 @@
 #ifndef UART_H_
 #define UART_H_
 
+#include <stdio.h>
+#include <avr/io.h>
 
+#include "utilities.h"
+#include "config.h"
+
+
+void uart_init();
+
+uint8_t uart_transmit(unsigned char data);
+
+uint8_t uart_recive();
+
+bool uart_is_ready_read() ;
 
 
 
