@@ -42,6 +42,9 @@
 *.idb
 *.pdb
 
+ByggernAtmega162/ByggernAtmega162/Debug/
+
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
