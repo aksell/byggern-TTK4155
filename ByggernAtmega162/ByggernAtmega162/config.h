@@ -9,8 +9,8 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
- #define F_CPU 4915E3
- #define UART0_BAUD 9600
+#define F_CPU 4915E3
+#define UART0_BAUD 9600
 
 
 
