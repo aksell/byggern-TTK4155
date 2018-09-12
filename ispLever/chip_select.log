@@ -1,0 +1,16 @@
+Starting EDIF2BLIF....
+readEDIF ended normally.
+
+EDIF2BLIF: Warning: Remove floating instance: :
+	a8
+
+Inspect circuit chip_select
+    Number of input ports   : 5
+    Number of output ports  : 5
+    Number of bidir ports   : 0
+    Number of instances     : 20
+    Number of nets          : 24
+
+No design errors found in circuit chip_select
+
+WriteBLIF ended normally.

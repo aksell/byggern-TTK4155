@@ -1,0 +1,10 @@
+C:\ispLEVER_Classic2_0\synpbase\bin64\m_cpld.exe  -prodtype  synplify_pro  -encrypt  -pro  -rundir  C:\users\akselsl\documents\byggern\byggern-ttk4155  -part ispGAL22LV10  -package LJ  -grade -4   -areadelay 0 -minc -RWCheckOnRam 1 -summaryfile C:\users\akselsl\documents\byggern\byggern-ttk4155\synlog\report\chip_select_fpga_mapper.xml -top_level_module  chip_select  -multisrs  -oedif  C:\users\akselsl\documents\byggern\byggern-ttk4155\chip_select.edi  -freq 1.000  C:\users\akselsl\documents\byggern\byggern-ttk4155\synwork\chip_select_mult.srs  -devicelib  C:\ispLEVER_Classic2_0\synpbase\lib\cpld\lattice.v  -ologparam  C:\users\akselsl\documents\byggern\byggern-ttk4155\syntmp\chip_select.plg  -osyn  C:\users\akselsl\documents\byggern\byggern-ttk4155\chip_select.srm  -prjdir  c:\users\akselsl\documents\byggern\byggern-ttk4155\  -prjname  chip_select  -log  C:\users\akselsl\documents\byggern\byggern-ttk4155\synlog\chip_select_fpga_mapper.srr 
+rc:0 success:1
+C:\users\akselsl\documents\byggern\byggern-ttk4155\chip_select.edi|o|1536755076|7873
+C:\users\akselsl\documents\byggern\byggern-ttk4155\synwork\chip_select_mult.srs|i|1536755076|2000
+C:\ispLEVER_Classic2_0\synpbase\lib\cpld\lattice.v|i|1401260784|210986
+C:\users\akselsl\documents\byggern\byggern-ttk4155\syntmp\chip_select.plg|o|1536755076|0
+C:\users\akselsl\documents\byggern\byggern-ttk4155\chip_select.srm|o|1536755076|4655
+C:\users\akselsl\documents\byggern\byggern-ttk4155\synlog\chip_select_fpga_mapper.srr|o|1536755076|1066
+C:\ispLEVER_Classic2_0\synpbase\bin\m_cpld.exe|i|1399365684|7067648
+C:\ispLEVER_Classic2_0\synpbase\bin64\m_cpld.exe|i|1399368522|8049664

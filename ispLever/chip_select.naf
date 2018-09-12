@@ -1,0 +1,10 @@
+a11  i
+a10  i
+a9  i
+a8  i
+wr  i
+ram_cs  o
+adc_cs  o
+oled_cs  o
+oled_dc  o
+wr_inverted  o

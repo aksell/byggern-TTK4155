@@ -1,0 +1,18 @@
+Section Cross Reference File
+Design 'chip_select' created Wed Sep 12 14:24:39 2018
+   Type              New Name                               Original Name
+// ----------------------------------------------------------------------
+End
+Section Type      Name
+// ----------------------------------------------------------------------
+        Input     a11
+        Input     a10
+        Input     a9
+        Input     a8
+        Input     wr
+        Output     ram_cs
+        Output     adc_cs
+        Output     oled_cs
+        Output     oled_dc
+        Output     wr_inverted
+End
