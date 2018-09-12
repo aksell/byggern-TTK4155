@@ -125,7 +125,19 @@
     <Compile Include="external_mem.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="joystick.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="joystick.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="slider.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="slider.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="uart.c">

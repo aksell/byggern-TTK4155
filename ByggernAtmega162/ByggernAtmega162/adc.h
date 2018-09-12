@@ -8,7 +8,8 @@
 #ifndef ADC_H_
 #define ADC_H_
 
-
+#include "config.h"
+#include <util/delay.h>
 #include "external_mem.h"
 
 
