@@ -13,6 +13,4 @@
 #define UART0_BAUD 9600
 
 
-
-
 #endif /* CONFIG_H_ */

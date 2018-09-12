@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "utilities.h"
 #include "config.h"
