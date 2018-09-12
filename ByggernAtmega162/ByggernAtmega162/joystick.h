@@ -9,15 +9,17 @@
 #ifndef JOYSTICK_H_
 #define JOYSTICK_H_
 
+#include "config.h"
 #include "utilities.h"
+#include "adc.h"
+#include <stdio.h>
 
-enum joystick_axis {
-	JOYSTICK_X,
-	JOYSTICK_Y
-};
+typedef enum joystick_axis_e{
+	JOYSTICK_X, 
+	JOYSTICK_Y};
 
 void joystick_init(bool lowpass_enable);
 
-int8_t joystick_get_angle(joystick_axis joystick_axis_p);
+volatile int8_t joystick_get_angle(enum joystick_axis_e joystick_axis_p);
 
 #endif /* JOYSTICK_H_ */
