@@ -25,6 +25,6 @@ uint8_t uart_recive();
 
 bool uart_is_ready_read() ;
 
-
+static FILE uart_stream = FDEV_SETUP_STREAM  (uart_transmit, uart_recive, _FDEV_SETUP_RW);
 
 #endif /* UART_H_ */

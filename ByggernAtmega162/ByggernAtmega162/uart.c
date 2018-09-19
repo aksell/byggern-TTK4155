@@ -26,13 +26,15 @@
 	 UCSR0C = (1<<URSEL0)|(1<<USBS0)|(1<<UCSZ00)|(1<<UCSZ01);
 	
 	//Link stdio to UART
-	fdevopen(&uart_transmit,&uart_recive);
+	//fdevopen(&uart_transmit,&uart_recive);
+	
  }
  
  uint8_t uart_transmit(unsigned char data){
 	//Wait for UART transmit ready flag
 	while(!(UCSR0A & (1<<UDRE0)));
 	UDR0 = data;
+	
 	
 	return 0;
 	

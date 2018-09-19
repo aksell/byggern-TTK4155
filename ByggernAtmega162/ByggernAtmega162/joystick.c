@@ -26,7 +26,7 @@ void joystick_init(bool lowpass_enable) {
 }
 
 volatile int8_t get_unfiltered_angle(enum joystick_axis_e joystick_axis_p) {
-	return (int8_t)((float)((int16_t)(adc_read(joystick_axis_p+1)) - offset_value[joystick_axis_p])*(60.0/128));
+	return (int8_t)((((int16_t)(adc_read(joystick_axis_p+1)) - offset_value[joystick_axis_p])*60)/128);
 }
 
 volatile int8_t joystick_get_angle(enum joystick_axis_e joystick_axis_p) {
