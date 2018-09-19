@@ -1,7 +1,7 @@
 #--  Synopsys, Inc.
 #--  Version I-2014.03LC 
-#--  Project file C:\users\akselsl\documents\byggern\byggern-ttk4155\run_options.txt
-#--  Written on Wed Sep 12 14:24:34 2018
+#--  Project file C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\run_options.txt
+#--  Written on Wed Sep 19 09:43:31 2018
 
 
 #project files
@@ -9,8 +9,8 @@ add_file -vhdl -lib work "./chip_select.vhd"
 
 
 
-#implementation: "byggern-ttk4155"
-impl -add byggern-ttk4155 -type fpga
+#implementation: "isplever"
+impl -add isplever -type fpga
 
 #device options
 set_option -technology ispGAL
@@ -52,5 +52,5 @@ set_option -write_apr_constraint 1
 project -result_file "./chip_select.edi"
 
 #set log file 
-set_option log_file "C:/users/akselsl/documents/byggern/byggern-ttk4155/chip_select.srf" 
-impl -active "byggern-ttk4155"
+set_option log_file "C:/users/torbjfug/documents/byggern/byggern-ttk4155/isplever/chip_select.srf" 
+impl -active "isplever"

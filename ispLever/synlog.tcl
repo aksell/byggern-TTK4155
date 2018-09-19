@@ -1,1 +1,1 @@
-project -load c:/users/akselsl/documents/byggern/byggern-ttk4155/chip_select.prj
+project -load c:/users/torbjfug/documents/byggern/byggern-ttk4155/isplever/chip_select.prj

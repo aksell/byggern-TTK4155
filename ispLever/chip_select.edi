@@ -4,7 +4,7 @@
   (keywordMap (keywordLevel 0))
   (status
     (written
-      (timeStamp 2018 9 12 14 24 36)
+      (timeStamp 2018 9 19 9 43 34)
       (author "Synopsys, Inc.")
       (program "Synplify Pro" (version "I-2014.03LC , mapper maplat, Build 923R"))
      )
@@ -64,9 +64,7 @@
            (port a8 (direction INPUT)
            (property LOC (string "P4"))
  )
-           (port wr (direction INPUT)
-           (property LOC (string "P5"))
- )
+           (port wr (direction INPUT))
            (port ram_cs (direction OUTPUT)
            (property LOC (string "P19"))
  )
@@ -79,9 +77,6 @@
            (port oled_dc (direction OUTPUT)
            (property LOC (string "P16"))
  )
-           (port wr_inverted (direction OUTPUT)
-           (property LOC (string "P15"))
- )
          )
          (contents
           (instance a11 (viewRef prim (cellRef IBUF (libraryRef mach)))          )
@@ -93,34 +88,23 @@
           (instance adc_cs (viewRef prim (cellRef OBUF (libraryRef mach)))          )
           (instance oled_cs (viewRef prim (cellRef OBUF (libraryRef mach)))          )
           (instance oled_dc (viewRef prim (cellRef OBUF (libraryRef mach)))          )
-          (instance wr_inverted (viewRef prim (cellRef OBUF (libraryRef mach)))          )
           (instance adc_csor_i (viewRef prim (cellRef INV (libraryRef mach)))          )
-          (instance oled_csor_i (viewRef prim (cellRef INV (libraryRef mach)))          )
+          (instance a9_c_i (viewRef prim (cellRef INV (libraryRef mach)))          )
           (instance oled_dcor_i (viewRef prim (cellRef INV (libraryRef mach)))          )
-          (instance a9_i (viewRef prim (cellRef INV (libraryRef mach)))          )
           (instance oled_dcor (viewRef prim (cellRef AND2 (libraryRef mach)))          )
-          (instance oled_csor (viewRef prim (cellRef AND2 (libraryRef mach)))          )
           (instance a10_i (viewRef prim (cellRef INV (libraryRef mach)))          )
           (instance adc_csor (viewRef prim (cellRef AND2 (libraryRef mach)))          )
-          (instance un1_oled_cs (viewRef prim (cellRef AND2 (libraryRef mach)))          )
-          (instance wr_i (viewRef prim (cellRef INV (libraryRef mach)))          )
+          (instance oled_csor (viewRef prim (cellRef AND2 (libraryRef mach)))          )
           (instance a11_i (viewRef prim (cellRef INV (libraryRef mach)))          )
-          (net wr_i (joined
-           (portRef O (instanceRef wr_i))
-           (portRef I0 (instanceRef wr_inverted))
-          ))
+          (instance oled_csor_i (viewRef prim (cellRef INV (libraryRef mach)))          )
           (net a11_i (joined
            (portRef O (instanceRef a11_i))
-           (portRef I1 (instanceRef un1_oled_cs))
+           (portRef I1 (instanceRef oled_csor))
            (portRef I1 (instanceRef adc_csor))
            (portRef I0 (instanceRef ram_cs))
           ))
           (net a10_i (joined
            (portRef O (instanceRef a10_i))
-           (portRef I0 (instanceRef un1_oled_cs))
-          ))
-          (net a9_i (joined
-           (portRef O (instanceRef a9_i))
            (portRef I0 (instanceRef oled_csor))
           ))
           (net a11_c (joined
@@ -142,8 +126,7 @@
           ))
           (net a9_c (joined
            (portRef O (instanceRef a9))
-           (portRef I0 (instanceRef oled_dcor))
-           (portRef I0 (instanceRef a9_i))
+           (portRef I0 (instanceRef a9_c_i))
           ))
           (net a9 (joined
            (portRef a9)
@@ -158,7 +141,6 @@
           ))
           (net wr_c (joined
            (portRef O (instanceRef wr))
-           (portRef I0 (instanceRef wr_i))
           ))
           (net wr (joined
            (portRef wr)
@@ -192,22 +174,18 @@
            (portRef O (instanceRef oled_dc))
            (portRef oled_dc)
           ))
-          (net wr_inverted (joined
-           (portRef O (instanceRef wr_inverted))
-           (portRef wr_inverted)
-          ))
-          (net un1_oled_cs_0 (joined
-           (portRef O (instanceRef un1_oled_cs))
-           (portRef I1 (instanceRef oled_csor))
+          (net oled_cs_c_0 (joined
+           (portRef O (instanceRef oled_csor))
+           (portRef I0 (instanceRef oled_csor_i))
            (portRef I1 (instanceRef oled_dcor))
           ))
           (net adc_cs_c_0 (joined
            (portRef O (instanceRef adc_csor))
            (portRef I0 (instanceRef adc_csor_i))
           ))
-          (net oled_cs_c_0 (joined
-           (portRef O (instanceRef oled_csor))
-           (portRef I0 (instanceRef oled_csor_i))
+          (net a9_c_i (joined
+           (portRef O (instanceRef a9_c_i))
+           (portRef I0 (instanceRef oled_dcor))
           ))
           (net oled_dc_c_0 (joined
            (portRef O (instanceRef oled_dcor))

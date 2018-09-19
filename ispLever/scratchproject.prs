@@ -1,14 +1,14 @@
 #--  Synopsys, Inc.
 #--  Version I-2014.03LC 
-#--  Project file C:\users\akselsl\documents\byggern\byggern-ttk4155\scratchproject.prs
+#--  Project file C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\scratchproject.prs
 
 #project files
-add_file -vhdl -lib work "C:/users/akselsl/documents/byggern/byggern-ttk4155/chip_select.vhd"
+add_file -vhdl -lib work "C:/users/torbjfug/documents/byggern/byggern-ttk4155/isplever/chip_select.vhd"
 
 
 
-#implementation: "byggern-ttk4155"
-impl -add C:\users\akselsl\documents\byggern\byggern-ttk4155 -type fpga
+#implementation: "isplever"
+impl -add C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever -type fpga
 
 #device options
 set_option -technology ispGAL
@@ -47,8 +47,8 @@ set_option -auto_infer_blackbox 0
 set_option -write_apr_constraint 1
 
 #set result format/file last
-project -result_file "C:/users/akselsl/documents/byggern/byggern-ttk4155/chip_select.edi"
+project -result_file "C:/users/torbjfug/documents/byggern/byggern-ttk4155/isplever/chip_select.edi"
 
 #set log file 
-set_option log_file "C:/users/akselsl/documents/byggern/byggern-ttk4155/chip_select.srf" 
-impl -active "byggern-ttk4155"
+set_option log_file "C:/users/torbjfug/documents/byggern/byggern-ttk4155/isplever/chip_select.srf" 
+impl -active "isplever"

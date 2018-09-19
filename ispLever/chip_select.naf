@@ -7,4 +7,3 @@ ram_cs  o
 adc_cs  o
 oled_cs  o
 oled_dc  o
-wr_inverted  o

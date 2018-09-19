@@ -1,11 +1,11 @@
 #$ TOOL ispLEVER Classic 2.0.00.17.20.15
-#$ DATE Wed Sep 12 14:24:39 2018
+#$ DATE Wed Sep 19 09:43:38 2018
 #$ MODULE chip_select
-#$ PINS 10 a11:1'ke'  a10:2'ke'  a9:3'ke'  a8:4'ke'  wr:5'ke'  ram_cs:19'ke'  adc_cs:18'ke'  oled_cs:17'ke'  oled_dc:16'ke'  wr_inverted:15'ke' 
+#$ PINS 8 a11:1'ke'  a10:2'ke'  a9:3'ke'  a8:4'ke'  ram_cs:19'ke'  adc_cs:18'ke'  oled_cs:17'ke'  oled_dc:16'ke' 
 
 .model chip_select
-.inputs a11.BLIF a10.BLIF a9.BLIF wr.BLIF
-.outputs ram_cs adc_cs oled_cs oled_dc wr_inverted
+.inputs a11.BLIF a10.BLIF a9.BLIF
+.outputs ram_cs adc_cs oled_cs oled_dc
 .names a11.BLIF ram_cs
 0 1
 1 0
@@ -13,17 +13,13 @@
 1- 1
 -0 1
 01 0
-.names a11.BLIF a10.BLIF a9.BLIF oled_cs
+.names a11.BLIF a10.BLIF oled_cs
+1- 1
+-1 1
+00 0
+.names a11.BLIF a10.BLIF a9.BLIF oled_dc
 -1- 1
 1-- 1
 --1 1
 000 0
-.names a11.BLIF a10.BLIF a9.BLIF oled_dc
--1- 1
-1-- 1
---0 1
-001 0
-.names wr.BLIF wr_inverted
-0 1
-1 0
 .end

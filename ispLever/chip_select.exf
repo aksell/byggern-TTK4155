@@ -1,5 +1,5 @@
 Section Cross Reference File
-Design 'chip_select' created Wed Sep 12 14:24:39 2018
+Design 'chip_select' created Wed Sep 19 09:43:38 2018
    Type              New Name                               Original Name
 // ----------------------------------------------------------------------
 End
@@ -14,5 +14,4 @@ Section Type      Name
         Output     adc_cs
         Output     oled_cs
         Output     oled_dc
-        Output     wr_inverted
 End
