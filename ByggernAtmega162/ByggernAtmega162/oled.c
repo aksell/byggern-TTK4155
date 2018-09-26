@@ -119,6 +119,16 @@ void oled_control_write(uint8_t data){
 	*adress = data;	
 }
 
+bool printf_inverted = false;
+
+void oled_printf_inverted() {
+	printf_inverted = true;
+}
+
+void oled_printf_normal() {
+	printf_inverted = false;
+}
+
 
 uint8_t printf_columb = 0;
 uint8_t printf_page = 0;
@@ -164,6 +174,10 @@ void oled_print_char_at_columb(char letter, uint8_t page, uint8_t size) {
 	}
 	oled_page_select(page);
 	for(int i = 0; i < 8; i++) {
-		oled_data_write(pgm_read_byte(&(font8[letter - ' '][i])));
-	}
+		if(!printf_inverted) {
+			oled_data_write(pgm_read_byte(&(font8[letter - ' '][i])));
+		} else {
+			oled_data_write(~pgm_read_byte(&(font8[letter - ' '][i])));
+		}
+	}s
 }
