@@ -135,6 +135,7 @@ void oled_set_printf_size(uint8_t size) {
 uint8_t oled_print_char(char letter) {
 	if(letter == '\n') {
 		printf_page+=1;
+		oled_columb_range_select(0, OLED_COLUMBS);
 		} else {
 		oled_print_char_at_columb(letter, printf_page, printf_size);
 		uint8_t columb_adder = 0;
