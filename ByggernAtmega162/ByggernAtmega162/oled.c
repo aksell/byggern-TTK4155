@@ -179,5 +179,5 @@ void oled_print_char_at_columb(char letter, uint8_t page, uint8_t size) {
 		} else {
 			oled_data_write(~pgm_read_byte(&(font8[letter - ' '][i])));
 		}
-	}s
+	}
 }

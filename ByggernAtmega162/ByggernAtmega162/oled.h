@@ -16,6 +16,7 @@
 #include <stdio.h>
 
 #include "fonts.h"
+#include "timer.h"
 
 
 #include <util/delay.h>
@@ -48,7 +49,7 @@ void oled_set_printf_size(uint8_t size);
 void oled_set_printf_page(uint8_t page);
 uint8_t oled_printf_dummy_recieve();
 
-void oled_printf_inverse();
+void oled_printf_inverted();
 void oled_printf_normal();
 static FILE oled_stream = FDEV_SETUP_STREAM(oled_print_char, NULL, _FDEV_SETUP_WRITE);
 
