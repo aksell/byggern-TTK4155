@@ -16,10 +16,18 @@
 
 typedef enum joystick_axis_e{
 	JOYSTICK_X, 
-	JOYSTICK_Y};
+	JOYSTICK_Y}joystick_axis;
+	
+	typedef enum joystick_dir {
+		UP,
+		DOWN,
+		RIGHT,
+		LEFT,
+		NEUTRAL
+		}joystick_dir;
 
 void joystick_init(bool lowpass_enable);
 
-volatile int8_t joystick_get_angle(enum joystick_axis_e joystick_axis_p);
+volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p);
 
 #endif /* JOYSTICK_H_ */

@@ -25,16 +25,29 @@ void joystick_init(bool lowpass_enable) {
 	lowpass_enabled = lowpass_enable;
 }
 
-volatile int8_t get_unfiltered_angle(enum joystick_axis_e joystick_axis_p) {
-	return (int8_t)((((int16_t)(adc_read(joystick_axis_p+1)) - offset_value[joystick_axis_p])*60)/128);
+volatile int8_t get_unfiltered_percent(joystick_axis joystick_axis_p) {
+	return (int8_t)((((int16_t)(adc_read(joystick_axis_p+1)) - offset_value[joystick_axis_p])*100)/128);
 }
 
-volatile int8_t joystick_get_angle(enum joystick_axis_e joystick_axis_p) {
+volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p) {
 	if(lowpass_enabled) {
 		prev_value[joystick_axis_p]  = (int8_t)(get_unfiltered_angle(joystick_axis_p)*alpha + prev_value[joystick_axis_p]*(1.0-alpha));
 		return prev_value[joystick_axis_p];
 	} else {
-		return get_unfiltered_angle(joystick_axis_p);
+		return get_unfiltered_percent(joystick_axis_p);
 	}
 }
+
+joystick_dir joystick_get_dir() {
+	int8_t x_a = joystick_get_percent(JOYSTICK_X);
+	int8_t y_a = joystick_get_percent(JOYSTICK_Y);
+	
+	if(x_a > 50) return RIGHT;
+	if(x_a < -50) return LEFT;
+	if(y_a > 50) return UP;
+	if(y_a < -50) return DOWN;
+	return NEUTRAL;	
+}
+
+
 
