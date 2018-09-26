@@ -11,9 +11,9 @@
 
 #include "utilities.h"
 
-void buttons_init();
+void push_buttons_init();
 
-void buttons_set_state(int button_index, bool button_state);
-bool buttons_get_state(int button_index);
+void push_buttons_set_state(int button_index, bool button_state);
+bool push_buttons_get_state(int button_index);
 
 #endif /* BUTTONS_H_ */

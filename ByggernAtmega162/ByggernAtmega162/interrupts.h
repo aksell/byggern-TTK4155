@@ -8,9 +8,11 @@
 
 #ifndef INTERRUPTS_H_
 #define INTERRUPTS_H_
+
 #include "push_buttons.h"
+#include <avr/interrupt.h>
 
-
+void interrupt_init();
 
 
 #endif /* INTERRUPTS_H_ */

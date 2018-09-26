@@ -29,5 +29,6 @@ typedef enum joystick_axis_e{
 void joystick_init(bool lowpass_enable);
 
 volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p);
+joystick_dir joystick_get_dir();
 
 #endif /* JOYSTICK_H_ */

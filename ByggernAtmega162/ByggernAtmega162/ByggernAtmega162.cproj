@@ -128,6 +128,12 @@
     <Compile Include="fonts.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="interrupts.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="interrupts.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="joystick.c">
       <SubType>compile</SubType>
     </Compile>
@@ -143,10 +149,28 @@
     <Compile Include="oled.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="oled_menu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="oled_menu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="push_buttons.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="push_buttons.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="slider.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="slider.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="uart.c">

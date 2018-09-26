@@ -31,7 +31,7 @@ volatile int8_t get_unfiltered_percent(joystick_axis joystick_axis_p) {
 
 volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p) {
 	if(lowpass_enabled) {
-		prev_value[joystick_axis_p]  = (int8_t)(get_unfiltered_angle(joystick_axis_p)*alpha + prev_value[joystick_axis_p]*(1.0-alpha));
+		prev_value[joystick_axis_p]  = (int8_t)(get_unfiltered_percent(joystick_axis_p)*alpha + prev_value[joystick_axis_p]*(1.0-alpha));
 		return prev_value[joystick_axis_p];
 	} else {
 		return get_unfiltered_percent(joystick_axis_p);
