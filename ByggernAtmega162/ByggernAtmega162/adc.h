@@ -1,6 +1,6 @@
 /*
  * adc.h
- *
+ * Driver for ADC0844
  * Created: 12.09.2018 14:42:29
  *  Author: akselsl
  */ 
@@ -13,6 +13,7 @@
 #include "external_mem.h"
 
 
+//takes a integer from 1 to 4 and returns the analog value of the corresponding channel of the ADC
 volatile uint8_t adc_read(uint8_t channel);
 
 
