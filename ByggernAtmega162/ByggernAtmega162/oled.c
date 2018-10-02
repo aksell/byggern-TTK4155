@@ -136,6 +136,7 @@ uint8_t printf_size = 0;
 
 void oled_set_printf_page(uint8_t page) {
 	printf_page = page;
+	oled_page_select(printf_page);
 }
 
 void oled_set_printf_size(uint8_t size) {
@@ -145,9 +146,10 @@ void oled_set_printf_size(uint8_t size) {
 uint8_t oled_print_char(char letter) {
 	if(letter == '\n') {
 		printf_page+=1;
+		oled_page_select(printf_page);
 		oled_columb_range_select(0, OLED_COLUMBS);
-		} else {
-		oled_print_char_at_columb(letter, printf_page, printf_size);
+	} else {
+		oled_print_char_of_size(letter, printf_size);
 		uint8_t columb_adder = 0;
 	}
 	return 0;
@@ -159,7 +161,7 @@ uint8_t oled_printf_dummy_recieve(){
 }
 
 
-void oled_print_char_at_columb(char letter, uint8_t page, uint8_t size) {
+void oled_print_char_of_size(char letter,  uint8_t size) {
 	uint8_t char_length = 0;
 	unsigned char ** letter_bitmap;
 	if(size == FONT_SIZE_SMALL) {
@@ -172,7 +174,6 @@ void oled_print_char_at_columb(char letter, uint8_t page, uint8_t size) {
 		char_length = 8;
 		letter_bitmap = font8;
 	}
-	oled_page_select(page);
 	for(int i = 0; i < 8; i++) {
 		if(!printf_inverted) {
 			oled_data_write(pgm_read_byte(&(font8[letter - ' '][i])));
