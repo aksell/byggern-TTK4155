@@ -15,18 +15,16 @@ void interrupt_init() {
 	GICR |= 1<<INT1;					// Enable INT1
 	MCUCR |= 1<<ISC11 | 1<<ISC10;	// Trigger INT1 on rising edge
 	MCUCR |= 1<<ISC01 | 1<<ISC00;	// Trigger INT0 on rising edge
-	
-	
 	sei();
 }
 
 ISR(INT0_vect)
 {
-	push_buttons_set_state(0, 1);
+	push_buttons_set_state(0, 1); //Activate button0 active flag
 }
 
 
 ISR(INT1_vect)
 {
-	push_buttons_set_state(1, 1);
+	push_buttons_set_state(1, 1);//Activate button1 active flag
 }

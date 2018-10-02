@@ -12,6 +12,7 @@
 #include "push_buttons.h"
 #include <avr/interrupt.h>
 
+//Sets up interrupts on INT0 and INT1
 void interrupt_init();
 
 
