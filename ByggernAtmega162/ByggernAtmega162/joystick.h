@@ -26,9 +26,14 @@ typedef enum joystick_axis_e{
 		NEUTRAL
 		}joystick_dir;
 
+
+//Init the the joystick, if lowpass_enable the value of the joystick will be filtered
 void joystick_init(bool lowpass_enable);
 
+// Returns a number between -100 to 100 indicating the joystick position
 volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p);
+
+//Returns a the joystick direction
 joystick_dir joystick_get_dir();
 
 #endif /* JOYSTICK_H_ */
