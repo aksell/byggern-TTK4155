@@ -8,7 +8,7 @@
 
 void interrupt_init() {
 	
-	DDRD &= ~(1<<PD2 |  1 << PD3);		// Set port D pin 2 and 3 to input
+	//DDRD &= ~(1<<PD2 |  1 << PD3);		// Set port D pin 2 and 3 to input
 	cli();
 	 
 	//GICR |= 1<<INT0;					// Enable INT0
