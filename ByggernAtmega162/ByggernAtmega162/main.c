@@ -28,7 +28,6 @@ int main(void)
 	external_mem_init();
 	uart_init();
 	joystick_init(false);
-	oled_init();
 	push_buttons_init();
 	interrupt_init();
 	timer_init();
@@ -40,7 +39,7 @@ int main(void)
 	//oled_chess();
 	stdout = &oled_stream;
 	//stdout = &uart_stream;
-	
+	oled_init();
 	menu_init();
 	//printf("12346YGFHGF \n");
 	//printf("2 \n");
