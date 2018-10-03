@@ -22,6 +22,7 @@
 #include "interrupts.h"
 #include "push_buttons.h"
 #include "timer.h"
+#include "spi.h"
 
 int main(void)
 {
@@ -31,6 +32,8 @@ int main(void)
 	push_buttons_init();
 	interrupt_init();
 	timer_init();
+	spi_init();
+	
 	volatile uint8_t *p = 0x1400;
 
 	unsigned char uart_test_recieve;
@@ -39,13 +42,29 @@ int main(void)
 	//oled_chess();
 	stdout = &oled_stream;
 	//stdout = &uart_stream;
+
 	oled_init();
 	menu_init();
+	
 	//printf("12346YGFHGF \n");
 	//printf("2 \n");
     while (1) 
 		{
-	
+		
+		stdout = &uart_stream;
+		uint8_t data [3];
+		data[0]=1;
+		data[1]=2;
+		data[2]=3;
+		
+		uint8_t read_data [3];
+		spi_transmit_recieve(data,read_data,3);
+		for (int i = 0;i<3;i++){
+			printf("Sending: %d\r\n",data[i]);
+			
+			printf("Recieving: %d\r\n", read_data[i]);
+		}
+		printf("\n");
 		/*
 		_delay_ms(10);
 		if (uart_is_ready_read()){
@@ -54,11 +73,11 @@ int main(void)
 			printf("%c",uart_test_recieve);
 			//printf("HEi, %i\r\n", 5);
 		*/
-		
+		stdout = &oled_stream;
 		menu_update();
 		push_buttons_poll();
 		//menu_increment_current_value();
-		
+		_delay_ms(10000);
 			
 		}
 
