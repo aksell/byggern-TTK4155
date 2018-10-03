@@ -7,7 +7,6 @@
 
 #include "spi.h"
 
-#define CAN_SPI_ID 0
 
 
 
@@ -37,17 +36,17 @@ void spi_transmit_recieve(uint8_t * send_data, uint8_t * recieve_data, uint8_t d
 	PORTB |= 1<<PB4;	
 }
 
-/*
+
 void spi_receive(uint8_t * recieve_data, uint8_t data_length){
-	uint8_t data = 0;
-	return spi_transmit_recieve(&datauint8_t * recieve_data, uint8_t data_length);
+	uint8_t dummy_data[MAX_CAN_LENGTH];
+	spi_transmit_recieve(dummy_data, recieve_data, data_length);
 }
 
 void spi_transmit(uint8_t * send_data,uint8_t data_length){
-	uint8_t dummy_recieve [data_length];
-	spi_transmit_recieve(send_data,dummy_recieve,uint8_t data_length);
+	uint8_t dummy_recieve [MAX_CAN_LENGTH];
+	spi_transmit_recieve(send_data,dummy_recieve, data_length);
 }
-*/
+
 
 /*
 		stdout = &uart_stream;
