@@ -23,6 +23,7 @@
 #include "push_buttons.h"
 #include "timer.h"
 #include "spi.h"
+#include "CAN_controller.h"
 
 int main(void)
 {
@@ -33,6 +34,7 @@ int main(void)
 	interrupt_init();
 	timer_init();
 	spi_init();
+	CAN_init();
 	
 	volatile uint8_t *p = 0x1400;
 
@@ -52,17 +54,25 @@ int main(void)
 		{
 		
 		stdout = &uart_stream;
+		CAN_test();
+		
+		/*
 		uint8_t data [3];
-		data[0]=1;
+		data[0]=2;
 		data[1]=2;
 		data[2]=3;
 		
 		uint8_t read_data [3];
-		spi_transmit_recieve(data,read_data,3);
-		for (int i = 0;i<3;i++){
+		uint8_t * address;
+		uint8_t recieved_length;
+		CAN_transmit(data,1);
+		_delay_ms(100);
+		CAN_recive(address,data,recieved_length);
+		for (int i = 0;i<1;i++){
 			printf("Sending: %d\r\n",data[i]);
-			
-			printf("Recieving: %d\r\n", read_data[i]);
+			printf("Receiving: %d\r\n", read_data[i]);
+			printf("Receiving address: %d\r\n", *address);
+			printf("Receiving length: %d\r\n", recieved_length);
 		}
 		printf("\n");
 		/*
@@ -77,7 +87,7 @@ int main(void)
 		menu_update();
 		push_buttons_poll();
 		//menu_increment_current_value();
-		_delay_ms(10000);
+		_delay_ms(5000);
 			
 		}
 
