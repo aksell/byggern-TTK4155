@@ -57,6 +57,7 @@ int main(void)
 		*/
 		
 		menu_update();
+		push_buttons_poll();
 		//menu_increment_current_value();
 		
 			
