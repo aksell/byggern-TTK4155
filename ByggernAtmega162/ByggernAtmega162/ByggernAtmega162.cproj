@@ -116,6 +116,12 @@
     <Compile Include="adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_controller.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_controller.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="config.h">
       <SubType>compile</SubType>
     </Compile>
@@ -141,6 +147,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_reg.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="oled.c">
