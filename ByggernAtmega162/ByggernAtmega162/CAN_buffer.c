@@ -66,9 +66,7 @@ can_message CAN_buffer_read(){
 	
 }
 
-uint16_t CAN_addres_construct(uint16_t number){
-	return (number << CAN_ADDRESS_OFFSET)&CAN_ADDRESS_OFFSET_bm;
-}
+
 
 
 void CAN_buffer_test(){
@@ -131,8 +129,8 @@ bool CAN_buffer_is_empty(){
 
 void CAN_buffer_test_2(){
 	can_message message1;
-	message1.address = 0x0001;
-	message1.data_size = 8;
+	message1.address = 0x7A1;
+	message1.data_size = 2;
 	for (int i = 0; i < message1.data_size; i++){
 		message1.data[i] = i+120;
 	}
