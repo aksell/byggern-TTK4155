@@ -24,6 +24,7 @@
 #include "timer.h"
 #include "spi.h"
 #include "CAN_controller.h"
+#include "CAN_buffer.h"
 
 int main(void)
 {
@@ -35,7 +36,9 @@ int main(void)
 	timer_init();
 	spi_init();
 	CAN_init();
+	CAN_buffer_init();
 	
+	_delay_ms(100);
 	volatile uint8_t *p = 0x1400;
 
 	unsigned char uart_test_recieve;
@@ -48,13 +51,15 @@ int main(void)
 	oled_init();
 	menu_init();
 	
+	
+	
 	//printf("12346YGFHGF \n");
 	//printf("2 \n");
     while (1) 
 		{
 		
 		stdout = &uart_stream;
-		CAN_test();
+		CAN_buffer_test_2();
 		
 		/*
 		uint8_t data [3];
@@ -86,6 +91,7 @@ int main(void)
 		stdout = &oled_stream;
 		menu_update();
 		push_buttons_poll();
+		
 		//menu_increment_current_value();
 		_delay_ms(5000);
 			
