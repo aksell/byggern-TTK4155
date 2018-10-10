@@ -24,18 +24,27 @@ void CAN_init() {
 	
 }
 
-uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size) {
+uint16_t CAN_addres_construct(uint16_t number){
+	return (number << CAN_ADDRESS_OFFSET)&CAN_ADDRESS_OFFSET_CONSTRUCT_bm;
+}
+
+uint16_t CAN_addres_read(uint16_t number){
+	return (number << CAN_ADDRESS_OFFSET)&CAN_ADDRESS_OFFSET_READ_bm;
+}
+
+uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	//Check TXB0CTRL.TXREQ clear
 	uint8_t TXREQ_data;
 	MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1); //Wait for transmit buffer is pending transmission
 	while (TXREQ_data & (1 << TXBnCTRL_TXREQ)){ //to fix
 		MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1);
 	}
+	address = CAN_addres_construct(address);
+	uint8_t address_8b[2];
+	convert_from_16_to_8(address,address_8b);
 	
-	uint8_t address[2] = {1, 1};
-		
-		
-	MCP2515_write(MCP_TXB0SIDH, address, 2); //Set identifier to 0
+	
+	MCP2515_write(MCP_TXB0SIDH, address_8b, 2); //Set identifier to 0
 	MCP2515_write(MCP_TXB0DLC, &data_size, 1); //Set data length
 
 	
@@ -51,7 +60,10 @@ void CAN_recive(uint16_t * address, uint8_t * data, uint8_t * data_size) {
 	uint8_t address_data[2];
 	
 	MCP2515_read(MCP_RXB0SIDH, address_data, 2); //Read identifier
-	address = (address_data[0] << 2) |  (address_data[1] >> 5);
+	//*address = convert_from_8_to_16(address_data[0],address_data[1]);
+	//*address = CAN_addres_read(*address);
+	
+	*address = (((uint16_t)address_data[0]) << 3) |  (((uint16_t)address_data[1]) >> 5);
 	
 	MCP2515_read(MCP_RXB0DLC, data_size, 1); //Read data size
 	*data_size = (*data_size) & (0x0f); //map out the data length bits
@@ -61,10 +73,10 @@ void CAN_recive(uint16_t * address, uint8_t * data, uint8_t * data_size) {
 }
 
 void CAN_transmit_message(can_message* message){
-	CAN_transmit(&(message->data),message->data_size);
+	CAN_transmit(&(message->data),message->data_size,message->address);
 }
 
-CAN_recive_message(can_message* message){
+void CAN_recive_message(can_message* message){
 	CAN_recive(&(message->address),&(message->data),&(message->data_size));
 }
 
@@ -72,12 +84,12 @@ CAN_recive_message(can_message* message){
 
 void CAN_test() {
 	uint8_t data[] = {44, 2, 5,12,4};
-	CAN_transmit(data, 3);
+	CAN_transmit(data, 3,1);
 	for (int i = 0;i < 10;i ++){
 		data[0] = i;
 		uint16_t add = 0;
 		uint8_t r_data[1];
-		CAN_transmit(data,1);
+		CAN_transmit(data,1,0);
 		uint8_t r_data_size = 0;
 		CAN_recive(&add, r_data, &r_data_size);
 		CAN_recive(&add, r_data, &r_data_size);

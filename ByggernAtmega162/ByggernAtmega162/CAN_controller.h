@@ -16,8 +16,8 @@
 
 #define CAN_MESSAGE_MAX_SIZE 8
 #define CAN_ADDRESS_OFFSET 5
-#define CAN_ADDRESS_OFFSET_bm 0xffe0
-#de
+#define CAN_ADDRESS_OFFSET_CONSTRUCT_bm 0xffe0
+#define CAN_ADDRESS_OFFSET_READ_bm 0x7fff
 
 typedef struct can_message_s{
 	uint16_t address;
