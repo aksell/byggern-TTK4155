@@ -32,7 +32,7 @@ int main(void)
 	uart_init();
 	joystick_init(false);
 	push_buttons_init();
-	interrupt_init();
+	//interrupt_init();
 	timer_init();
 	spi_init();
 	CAN_init();
@@ -50,7 +50,7 @@ int main(void)
 
 	oled_init();
 	menu_init();
-	
+	interrupt_init();
 	
 	
 	//printf("12346YGFHGF \n");
@@ -59,6 +59,7 @@ int main(void)
 		{
 		
 		stdout = &uart_stream;
+		printf("Start loop");
 		CAN_buffer_test_2();
 		
 		/*
