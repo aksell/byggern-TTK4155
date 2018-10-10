@@ -14,10 +14,31 @@
 #include "MCP2515_driver.h"
 #include "uart.h"
 
+#define CAN_MESSAGE_MAX_SIZE 8
+#define CAN_ADDRESS_OFFSET 5
+#define CAN_ADDRESS_OFFSET_bm 0xffe0
+#de
+
+typedef struct can_message_s{
+	uint16_t address;
+	uint8_t data_size;
+	uint8_t data [CAN_MESSAGE_MAX_SIZE];
+}can_message;
+
+
+
+
 void CAN_init();
-uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size);
-void CAN_recive(uint16_t * address, uint8_t * data, uint8_t * data_size);
+
+void CAN_transmit_message(can_message* message);
+void CAN_recive_message(can_message* message);
+uint16_t CAN_addres_construct(uint16_t number);
+uint16_t CAN_addres_read(uint16_t number);
+
+
 void CAN_test();
+void CAN_test_2();
+
 
 
 #endif /* CAN_CONTROLLER_H_ */
