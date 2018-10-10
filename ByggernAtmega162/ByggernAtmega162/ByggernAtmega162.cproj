@@ -116,6 +116,12 @@
     <Compile Include="adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_buffer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_buffer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="CAN_controller.c">
       <SubType>compile</SubType>
     </Compile>
