@@ -19,7 +19,7 @@ void CAN_init() {
 	
 	MCP2515_bit_modify(MCP_CANINTE, 0b00000001,1); //Enable Interrupt on RX0
 	
-	MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_LOOPBACK);
+	MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL);
 	
 	
 }
@@ -31,6 +31,18 @@ uint16_t CAN_addres_construct(uint16_t number){
 uint16_t CAN_addres_read(uint16_t number){
 	return (number << CAN_ADDRESS_OFFSET)&CAN_ADDRESS_OFFSET_READ_bm;
 }
+
+can_message CAN_message_construct(uint16_t address, uint8_t data_size, uint8_t * data){
+	can_message message;
+	message.address = address;
+	message.data_size = data_size;
+	for(int i = 0; i<data_size;i++){
+		message.data[i] = data[i];
+	}
+	return message;
+}
+
+
 
 uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	//Check TXB0CTRL.TXREQ clear
@@ -80,9 +92,30 @@ void CAN_recive_message(can_message* message){
 	CAN_recive(&(message->address),&(message->data),&(message->data_size));
 }
 
-
+void CAN_interrupt_routine(){
+	if(!CAN_buffer_full()){
+		printf("Buffer written\n\r");
+		can_message message;
+		uint8_t s;
+		CAN_recive_message(&message);
+		
+	
+		if(CAN_buffer_remaining_size() >= (message.data_size + 3)){//enough to write the entire message to the buffer
+			CAN_buffer_write(&message);
+			MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);
+		}
+		else{
+			printf("Buffer set full\n\r");
+			CAN_buffer_set_full();
+		}
+	}
+	else{
+		printf("Buffer full\n\r");
+	}
+}
 
 void CAN_test() {
+/*
 	uint8_t data[] = {44, 2, 5,12,4};
 	CAN_transmit(data, 3,1);
 	for (int i = 0;i < 10;i ++){
@@ -96,6 +129,7 @@ void CAN_test() {
 		printf("Sendt: %d	Recieved: %d \r\n",data[0],r_data[0]);
 		
 	}
+*/
 	/*can_message message1;
 	message1.address = 0xff0f;
 	message1.data_size = 6;
