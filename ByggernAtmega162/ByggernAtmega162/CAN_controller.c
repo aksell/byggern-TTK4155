@@ -48,8 +48,13 @@ uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	//Check TXB0CTRL.TXREQ clear
 	uint8_t TXREQ_data;
 	MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1); //Wait for transmit buffer is pending transmission
-	while (TXREQ_data & (1 << TXBnCTRL_TXREQ)){ //to fix
+	int read_errors = 0;
+	while (TXREQ_data & (1 << TXBnCTRL_TXREQ)){ //toFix
 		MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1);
+		if(read_errors++ > 10) {
+			printf("ERROR: Could not make contact with MPC2515\n\r");
+			return 0xff;
+		}
 	}
 	address = CAN_addres_construct(address);
 	uint8_t address_8b[2];
