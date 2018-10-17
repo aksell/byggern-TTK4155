@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ByggernAtmega162", "ByggernAtmega162\ByggernAtmega162.cproj", "{C25B0DF3-321E-47AF-B103-592680B5651B}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ByggernAtmega2560", "ByggernAtmega2560\ByggernAtmega2560.cproj", "{1B1A0AF3-5DC1-40E5-A4BA-E5168C2BF869}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -13,6 +15,10 @@ Global
 		{C25B0DF3-321E-47AF-B103-592680B5651B}.Debug|AVR.Build.0 = Debug|AVR
 		{C25B0DF3-321E-47AF-B103-592680B5651B}.Release|AVR.ActiveCfg = Release|AVR
 		{C25B0DF3-321E-47AF-B103-592680B5651B}.Release|AVR.Build.0 = Release|AVR
+		{1B1A0AF3-5DC1-40E5-A4BA-E5168C2BF869}.Debug|AVR.ActiveCfg = Debug|AVR
+		{1B1A0AF3-5DC1-40E5-A4BA-E5168C2BF869}.Debug|AVR.Build.0 = Debug|AVR
+		{1B1A0AF3-5DC1-40E5-A4BA-E5168C2BF869}.Release|AVR.ActiveCfg = Release|AVR
+		{1B1A0AF3-5DC1-40E5-A4BA-E5168C2BF869}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
