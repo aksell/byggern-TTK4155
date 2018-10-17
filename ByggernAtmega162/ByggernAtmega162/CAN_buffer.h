@@ -9,7 +9,7 @@
 #ifndef CAN_BUFFER_H_
 #define CAN_BUFFER_H_
 
-#define CAN_BUFFER_SIZE 30
+#define CAN_BUFFER_SIZE 22
 
 
 #include <avr/io.h>
@@ -29,7 +29,7 @@ void CAN_buffer_write(can_message *message);
 can_message CAN_buffer_read();
 
 uint8_t CAN_buffer_remaining_size();
-bool CAN_buffer_is_empty();
+bool CAN_buffer_empty();
 bool CAN_buffer_full();
 void CAN_buffer_set_full();
 

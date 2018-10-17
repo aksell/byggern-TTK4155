@@ -13,9 +13,9 @@ void interrupt_init() {
 	 
 	
 	
-	GICR |= 1<<INT0;					// Enable INT0
+	//GICR |= 1<<INT0;					// Enable INT0
 	//GICR |= 1<<INT1;					// Enable INT1
-	MCUCR |= 1<<ISC01; //| 1<<ISC00;	// Trigger INT0 on falling edge
+	//MCUCR |= 1<<ISC01; //| 1<<ISC00;	// Trigger INT0 on falling edge
 	//MCUCR |= 1<<ISC11 | 0<<ISC10;	// Trigger INT1 on rising edge
 	
 	sei();
@@ -42,7 +42,6 @@ ISR(INT0_vect)
 		printf("Buffer full\n\r");
 	}*/
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		printf("Message\n\r");
 		CAN_interrupt_routine();
 	}
 	/*can_message message;

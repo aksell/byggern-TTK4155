@@ -93,25 +93,11 @@ void CAN_recive_message(can_message* message){
 }
 
 void CAN_interrupt_routine(){
-	if(!CAN_buffer_full()){
-		printf("Buffer written\n\r");
-		can_message message;
-		uint8_t s;
-		CAN_recive_message(&message);
-		
-	
-		if(CAN_buffer_remaining_size() >= (message.data_size + 3)){//enough to write the entire message to the buffer
-			CAN_buffer_write(&message);
-			MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);
-		}
-		else{
-			printf("Buffer set full\n\r");
-			CAN_buffer_set_full();
-		}
-	}
-	else{
-		printf("Buffer full\n\r");
-	}
+	printf("Buffer written\n\r");
+	can_message message;
+	CAN_recive_message(&message);
+	CAN_buffer_write(&message);
+	MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);
 }
 
 void CAN_test() {

@@ -25,17 +25,28 @@ void CAN_buffer_init(){
 }
 
 void CAN_buffer_increment_head(){
-	head = (head + 1) % CAN_BUFFER_SIZE;
-	if(head == tail){
-		buffer_full = true;
+	if (!buffer_empty && head == tail){
+		head = (head + 11) % CAN_BUFFER_SIZE;
+		tail = head;
 	}
 	else{
+		head = (head + 11) % CAN_BUFFER_SIZE;
+	}
+	
+	
+	if (head == tail){
+		buffer_full = true;
+	}
+	if(buffer_empty && head != tail){
 		buffer_empty = false;
 	}
 }
 
 void CAN_buffer_increment_tail(){
-	tail = (tail + 1) % CAN_BUFFER_SIZE;
+	if (buffer_full){
+		buffer_full = false;
+	}
+	tail = (tail + 11) % CAN_BUFFER_SIZE;
 	if(tail == head){
 		buffer_empty = true;
 	}
@@ -53,52 +64,43 @@ void CAN_buffer_write(can_message *message){
 	uint8_t adress_array[2] = {0,0};
 	convert_from_16_to_8(message->address,adress_array);
 	buffer_data[head] = adress_array[0];
-	CAN_buffer_increment_head();
-	buffer_data[head] = adress_array[1];
-	CAN_buffer_increment_head();
-	buffer_data[head] = message->data_size;
-	CAN_buffer_increment_head();
+	buffer_data[head+1] = adress_array[1];
+	buffer_data[head+2] = message->data_size;
+	
 	for (int i = 0; i < message->data_size; i++){
-		buffer_data[head] = message->data[i];
-		CAN_buffer_increment_head();
+		buffer_data[(head+3+i)%CAN_BUFFER_SIZE] = message->data[i];
+		
 	}
+	CAN_buffer_increment_head();
 }
 
 
 
 can_message CAN_buffer_read(){
 	can_message message;
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		if(tail < CAN_BUFFER_SIZE-1){
+	
+		/*if(tail < CAN_BUFFER_SIZE-1){
 			message.address = convert_from_8_to_16(buffer_data[tail],buffer_data[tail+1]);
-			CAN_buffer_increment_tail();
-			CAN_buffer_increment_tail();
+			
 		}
 		else{
 			message.address = convert_from_8_to_16(buffer_data[tail], buffer_data[0]);
-			CAN_buffer_increment_tail();
-			CAN_buffer_increment_tail();
-		}
-		message.data_size = buffer_data[tail];
-		CAN_buffer_increment_tail();
+			
+		}*/
+		message.address = convert_from_8_to_16(buffer_data[tail], buffer_data[(tail+1)%CAN_BUFFER_SIZE]);
+		message.data_size = buffer_data[(tail+2)%CAN_BUFFER_SIZE];
+		
 	
 		for(int i = 0; i<message.data_size ; i++){
-			message.data[i] = buffer_data[tail];
-			CAN_buffer_increment_tail();
+			message.data[i] = buffer_data[(tail+3+i)%CAN_BUFFER_SIZE];
 		}
-		if(buffer_full){
-			buffer_full = false;
-			CAN_interrupt_routine();
-			
-		}
-	}
+		CAN_buffer_increment_tail();
+		
+	
 	
 	return message;
 	
 }
-
-
-
 
 
 
@@ -113,9 +115,8 @@ uint8_t CAN_buffer_remaining_size(){
 
 
 
-bool CAN_buffer_is_empty(){
+bool CAN_buffer_empty(){
 	return buffer_empty;
-	//return !(buffer_full) && (head == tail);
 }
 
 
@@ -179,19 +180,24 @@ void CAN_buffer_test(){
 void CAN_buffer_test_2(){
 	can_message message1;
 	message1.address = 1;
-	message1.data_size = 8;
+	message1.data_size = 2;
 	for (int i = 0; i < message1.data_size; i++){
 		message1.data[i] = i+12;
 	}
 	
 	can_message message2;
-	message2.address = 0x2;
+	message2.address = 2;
 	message2.data_size = 8;
 	for (int i = 0; i < message2.data_size; i++){
 		message2.data[i] = i;
 	}
 	
-	CAN_transmit_message(&message1);
+	
+	CAN_buffer_write(&message1);
+	CAN_buffer_write(&message2);
+	//CAN_buffer_read();
+	
+	//CAN_transmit_message(&message1);
 	//printf("Remaining buffer space:	%d\n\r", CAN_buffer_remaining_size());
 	//CAN_interrupt_routine();
 	//_delay_ms(100);

@@ -97,14 +97,16 @@ int main(void)
 			printf("%c",uart_test_recieve);
 			//printf("HEi, %i\r\n", 5);
 		*/
-		while(!uart_buffer_empty()){
+		printf("\n\r Buffer empty %d \n\r",CAN_buffer_empty());
+		while(!CAN_buffer_empty()){
 			printf("CAN MESSAGE:	\n\r");
 			message = CAN_buffer_read();
 			printf("Address:	%d\n\r",message.address);
 			printf("Received data\n\r");
 			for(int i = 0; i<message.data_size;i++){
-				printf("%d",message.data[i]);
+				printf("Data:%d, \n\r",message.data[i]);
 			}
+			printf("\n\r");
 		}
 		
 		
