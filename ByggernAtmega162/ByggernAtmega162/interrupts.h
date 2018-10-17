@@ -17,6 +17,7 @@
 #include "MCP2515_driver.h"
 #include "MCP2515_reg.h"
 #include "uart.h"
+#include "uart_buffer.h"
 
 //Sets up interrupts on INT0 and INT1
 void interrupt_init();
