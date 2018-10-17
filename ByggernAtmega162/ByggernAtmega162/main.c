@@ -13,6 +13,7 @@
 
 
 #include "uart.h"
+#include "uart_buffer.h"
 #include "utilities.h"
 #include "external_mem.h"
 #include "joystick.h"
@@ -26,6 +27,7 @@
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
 
+
 int main(void)
 {
 	external_mem_init();
@@ -37,6 +39,7 @@ int main(void)
 	spi_init();
 	CAN_init();
 	CAN_buffer_init();
+	//uart_buffer_init();
 	
 	_delay_ms(100);
 	volatile uint8_t *p = 0x1400;
@@ -50,16 +53,21 @@ int main(void)
 
 	oled_init();
 	menu_init();
+	
+	stdout = &uart_stream;
 	interrupt_init();
 	
+	uint8_t can_data[8];
+	can_message message = CAN_message_construct(3,8,can_data);
+	printf("Ready\n\r");
 	
-	//printf("12346YGFHGF \n");
-	//printf("2 \n");
     while (1) 
 		{
 		
 		stdout = &uart_stream;
-		printf("Start loop");
+		//printf("Start loop\n\r");
+		//printf("Remaning buffer size: %d", CAN_buffer_remaining_size());
+		//uart_buffer_test();
 		CAN_buffer_test_2();
 		
 		/*
@@ -89,12 +97,28 @@ int main(void)
 			printf("%c",uart_test_recieve);
 			//printf("HEi, %i\r\n", 5);
 		*/
+		while(!uart_buffer_empty()){
+			printf("CAN MESSAGE:	\n\r");
+			message = CAN_buffer_read();
+			printf("Address:	%d\n\r",message.address);
+			printf("Received data\n\r");
+			for(int i = 0; i<message.data_size;i++){
+				printf("%d",message.data[i]);
+			}
+		}
+		
+		
+		while(!uart_buffer_empty()){
+			printf("%c",uart_buffer_read());
+		}
+		
+		
+		
 		stdout = &oled_stream;
 		menu_update();
 		push_buttons_poll();
 		
-		//menu_increment_current_value();
-		_delay_ms(5000);
+		_delay_ms(1);
 			
 		}
 

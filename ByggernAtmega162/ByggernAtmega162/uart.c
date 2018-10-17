@@ -20,7 +20,7 @@
 	 UBRR0L = ubrr;
 	 
 	 //Enable UART RX/TX
-	 UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+	 UCSR0B = (1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0);
 	 
 	 //Set USRC register access and Set 8bit data,
 	 UCSR0C = (1<<URSEL0)|(1<<USBS0)|(1<<UCSZ00)|(1<<UCSZ01);
@@ -34,8 +34,6 @@
 	//Wait for UART transmit ready flag
 	while(!(UCSR0A & (1<<UDRE0)));
 	UDR0 = data;
-	
-	
 	return 0;
 	
  }
