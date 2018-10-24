@@ -60,5 +60,5 @@ ISR(INT0_vect)
 
 ISR(USART0_RXC_vect)
 {
-	uart_buffer_write(uart_recive());
+	//can_buffer_write(uart_recive());
 }

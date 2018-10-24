@@ -62,68 +62,7 @@ int main(void)
 	printf("Ready\n\r");
 	
     while (1) 
-		{
-		
-		stdout = &uart_stream;
-		//printf("Start loop\n\r");
-		//printf("Remaning buffer size: %d", CAN_buffer_remaining_size());
-		//uart_buffer_test();
-		CAN_buffer_test_2();
-		
-		/*
-		uint8_t data [3];
-		data[0]=2;
-		data[1]=2;
-		data[2]=3;
-		
-		uint8_t read_data [3];
-		uint8_t * address;
-		uint8_t recieved_length;
-		CAN_transmit(data,1);
-		_delay_ms(100);
-		CAN_recive(address,data,recieved_length);
-		for (int i = 0;i<1;i++){
-			printf("Sending: %d\r\n",data[i]);
-			printf("Receiving: %d\r\n", read_data[i]);
-			printf("Receiving address: %d\r\n", *address);
-			printf("Receiving length: %d\r\n", recieved_length);
-		}
-		printf("\n");
-		/*
-		_delay_ms(10);
-		if (uart_is_ready_read()){
-			uart_test_recieve =  uart_recive();
-			//uart_transmit(uart_test_recieve);f
-			printf("%c",uart_test_recieve);
-			//printf("HEi, %i\r\n", 5);
-		*/
-		while(!uart_buffer_empty()){
-			printf("CAN MESSAGE:	\n\r");
-			message = CAN_buffer_read();
-			printf("Address:	%d\n\r",message.address);
-			printf("Received data\n\r");
-			for(int i = 0; i<message.data_size;i++){
-				printf("%d",message.data[i]);
-			}
-		}
-		
-		
-		while(!uart_buffer_empty()){
-			printf("%c",uart_buffer_read());
-		}
-		
-		
-		
-		stdout = &oled_stream;
-		menu_update();
-		push_buttons_poll();
-		
-		_delay_ms(1);
-			
-		}
-
-	
-
-    
+	{
+	}
+	return 0;
 }
-
