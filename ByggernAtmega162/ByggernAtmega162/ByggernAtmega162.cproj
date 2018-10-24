@@ -116,6 +116,9 @@
     <Compile Include="adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_adresses.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="CAN_buffer.c">
       <SubType>compile</SubType>
     </Compile>
@@ -126,6 +129,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="CAN_controller.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_message_handler.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_message_handler.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="config.h">
@@ -176,6 +185,12 @@
     <Compile Include="oled_menu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="ping_pong_loop.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ping_pong_loop.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="push_buttons.c">
       <SubType>compile</SubType>
     </Compile>
@@ -204,6 +219,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="uart.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart_buffer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart_buffer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="utilities.c">
