@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../CAN_buffer.c \
 ../CAN_controller.c \
+../internal_ADC.c \
 ../main.c \
 ../MCP2515_driver.c \
 ../spi.c \
@@ -56,6 +57,7 @@ ASM_SRCS +=
 OBJS +=  \
 CAN_buffer.o \
 CAN_controller.o \
+internal_ADC.o \
 main.o \
 MCP2515_driver.o \
 spi.o \
@@ -66,6 +68,7 @@ utilities.o
 OBJS_AS_ARGS +=  \
 CAN_buffer.o \
 CAN_controller.o \
+internal_ADC.o \
 main.o \
 MCP2515_driver.o \
 spi.o \
@@ -76,6 +79,7 @@ utilities.o
 C_DEPS +=  \
 CAN_buffer.d \
 CAN_controller.d \
+internal_ADC.d \
 main.d \
 MCP2515_driver.d \
 spi.d \
@@ -86,6 +90,7 @@ utilities.d
 C_DEPS_AS_ARGS +=  \
 CAN_buffer.d \
 CAN_controller.d \
+internal_ADC.d \
 main.d \
 MCP2515_driver.d \
 spi.d \
@@ -107,6 +112,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
