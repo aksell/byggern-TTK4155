@@ -12,7 +12,9 @@
 
 #define CAN_MOTOR 1
 #define CAN_IR 5
-#define CAN_JOYSTICK 10
+#define CAN_JOYSTICK_Y	10
+#define CAN_JOYSTICK_X	11
+#define	CAN_SLIDER		20
 
 
 
