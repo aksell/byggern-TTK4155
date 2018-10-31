@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-//Initalizes and starts a PWM signal on pin 5/PE3
+#include <util/atomic.h>
 void timer_init_fast_pwm_0();
 
 

@@ -8,8 +8,8 @@
 #include "CAN_buffer.h"
 
 uint8_t buffer_data[CAN_BUFFER_SIZE];
-static uint8_t head;
-static uint8_t tail;
+volatile uint8_t head;
+volatile uint8_t tail;
 bool buffer_full;
 bool buffer_empty;
 
@@ -46,6 +46,34 @@ bool CAN_buffer_full(){
 
 void CAN_buffer_set_full(){
 	buffer_full = true;
+}
+
+uint8_t CAN_buffer_remaining_size(){
+	if(buffer_full){
+		return 0;
+	}
+	else if (head >= tail) {
+		uint8_t val = (uint8_t)(CAN_BUFFER_SIZE - head + tail);
+		
+		return val;
+	}
+	else {
+		uint8_t val = tail-head;
+		return val;
+	}
+}
+
+
+bool CAN_buffer_empty(){
+	return buffer_empty;
+}
+
+
+void CAN_buffer_reset(){
+	head = 0;
+	tail = 0;
+	buffer_full = false;
+	buffer_empty = true;
 }
 
 
@@ -92,37 +120,17 @@ can_message CAN_buffer_read(){
 			
 		}
 	}
-	
 	return message;
-	
 }
 
 
 
 
-
-
-uint8_t CAN_buffer_remaining_size(){
-	if (head >= tail) {
-		return (CAN_BUFFER_SIZE - head + tail);
-	}
-	else {
-		return (tail - head);
-	}
-}
-
-
-
-bool CAN_buffer_is_empty(){
-	return buffer_empty;
-	//return !(buffer_full) && (head == tail);
-}
 
 
 
 
 void CAN_buffer_test(){
-	
 	/*can_message message1;
 	message1.address = 17;
 	message1.data_size = 7;
@@ -190,8 +198,19 @@ void CAN_buffer_test_2(){
 	for (int i = 0; i < message2.data_size; i++){
 		message2.data[i] = i;
 	}
+	can_message message3;
+	message3.address = 0x3;
+	message3.data_size = 8;
+	for (int i = 0; i < message3.data_size; i++){
+		message3.data[i] = i+100;
+	}
 	
 	CAN_transmit_message(&message1);
+	//printf("Remaning buffer size test funk: %d\n\n\r", CAN_buffer_remaining_size());
+	CAN_transmit_message(&message2);
+	//printf("Remaning buffer size test funk: %d\n\n\r", CAN_buffer_remaining_size());
+	CAN_transmit_message(&message3);
+	//printf("Remaning buffer size test funk: %d\n\n\r", CAN_buffer_remaining_size());
 	//printf("Remaining buffer space:	%d\n\r", CAN_buffer_remaining_size());
 	//CAN_interrupt_routine();
 	//_delay_ms(100);

@@ -15,18 +15,18 @@
 #include <avr/pgmspace.h>
 #include <stdio.h>
 
-#include "fonts.h"
+//#include "fonts.h"
 #include "timer.h"
 
 
 #include <util/delay.h>
+
+
 #define OLED_PAGES 8
 #define OLED_COLUMBS 128
 
 #define OLED_COLUMB_SET 0x21
 #define OLED_PAGE_SET 0x22
-
-
 
 
 void oled_init();
