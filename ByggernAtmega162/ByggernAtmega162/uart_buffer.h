@@ -18,13 +18,16 @@
 
 
 #define UART_BUFFER_SIZE 32
+
 void uart_buffer_init();
 void uart_buffer_write(uint8_t data);
 uint8_t uart_buffer_read();
 
 void uart_buffer_test();
 
-bool uart_buffer_empty();
+bool CAN_buffer_empty();
+bool CAN_buffer_full();
+void CAN_buffer_set_full();
 
 
 

@@ -36,7 +36,7 @@ uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	uint8_t TXREQ_data;
 	MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1); //Wait for transmit buffer is pending transmission
 	int read_errors = 0;
-	while (TXREQ_data & (1 << TXBnCTRL_TXREQ)){ //toFix
+	while (TXREQ_data & (1 << TXBnCTRL_TXREQ)){ //If not make contact with chip
 		MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1);
 		if(read_errors++ > 10) {
 			printf("ERROR: Could not make contact with MPC2515\n\r");
@@ -94,6 +94,6 @@ void CAN_test() {
 		CAN_transmit(&(data[i]),2,1);
 		uint8_t r_data_size = 0;
 		CAN_recive(&add, r_data, &r_data_size);
-		printf("Sendt: %d	Recieved: %d \r\n",data[i],r_data[0]);
+		printf("Sendt: %d	Recieved: %d \n\r",data[i],r_data[0]);
 	}
 }

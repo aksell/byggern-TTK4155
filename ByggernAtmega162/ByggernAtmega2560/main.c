@@ -11,29 +11,34 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <avr/interrupt.h>
 
-
+#include "timer.h"
 #include "uart.h"
 #include "utilities.h"
 #include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
+#include "internal_ADC.h"
 
 int main(void)
 {
+	timer_init_fast_pwm_0();
 	uart_init();
+	internal_ADC_init();
 	spi_init();
 	CAN_init();
-	//CAN_buffer_init();
+	sei();
 	stdout = &uart_stream;
 	int i = 0;
     while (1) 
 	{
+		//Update values from canbuss
+		//Drive motor from PID reg
+		//Read Ball sensor led
+		//Update Servo
+		//Update solanoide
 		
-		printf("Hei Aksel! %i\n\r", i++);
-		printf("+----------+\n\r|          |\n\r| /\\    \/\\ |\n\r| \\/    \\/ |\n\r|          |\n\r|  [-=-=-] |\n\r+----------+\n\n\n\n\r");
-		CAN_test();
-		_delay_ms(500);
+		_delay_ms(100);
 	}
 }
-

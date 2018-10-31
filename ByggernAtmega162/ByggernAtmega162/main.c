@@ -26,6 +26,7 @@
 #include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
+#include "CAN_message_handler.h"
 
 
 int main(void)
@@ -34,12 +35,12 @@ int main(void)
 	uart_init();
 	joystick_init(false);
 	push_buttons_init();
-	//interrupt_init();
-	timer_init();
+	interrupt_init();
+	timer1_init();
 	spi_init();
 	CAN_init();
 	CAN_buffer_init();
-	//uart_buffer_init();
+	uart_buffer_init();
 	
 	_delay_ms(100);
 	volatile uint8_t *p = 0x1400;
@@ -58,72 +59,38 @@ int main(void)
 	interrupt_init();
 	
 	uint8_t can_data[8];
+
 	can_message message = CAN_message_construct(3,8,can_data);
-	printf("Ready\n\r");
+	printf("\n\rInit\n\r");
 	
     while (1) 
 		{
 		
+		//printf("MAin\n\r");
 		stdout = &uart_stream;
-		//printf("Start loop\n\r");
-		//printf("Remaning buffer size: %d", CAN_buffer_remaining_size());
-		//uart_buffer_test();
-		CAN_buffer_test_2();
-		
-		/*
-		uint8_t data [3];
-		data[0]=2;
-		data[1]=2;
-		data[2]=3;
-		
-		uint8_t read_data [3];
-		uint8_t * address;
-		uint8_t recieved_length;
-		CAN_transmit(data,1);
-		_delay_ms(100);
-		CAN_recive(address,data,recieved_length);
-		for (int i = 0;i<1;i++){
-			printf("Sending: %d\r\n",data[i]);
-			printf("Receiving: %d\r\n", read_data[i]);
-			printf("Receiving address: %d\r\n", *address);
-			printf("Receiving length: %d\r\n", recieved_length);
+		//CAN_joystick_transmit();
+		CAN_message_handler();
+		//CAN_test();
+		//CAN_interrupt_routine();
+		uint8_t c;
+		bool uart_empty;
+		uart_empty = uart_buffer_empty();
+		while(!uart_empty){
+			c = uart_buffer_read();
+			printf("%c",c);
+			uart_empty = uart_buffer_empty();
 		}
-		printf("\n");
-		/*
-		_delay_ms(10);
-		if (uart_is_ready_read()){
-			uart_test_recieve =  uart_recive();
-			//uart_transmit(uart_test_recieve);f
-			printf("%c",uart_test_recieve);
-			//printf("HEi, %i\r\n", 5);
-		*/
-		while(!uart_buffer_empty()){
-			printf("CAN MESSAGE:	\n\r");
-			message = CAN_buffer_read();
-			printf("Address:	%d\n\r",message.address);
-			printf("Received data\n\r");
-			for(int i = 0; i<message.data_size;i++){
-				printf("%d",message.data[i]);
-			}
-		}
-		
-		
-		while(!uart_buffer_empty()){
-			printf("%c",uart_buffer_read());
-		}
-		
 		
 		
 		stdout = &oled_stream;
 		menu_update();
 		push_buttons_poll();
-		
-		_delay_ms(1);
+		_delay_ms(1000);
+		stdout = &uart_stream;
 			
 		}
 
 	
 
-    
+    return 0;
 }
-
