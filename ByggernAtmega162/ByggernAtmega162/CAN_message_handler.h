@@ -15,12 +15,14 @@
 #include "CAN_controller.h"
 #include "uart.h"
 #include "joystick.h"
+#include "slider.h"
 #include "ping_pong_loop.h"
 
 void CAN_message_handler();
 
 //Transmit joystick value
-void CAN_joystick_transmit();
+void CAN_joystick_X_transmit();
+void CAN_joystick_Y_transmit();
 
 
 #endif /* CAN_MESSAGE_HANDLER_H_ */

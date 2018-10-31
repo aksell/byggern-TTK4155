@@ -33,10 +33,26 @@ void CAN_message_handler(){
 
 
 
-void CAN_joystick_transmit(){
+void CAN_joystick_X_transmit(){
 	uint8_t	data = joystick_get_percent(JOYSTICK_X);
 	can_message message;
-	message = CAN_message_construct(CAN_JOYSTICK,1,&data);
+	message = CAN_message_construct(CAN_JOYSTICK_X,1,&data);
 	CAN_transmit_message(&message);
 	
+}
+
+void CAN_joystick_Y_transmit(){
+	uint8_t	data = joystick_get_percent(JOYSTICK_Y);
+	can_message message;
+	message = CAN_message_construct(CAN_JOYSTICK_Y,1,&data);
+	CAN_transmit_message(&message);
+	
+}
+
+void CAN_slider_transmit(){
+	
+	uint8_t	data = slider_get(SLIDER_LEFT);
+	can_message message;
+	message = CAN_message_construct(CAN_SLIDER,1,&data);
+	CAN_transmit_message(&message);
 }
