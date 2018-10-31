@@ -15,8 +15,8 @@
 void spi_init(){
 
 	/* Set MOSI and SCK and CS output, all others input */
-	DDRB = (1<<MOSI_PIN)|(1<<SCK_PIN)|(1<<SS_PIN)|(1 << PB0);
-	PORTB |= (1<<SS_PIN) | (1 << PB0);
+	DDRB |= (1<<MOSI_PIN)|(1<<SCK_PIN)|(1<<SS_PIN)|(1 << PB0);
+	PORTB |= (1<<SS_PIN) | (1 << PB0); //Set Master mode
 	/* Enable interrupt */
 	//SPSR = (1<<SPIF);
 	//SPCR = 1<<SPIE;	

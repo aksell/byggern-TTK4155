@@ -38,4 +38,5 @@ ISR(USART0_RXC_vect)
 		uint8_t data = uart_recive();
 		uart_buffer_write(data);
 	}
+	//can_buffer_write(uart_recive());
 }

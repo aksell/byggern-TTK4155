@@ -12,6 +12,8 @@ MCP2515_driver.c
 
 spi.c
 
+timer.c
+
 uart.c
 
 utilities.c

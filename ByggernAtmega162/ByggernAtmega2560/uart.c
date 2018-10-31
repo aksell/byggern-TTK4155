@@ -4,13 +4,7 @@
  * Created: 29.08.2018 14:24:07
  *  Author: EdvardOlaf
  */ 
-
-
-
-
 #include "uart.h"
-
-
  
  void uart_init(){
 	 
@@ -34,15 +28,10 @@
 	//Wait for UART transmit ready flag
 	while(!(UCSR0A & (1<<UDRE0)));
 	UDR0 = data;
-	
-	
 	return 0;
-	
- }
+}
 
-uint8_t uart_recive(){
-	
-	
+uint8_t uart_recive(){	
 	if (uart_is_ready_read()) {
 		return UDR0;
 	} else {

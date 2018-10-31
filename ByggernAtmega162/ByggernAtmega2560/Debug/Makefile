@@ -42,6 +42,7 @@ C_SRCS +=  \
 ../main.c \
 ../MCP2515_driver.c \
 ../spi.c \
+../timer.c \
 ../uart.c \
 ../utilities.c
 
@@ -58,6 +59,7 @@ CAN_controller.o \
 main.o \
 MCP2515_driver.o \
 spi.o \
+timer.o \
 uart.o \
 utilities.o
 
@@ -67,6 +69,7 @@ CAN_controller.o \
 main.o \
 MCP2515_driver.o \
 spi.o \
+timer.o \
 uart.o \
 utilities.o
 
@@ -76,6 +79,7 @@ CAN_controller.d \
 main.d \
 MCP2515_driver.d \
 spi.d \
+timer.d \
 uart.d \
 utilities.d
 
@@ -85,6 +89,7 @@ CAN_controller.d \
 main.d \
 MCP2515_driver.d \
 spi.d \
+timer.d \
 uart.d \
 utilities.d
 
@@ -102,6 +107,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
