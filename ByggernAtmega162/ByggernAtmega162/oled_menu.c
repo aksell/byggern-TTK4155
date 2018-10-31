@@ -127,13 +127,13 @@ void menu_set_value(Menu_element * menu_element, int8_t val){//Value can be chan
 			menu_element->value = 100;
 		}
 		else{
-			menu_element->value 0 val;
+			menu_element->value = val;
 		}
 	}
 }
 
 void menu_increment_score_value(){
-	menu_increment_value(&(game_menu->menu_items[game_menu->1]));
+	//menu_increment_value(&(game_menu->menu_items[game_menu->1]));
 }
 
 
@@ -200,7 +200,7 @@ void menu_print_current_menu(){
 void menu_init() {
 	main_menu = (Menu) {
 		.title = "MAIN MENU",
-		.menu_items[0] = (Menu_element) {"Play", &game_menu, &ping_pong_set_state(PLAYING),-127,0},
+		.menu_items[0] = (Menu_element) {"Play", &game_menu, NULL,-127,0},
 		.menu_items[1] = (Menu_element) {"Settings", &settings_menu, NULL,-127,0},
 		.menu_items[2] = (Menu_element) {"Test", NULL, NULL,-12,1},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -208,7 +208,7 @@ void menu_init() {
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.selected_item = 0,
+		.selected_item = 0
 	};
 	
 	
@@ -224,6 +224,7 @@ void menu_init() {
 		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 1};
+		
 	menu_set_parent(&settings_menu, &main_menu);
 	
 	
