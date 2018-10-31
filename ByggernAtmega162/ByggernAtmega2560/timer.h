@@ -10,6 +10,10 @@
 #define TIMER_H_
 #include "config.h"
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/atomic.h>
+
+
 void timer_init_fast_pwm_0();
 void timer_test();
 void timer_fast_pwm_duty_cycle(uint16_t per_cent_duty);
