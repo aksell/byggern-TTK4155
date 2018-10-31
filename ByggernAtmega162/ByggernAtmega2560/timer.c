@@ -8,10 +8,12 @@
 #include "timer.h"
 #define PWM_PRESCALER 8
 #define PWM_TOP F_CPU*2/(PWM_PRESCALER*100)
+
+//Initalizes and starts a PWM signal on pin 5/PE3
 void timer_init_fast_pwm_0() {
-	sreg = SREG;
+	unsigned char sreg = SREG;
 	/* Disable interrupts */
-	__disable_interrupt();
+	//__disable_interrupt();
 	
 	DDRE |= (1 << PE3);
 	TCCR3A = (0b10 << COM3A0) |  (0b10 << WGM30) ;	//Toggle OC1A on Compare Match, OC1B and OC1C disconnected
@@ -20,21 +22,22 @@ void timer_init_fast_pwm_0() {
 	ICR3 = PWM_TOP;
 	OCR3A = PWM_TOP/20;
 	
-	SREG = sreg //Enable interrupts
+	SREG = sreg; //Enable interrupts
 }
 
-void timer_test() {
-	printf("%i\n\r", TCNT3);
-}
 
+//Sets the PWM output on pin 5/PE3
+//Expects a value from 0 to 100
 void timer_fast_pwm_duty_cycle(uint16_t per_cent_duty) {
-	sreg = SREG;
+	unsigned char sreg = SREG;
 	/* Disable interrupts */
-	__disable_interrupt();
+	//__disable_interrupt();
+	if(per_cent_duty > 100) {
+		per_cent_duty = 100;
+	}
+	OCR3A = PWM_TOP/20+per_cent_duty*PWM_TOP/(20*100);
 	
-	OCR3A = PWM_TOP/20+per_cent_duty*PWM_TOP/(20*1000);
 	
-	
-	SREG = sreg //Enable interrupts
+	SREG = sreg; //Enable interrupts
 }
 
