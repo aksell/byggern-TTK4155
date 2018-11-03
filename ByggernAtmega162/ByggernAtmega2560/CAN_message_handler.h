@@ -15,6 +15,8 @@
 #include "CAN_controller.h"
 #include "uart.h"
 #include "dac.h"
+#include "dc_motor.h"
+#include <stdint.h>
 
 void CAN_message_handler();
 

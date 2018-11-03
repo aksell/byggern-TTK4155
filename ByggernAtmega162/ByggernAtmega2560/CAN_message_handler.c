@@ -21,10 +21,13 @@ void CAN_message_handler(){
 		*/
 		switch (message.address){
 			case CAN_JOYSTICK_X:
+				//printf("Joy value:	%i \n\r",(int8_t)message.data[0]);
+				dc_motor_set_speed(message.data[0]);
 				//code servo control goes here
 				break;
 			case CAN_SLIDER:
-				dac_write(message.data[0]);
+				//printf("Slider value:	%d \n\r",message.data[0]);
+				//dac_write(100);
 				break;
 			default:
 				break;
