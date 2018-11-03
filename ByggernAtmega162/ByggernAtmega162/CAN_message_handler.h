@@ -25,4 +25,7 @@ void CAN_joystick_X_transmit();
 void CAN_joystick_Y_transmit();
 
 
+void CAN_slider_transmit();
+
+
 #endif /* CAN_MESSAGE_HANDLER_H_ */
