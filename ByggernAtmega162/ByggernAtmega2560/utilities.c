@@ -22,3 +22,12 @@ void convert_from_16_to_8(uint16_t data_all, uint8_t * array_data){
 	array_data[1] = data_all & 0x00ff;
 	
 }
+
+int16_t convert_from_2_compliment(uint16_t number){
+	if (!(number&(1<<15))){
+		return number;
+	}
+	else{
+		return (-1*(~number+1));
+	}
+}
