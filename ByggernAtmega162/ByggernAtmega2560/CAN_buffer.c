@@ -185,23 +185,22 @@ void CAN_buffer_test(){
 }
 
 void CAN_buffer_test_2(){
-/*
 	can_message message1;
-	message1.address = 1;
+	message1.address = 4;
 	message1.data_size = 8;
 	for (int i = 0; i < message1.data_size; i++){
-		message1.data[i] = i+12;
+		message1.data[i] = i;
 	}
 	
 	can_message message2;
 	message2.address = 0x2;
-	message2.data_size = 8;
+	message2.data_size = 5;
 	for (int i = 0; i < message2.data_size; i++){
-		message2.data[i] = i;
+		message2.data[i] = i+10;
 	}
 	can_message message3;
 	message3.address = 0x3;
-	message3.data_size = 8;
+	message3.data_size = 6;
 	for (int i = 0; i < message3.data_size; i++){
 		message3.data[i] = i+100;
 	}
@@ -210,7 +209,7 @@ void CAN_buffer_test_2(){
 	//printf("Remaning buffer size test funk: %d\n\n\r", CAN_buffer_remaining_size());
 	CAN_transmit_message(&message2);
 	//printf("Remaning buffer size test funk: %d\n\n\r", CAN_buffer_remaining_size());
-	CAN_transmit_message(&message3);*/
+	CAN_transmit_message(&message3);
 	//printf("Remaning buffer size test funk: %d\n\n\r", CAN_buffer_remaining_size());
 	//printf("Remaining buffer space:	%d\n\r", CAN_buffer_remaining_size());
 	//CAN_interrupt_routine();
@@ -245,7 +244,5 @@ void CAN_buffer_test_2(){
 			printf("Sendt data: %d	Recieved data: %d \n\r",message1.data[i],r_2.data[i]);
 		}
 	}*/
-	//printf("Done");
-	
-	
+	//printf("Done");	
 }
