@@ -43,9 +43,6 @@ int main(void)
 	uart_buffer_init();
 	
 	_delay_ms(100);
-	volatile uint8_t *p = 0x1400;
-
-	unsigned char uart_test_recieve;
 	//external_mem_test();
 	//oled_white_screen();
 	//oled_chess();
@@ -54,22 +51,22 @@ int main(void)
 
 	oled_init();
 	menu_init();
-	
 	stdout = &uart_stream;
 	interrupt_init();
 	
 	uint8_t can_data[8];
-
+	sei();
 	can_message message = CAN_message_construct(3,8,can_data);
 	printf("\n\rInit\n\r");
 	
     while (1) 
 		{
-		
+		//CAN_buffer_test_2();
 		//printf("MAin\n\r");
 		stdout = &uart_stream;
 		//CAN_joystick_transmit();
 		CAN_message_handler();
+		ping_pong_loop();
 		//CAN_test();
 		//CAN_interrupt_routine();
 		uint8_t c;
@@ -81,16 +78,25 @@ int main(void)
 			uart_empty = uart_buffer_empty();
 		}
 		
-		
 		stdout = &oled_stream;
 		menu_update();
 		push_buttons_poll();
 		_delay_ms(1000);
 		stdout = &uart_stream;
-			
 		}
-
-	
+		
+		/*bool message_pending = !CAN_buffer_empty();
+		while(message_pending){
+			message = CAN_buffer_read();
+			printf("Address:	%d\n\r",message.address);
+			for(int j = 0;j<message.data_size;j++){
+				printf("Received:	%d \n\r", message.data[j]);
+			}
+			printf("\n\r");
+			message_pending = !CAN_buffer_empty();
+		}*/
+		
+		
 
     return 0;
 }
