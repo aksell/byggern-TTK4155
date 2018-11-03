@@ -21,6 +21,13 @@ void CAN_init() {
 	
 	//MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_LOOPBACK);
 	MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL);
+	
+	//CAN recieve interrupt
+	cli();
+	EIMSK |= (1<<INT2); //Enable interrupt pin 2
+	EICRA |= (0<<ISC20)|(1<<ISC21); //Trigger INT2 on falling edge
+	sei();
+	
 }
 
 uint16_t CAN_addres_construct(uint16_t number){
@@ -84,6 +91,25 @@ void CAN_recive_message(can_message* message){
 	CAN_recive(&(message->address),&(message->data),&(message->data_size));
 }
 
+void CAN_interrupt_routine(){
+	bool full = CAN_buffer_full();
+	if(!full){
+		
+		can_message message;
+		uint8_t s = CAN_buffer_remaining_size();
+		CAN_recive_message(&message);
+		if(s >= (message.data_size + 3)){//enough to write the entire message to the buffer
+			CAN_buffer_write(&message);
+			MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);
+		}
+		else{
+			CAN_buffer_set_full();
+		}
+	}
+	else{
+		printf("Buffer full\n\r");
+	}
+}
 
 
 void CAN_test() {
@@ -95,5 +121,12 @@ void CAN_test() {
 		uint8_t r_data_size = 0;
 		CAN_recive(&add, r_data, &r_data_size);
 		printf("Sendt: %d	Recieved: %d \n\r",data[i],r_data[0]);
+	}
+}
+
+ISR(INT2_vect)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		CAN_interrupt_routine();
 	}
 }
