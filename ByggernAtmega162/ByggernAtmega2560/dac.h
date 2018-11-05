@@ -12,6 +12,7 @@
 #include "TWI_Master.h"
 #include "config.h"
 #include "utilities.h"
+#include "uart.h"
 #include <avr/io.h>
 
 #define	DAC_SLAVE_ADDRES 0x50

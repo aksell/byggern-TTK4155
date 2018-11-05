@@ -64,9 +64,10 @@ int main(void)
 		//CAN_buffer_test_2();
 		//printf("MAin\n\r");
 		stdout = &uart_stream;
-		//CAN_joystick_transmit();
+		CAN_joystick_X_transmit();
 		CAN_message_handler();
-		ping_pong_loop();
+		//CAN_buffer_test_2();
+		//ping_pong_loop();
 		//CAN_test();
 		//CAN_interrupt_routine();
 		uint8_t c;
@@ -81,7 +82,7 @@ int main(void)
 		stdout = &oled_stream;
 		menu_update();
 		push_buttons_poll();
-		_delay_ms(1000);
+		_delay_ms(2000);
 		stdout = &uart_stream;
 		}
 		

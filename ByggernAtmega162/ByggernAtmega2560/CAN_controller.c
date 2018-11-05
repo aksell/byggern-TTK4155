@@ -24,7 +24,7 @@ void CAN_init() {
 	
 	//CAN recieve interrupt
 	cli();
-	EIMSK |= (1<<INT2); //Enable interrupt pin 2
+	EIMSK |= (1<<INT2); //Enable interrupt pin D2
 	EICRA |= (0<<ISC20)|(1<<ISC21); //Trigger INT2 on falling edge
 	sei();
 	

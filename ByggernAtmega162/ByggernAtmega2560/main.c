@@ -19,6 +19,7 @@
 #include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
+#include "CAN_message_handler.h"
 #include "internal_ADC.h"
 #include "dc_motor.h"
 #include "internal_ADC.h"
@@ -30,18 +31,24 @@ int main(void)
 	uart_init();
 	internal_ADC_init();
 	spi_init();
+	CAN_buffer_init();
 	CAN_init();
-	
 	dac_init();
 	internal_ADC_init();
 	dc_motor_init();
-	CAN_buffer_init();
+	timer0_init();
 	sei();
+	
 	stdout = &uart_stream;
+	printf("Init done\n\r");
 	int i = 0;
 	can_message message;
+	
     while (1) 
 	{	
+		CAN_message_handler();
+		dc_motor_PI_controller_update();
+		//CAN_buffer_test_2();
 		//Update values from can buss
 		//Drive motor from PID reg
 		//Read Ball sensor led
@@ -49,11 +56,9 @@ int main(void)
 		//Update solanoide
 		//CAN_buffer_test_2();
 		//CAN_message_handler();
-		dc_motor_PI_controller();
-		int16_t encoder_data;
+		/*int16_t encoder_data;
 		encoder_data = dc_motor_encoder_read();
-		printf("Encoder:	%i\n\r",encoder_data);
-		_delay_ms(1);
+		printf("Encoder:	%i\n\r",encoder_data);*/
 		
 		
 		
