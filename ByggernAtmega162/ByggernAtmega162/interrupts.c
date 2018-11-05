@@ -25,10 +25,7 @@ ISR(INT0_vect)
 {	
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		CAN_interrupt_routine();
-	}
-	
-	
-	
+	}	
 }
 
 

@@ -20,6 +20,9 @@
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
 #include "internal_ADC.h"
+#include "dc_motor.h"
+#include "internal_ADC.h"
+#include "utilities.h"
 
 int main(void)
 {
@@ -29,32 +32,42 @@ int main(void)
 
 	spi_init();
 	CAN_init();
+	
+	dac_init();
+	internal_ADC_init();
+	dc_motor_init();
+	CAN_buffer_init();
 	sei();
 	stdout = &uart_stream;
 	int i = 0;
+
 	
 	
 	internal_ADC_set_channel(0);
 	internal_ADC_start_free_running_mode();
+
+	can_message message;
+
     while (1) 
-	{
-		//Update values from canbuss
+	{	
+		//Update values from can buss
 		//Drive motor from PID reg
 		//Read Ball sensor led
 		//Update Servo
 		//Update solanoide
 		
-		//printf("ADC_POll: %i\n\r", internal_ADC_read_polling());
+		dc_motor_PI_controller();
+		int16_t encoder_data;
+		encoder_data = dc_motor_encoder_read();
+		printf("Encoder:	%i\n\r",encoder_data);
+		_delay_ms(1);
 		
-		internal_ADC_set_channel(0);
-			_delay_ms(10);
+;
 		printf("ADC0: %i\n\r", internal_ADC_read_free_running_mode());
-		internal_ADC_set_channel(1);
-		_delay_ms(10);
 
-		printf("ADC1: %i\n\n\r", internal_ADC_read_free_running_mode());
-		
 
 		_delay_ms(200);
+
+
 	}
 }

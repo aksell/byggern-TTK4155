@@ -131,7 +131,8 @@ can_message CAN_buffer_read(){
 
 
 void CAN_buffer_test(){
-	/*can_message message1;
+/*
+	can_message message1;
 	message1.address = 17;
 	message1.data_size = 7;
 	for (int i = 0; i < message1.data_size; i++)
@@ -164,16 +165,18 @@ void CAN_buffer_test(){
 	CAN_buffer_write(&message1);
 	CAN_buffer_write(&message2);
 	
+/ *
 	read_message_1 = CAN_buffer_read();
 	read_message_2 = CAN_buffer_read();
 	
 	
+
 	printf("Message 1:\n\r");
 	printf("Sendt address: %u	Recieved ardess: %u \n\r",message1.address,read_message_1.address);
 	printf("Sendt data_size: %d	Recieved size: %d \n\r",message1.data_size,read_message_1.data_size);
 	for(int i = 0; i<message1.data_size; i++){
 		printf("Sendt data: %d	Recieved data: %d \n\r",message1.data[i],read_message_1.data[i]);
-	}
+	}* /
 	
 	printf("Message 2:\n\r");
 	printf("Sendt address: %u	Recieved ardess: %u \n\r",message2.address,read_message_2.address);
@@ -181,7 +184,6 @@ void CAN_buffer_test(){
 	for(int i = 0; i<message2.data_size; i++){
 		printf("Sendt data: %d	Recieved data: %d \n\r",message2.data[i],read_message_2.data[i]);
 	}*/
-	
 }
 
 void CAN_buffer_test_2(){
@@ -244,7 +246,5 @@ void CAN_buffer_test_2(){
 			printf("Sendt data: %d	Recieved data: %d \n\r",message1.data[i],r_2.data[i]);
 		}
 	}*/
-	//printf("Done");
-	
-	
+	//printf("Done");	
 }

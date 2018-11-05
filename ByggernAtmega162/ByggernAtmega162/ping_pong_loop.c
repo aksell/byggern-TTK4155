@@ -11,22 +11,25 @@ uint8_t score;
 
 
 
-void game_init(){
+void ping_pong_init(){
 	score = 0;
-	game_state = SETTUP;
+	game_state = PLAYING;
 	timer2_init();
+	timer1_init();
 }
 
 void play_game(){
-	if(timer2_done()){
-		CAN_joystick_transmit();		
-		timer2_reset();
+	if(timer1_done()){
+		CAN_joystick_X_transmit();	
+		CAN_slider_transmit();	
+		timer1_reset();
+
 	}
-	menu_update();
+	//menu_update();
 }
 
 void ping_pong_loop(){
-	game_init();
+	ping_pong_init();
 	while(1){
 		switch (game_state){
 			case SETTUP:

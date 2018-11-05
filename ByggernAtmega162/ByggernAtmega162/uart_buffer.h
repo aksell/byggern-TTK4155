@@ -25,9 +25,9 @@ uint8_t uart_buffer_read();
 
 void uart_buffer_test();
 
-bool CAN_buffer_empty();
-bool CAN_buffer_full();
-void CAN_buffer_set_full();
+bool uart_buffer_empty();
+bool uart_buffer_full();
+void uart_buffer_set_full();
 
 
 

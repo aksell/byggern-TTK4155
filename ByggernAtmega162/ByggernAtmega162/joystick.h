@@ -18,13 +18,13 @@ typedef enum joystick_axis_e{
 	JOYSTICK_X, 
 	JOYSTICK_Y}joystick_axis;
 	
-	typedef enum joystick_dir {
-		UP,
-		DOWN,
-		RIGHT,
-		LEFT,
-		NEUTRAL
-		}joystick_dir;
+typedef enum joystick_dir_e {
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	NEUTRAL
+}joystick_dir;
 
 
 //Init the the joystick, if lowpass_enable the value of the joystick will be filtered
