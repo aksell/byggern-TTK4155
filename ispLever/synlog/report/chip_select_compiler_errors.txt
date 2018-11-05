@@ -1,0 +1,4 @@
+@E: CD242 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":36:30:36:30|Expecting ;
+@E: CD214 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":36:30:36:30|Not a concurrent statement
+@E|Parse errors encountered - exiting
+

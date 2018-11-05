@@ -1,0 +1,4 @@
+@N: CD630 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":6:7:6:17|Synthesizing work.chip_select.behave 
+Post processing for work.chip_select.behave
+@W: CL159 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":11:2:11:3|Input a8 is unused
+@W: CL159 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":12:2:12:3|Input wr is unused
