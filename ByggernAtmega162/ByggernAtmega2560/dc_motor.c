@@ -12,6 +12,7 @@ uint8_t dc_motor_K_p;
 uint8_t dc_motor_K_i;
 int16_t dc_motor_accumulated_error;
 uint16_t dc_motor_sample_time;
+bool update_pid;
 
 
 void dc_motor_encoder_reset_togle(){
@@ -25,25 +26,30 @@ void dc_motor_init(){
 		PORTH |= (1<<PH1);//Direction right
 		PORTH|=(1<<PH4);//Enable motor
 		PORTH|= ~(1<<PH5); 
-		PORTH &=~(1<<PH6); //Reset encoder
+		/*PORTH &=~(1<<PH6); //Reset encoder
 		_delay_us(10);
-		PORTH |=(1<<PH6);
-		dc_motor_K_i = 0;
-		dc_motor_K_p = 5;
+		PORTH |=(1<<PH6);*/
+		dc_motor_encoder_reset_togle();
+		dc_motor_K_i = 7;
+		dc_motor_K_p = 15;
 		
 		dc_motor_accumulated_error = 0;
 		dc_motor_sample_time = 1;
 		dc_motor_calibrate_limits();
 		dc_motor_refference_pos = dc_motor_max_pos/2;
+		update_pid = 0;
 
 }
+
+
+
 void dc_motor_calibrate_limits(){
-			dc_motor_set_speed(100);
+			dc_motor_set_speed(-100);
 			_delay_ms(1500);
 			dc_motor_set_speed(0);
 			_delay_ms(500);
 			dc_motor_encoder_reset_togle();
-			dc_motor_set_speed(-100);
+			dc_motor_set_speed(100);
 			_delay_ms(1500);
 			dc_motor_set_speed(0);
 			_delay_ms(500);
@@ -57,16 +63,22 @@ void dc_motor_set_dir(dc_motor_dir dir){
 		PORTH |= (1<<PH1);
 	}
 }
-void dc_motor_set_speed(int8_t speed){
+void dc_motor_set_speed(int16_t speed){
+	
 	if(speed < 0){
-		dc_motor_set_dir(DC_MOTOR_LEFT);
+		dc_motor_set_dir(DC_MOTOR_RIGHT);
+		if(speed < -255){
+			speed = -255;
+		}
 		dac_write(speed*(-1));
 	}
 	else{
-		dc_motor_set_dir(DC_MOTOR_RIGHT);
+		if(speed > 255){
+			speed = 255;
+		}
+		dc_motor_set_dir(DC_MOTOR_LEFT);
 		dac_write(speed);
-	}
-	
+	}	
 }
 
 
@@ -90,21 +102,21 @@ int16_t dc_motor_encoder_read(){
 }
 
 void dc_motor_set_refference_possition(int16_t pos){
-	dc_motor_refference_pos = pos;
+	dc_motor_refference_pos = dc_motor_max_pos/2 + dc_motor_max_pos*pos/100;
 }
 
 
 
 
-void dc_motor_PI_controller(){
+void dc_motor_PI_controller_update(){
 	volatile int16_t current_position;
 	current_position = dc_motor_encoder_read();
 	int16_t error = (dc_motor_refference_pos - current_position)/256;
-	//dc_motor_accumulated_error += error;
-	printf("Error:	%i\n\r",error);
+	dc_motor_accumulated_error += error;
+	//printf("E_a:%i	",dc_motor_accumulated_error);
+	//printf("E:%i	",error);
 	int16_t u;
-	u = (dc_motor_K_p*error); //dc_motor_sample_time*dc_motor_K_i*dc_motor_accumulated_error;
-	u = u;
-	printf("u:	%d\n\r",u);
+	u = (dc_motor_K_p*error) + 2*dc_motor_K_i*dc_motor_accumulated_error/PI_FREQUENZY;
+	//printf("u:%d\n\r",u);
 	dc_motor_set_speed(u);
 }
