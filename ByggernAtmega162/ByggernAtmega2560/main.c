@@ -30,6 +30,7 @@ int main(void)
 	timer_init_fast_pwm_0();
 	uart_init();
 	internal_ADC_init();
+
 	spi_init();
 	CAN_buffer_init();
 	CAN_init();
@@ -42,8 +43,18 @@ int main(void)
 	stdout = &uart_stream;
 	printf("Init done\n\r");
 	int i = 0;
-	can_message message;
+
 	
+	
+	internal_ADC_set_channel(0);
+	internal_ADC_start_free_running_mode();
+
+	can_message message;
+<<<<<<< HEAD
+	
+=======
+
+>>>>>>> 634d006e1efb55fca8a59f91bfb8478b6db7d72e
     while (1) 
 	{	
 		CAN_message_handler();
@@ -54,27 +65,24 @@ int main(void)
 		//Read Ball sensor led
 		//Update Servo
 		//Update solanoide
+<<<<<<< HEAD
 		//CAN_buffer_test_2();
 		//CAN_message_handler();
 		/*int16_t encoder_data;
+=======
+		
+		dc_motor_PI_controller();
+		int16_t encoder_data;
+>>>>>>> 634d006e1efb55fca8a59f91bfb8478b6db7d72e
 		encoder_data = dc_motor_encoder_read();
 		printf("Encoder:	%i\n\r",encoder_data);*/
 		
-		
-		
-		
-		
-		/*bool message_pending = !CAN_buffer_empty();
-		while(message_pending){
-			message = CAN_buffer_read();
-			printf("Address:	%d\n\r",message.address);
-			for(int j = 0;j<message.data_size;j++){
-				printf("Received:	%d \n\r", message.data[j]);
-			}
-			message_pending = !CAN_buffer_empty();
-		}*/
-		
-		
-		
+;
+		printf("ADC0: %i\n\r", internal_ADC_read_free_running_mode());
+
+
+		_delay_ms(200);
+
+
 	}
 }

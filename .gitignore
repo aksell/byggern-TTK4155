@@ -43,7 +43,10 @@
 *.pdb
 
 ByggernAtmega162/ByggernAtmega162/Debug/
+ByggernAtmega162\ByggernAtmega2560/Debug/
 
+
+**/Debug
 
 # Kernel Module Compile Results
 *.mod*
