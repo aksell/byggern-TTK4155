@@ -1,7 +1,0 @@
-C:\ispLEVER_Classic2_0\synpbase\bin64\syn_nfilter.exe  -link  -top  chip_select  -multisrs  C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synwork\chip_select_comp.srs  -osyn  C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synwork\chip_select_mult.srs  -log  C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synlog\chip_select_multi_srs_gen.srr 
-rc:0 success:1
-C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synwork\chip_select_comp.srs|i|1537343012|2006
-C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synwork\chip_select_mult.srs|o|1537343013|1857
-C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synlog\chip_select_multi_srs_gen.srr|o|1537343013|484
-C:\ispLEVER_Classic2_0\synpbase\bin\syn_nfilter.exe|i|1401223936|2741760
-C:\ispLEVER_Classic2_0\synpbase\bin64\syn_nfilter.exe|i|1401224132|6337536
