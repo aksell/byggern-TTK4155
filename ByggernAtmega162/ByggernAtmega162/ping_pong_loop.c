@@ -44,6 +44,7 @@ void ping_pong_loop(){
 				break;
 			default:
 				break;
+		CAN_message_handler();
 		}
 	}
 }
