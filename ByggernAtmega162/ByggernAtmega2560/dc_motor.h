@@ -17,7 +17,7 @@
 #include <util/delay.h>
 #include "uart.h"
 #include "utilities.h"
-#include "timer.h"
+#include "servo.h"
 
 
 

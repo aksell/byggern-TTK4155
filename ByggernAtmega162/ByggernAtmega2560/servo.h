@@ -13,15 +13,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/atomic.h>
+
+
 #include "dc_motor.h"
 
-void timer_init_fast_pwm_0();
-
+void servo_init_fast_pwm_3();
 
 //Sets the PWM output on pin 5/PE3
 //Expects a value from 0 to 100
-void timer_fast_pwm_duty_cycle(uint16_t per_cent_duty);
+void servo_fast_pwm_duty_cycle(uint16_t per_cent_duty);
 
-//Init 
-void timer0_init();
 #endif /* TIMER_H_ */

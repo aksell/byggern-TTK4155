@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 
-#include "timer.h"
+//#include "timer.h"
 #include "uart.h"
 #include "utilities.h"
 #include "spi.h"
@@ -24,10 +24,13 @@
 #include "dc_motor.h"
 #include "internal_ADC.h"
 #include "utilities.h"
+#include "speaker.h"
+#include "music.h"
 
 int main(void)
 {
-	timer_init_fast_pwm_0();
+
+	servo_init_fast_pwm_3();
 	uart_init();
 	internal_ADC_init();
 
@@ -35,53 +38,21 @@ int main(void)
 	CAN_buffer_init();
 	CAN_init();
 	dac_init();
-	internal_ADC_init();
-	dc_motor_init();
-	timer0_init();
-	sei();
-	
-	stdout = &uart_stream;
-	printf("Init done\n\r");
-	int i = 0;
 
+	music_init();
+	sei();
+	stdout = &uart_stream;
 	
-	
+	internal_ADC_init();
 	internal_ADC_set_channel(0);
 	internal_ADC_start_free_running_mode();
-
-	can_message message;
-<<<<<<< HEAD
+	sei();
 	
-=======
+	can_message message;
 
->>>>>>> 634d006e1efb55fca8a59f91bfb8478b6db7d72e
     while (1) 
 	{	
-		CAN_message_handler();
-		dc_motor_PI_controller_update();
-		//CAN_buffer_test_2();
-		//Update values from can buss
-		//Drive motor from PID reg
-		//Read Ball sensor led
-		//Update Servo
-		//Update solanoide
-<<<<<<< HEAD
-		//CAN_buffer_test_2();
-		//CAN_message_handler();
-		/*int16_t encoder_data;
-=======
-		
-		dc_motor_PI_controller();
-		int16_t encoder_data;
->>>>>>> 634d006e1efb55fca8a59f91bfb8478b6db7d72e
-		encoder_data = dc_motor_encoder_read();
-		printf("Encoder:	%i\n\r",encoder_data);*/
-		
-;
-		printf("ADC0: %i\n\r", internal_ADC_read_free_running_mode());
-
-
-		_delay_ms(200);
+			_delay_ms(10000);
 
 
 	}

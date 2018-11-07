@@ -5,7 +5,7 @@
  *  Author: EdvardOlaf
  */ 
 
-#include "timer.h"
+#include "servo.h"
 #define PWM_PRESCALER 8
 #define PWM_TOP F_CPU*2/(PWM_PRESCALER*100)
 
@@ -13,7 +13,7 @@
 
 
 //Initalizes and starts a PWM signal on pin 5/PE3
-void timer_init_fast_pwm_0() {
+void servo_init_fast_pwm_3() {
 
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		DDRE |= (1 << PE3);
@@ -29,7 +29,7 @@ void timer_init_fast_pwm_0() {
 
 //Sets the PWM output on pin 5/PE3
 //Expects a value from 0 to 100
-void timer_fast_pwm_duty_cycle(uint16_t per_cent_duty) {
+void servo_fast_pwm_duty_cycle(uint16_t per_cent_duty) {
 
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		OCR3A = PWM_TOP/20+per_cent_duty*PWM_TOP/(20*1000);
