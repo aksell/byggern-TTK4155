@@ -6,14 +6,13 @@
  */ 
 
 
-#include "config.h"
-#include <avr/io.h>
-#include <util/delay.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <avr/interrupt.h>
-
-//#include "timer.h"
+ #include "config.h"
+ #include <avr/io.h>
+ #include <util/delay.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <avr/interrupt.h>
+ #include "timer.h"
 #include "uart.h"
 #include "utilities.h"
 #include "spi.h"
@@ -56,4 +55,5 @@ int main(void)
 
 
 	}
+
 }

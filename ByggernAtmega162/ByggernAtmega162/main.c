@@ -27,6 +27,7 @@
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
 #include "CAN_message_handler.h"
+#include "state_machine.h"
 
 
 int main(void)
@@ -50,7 +51,7 @@ int main(void)
 	//stdout = &uart_stream;
 
 	oled_init();
-	menu_init();
+	oled_menu_init();
 	stdout = &uart_stream;
 	interrupt_init();
 	
@@ -64,8 +65,6 @@ int main(void)
 		//CAN_buffer_test_2();
 		//printf("MAin\n\r");
 		stdout = &uart_stream;
-		CAN_joystick_X_transmit();
-		CAN_message_handler();
 		//CAN_buffer_test_2();
 		//ping_pong_loop();
 		//CAN_test();
@@ -80,13 +79,13 @@ int main(void)
 		}
 		
 		stdout = &oled_stream;
-		menu_update();
+		oled_menu_update();
 		push_buttons_poll();
 		_delay_ms(2000);
 		stdout = &uart_stream;
 		}
 		
-		/*bool message_pending = !CAN_buffer_empty();
+		bool message_pending = !CAN_buffer_empty();
 		while(message_pending){
 			message = CAN_buffer_read();
 			printf("Address:	%d\n\r",message.address);
@@ -95,9 +94,7 @@ int main(void)
 			}
 			printf("\n\r");
 			message_pending = !CAN_buffer_empty();
-		}*/
-		
-		
+		}
 
     return 0;
 }

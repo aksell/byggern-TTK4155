@@ -10,7 +10,7 @@
 #define CAN_MESSAGE_HANDLER_H_
 #include "config.h"
 #include "utilities.h"
-#include "../ByggernAtmega162/CAN_adresses.h"
+#include "../ByggernAtmega162/CAN_protocol.h"
 #include "CAN_buffer.h"
 #include "CAN_controller.h"
 #include "uart.h"
