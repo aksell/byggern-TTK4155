@@ -19,6 +19,7 @@
 #include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
+#include "CAN_message_handler.h"
 #include "internal_ADC.h"
 #include "dc_motor.h"
 #include "internal_ADC.h"
@@ -33,38 +34,25 @@ int main(void)
 	uart_init();
 	internal_ADC_init();
 
-	
 	spi_init();
+	CAN_buffer_init();
 	CAN_init();
-	
 	dac_init();
-	internal_ADC_init();
-	//dc_motor_init();
-	//CAN_buffer_init();
-	
+
 	music_init();
-	
 	sei();
 	stdout = &uart_stream;
-	int i = 0;
-
 	
-	
+	internal_ADC_init();
 	internal_ADC_set_channel(0);
 	internal_ADC_start_free_running_mode();
+	sei();
+	
 	can_message message;
-	music_test();
+
     while (1) 
 	{	
-		//Update values from can buss
-		//Drive motor from PID reg
-		//Read Ball sensor led
-		//Update Servo
-		//Update solanoide
-		
-		
-		
-		_delay_ms(10000);
+			_delay_ms(10000);
 
 
 	}

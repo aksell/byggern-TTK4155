@@ -11,6 +11,7 @@ void CAN_message_handler(){
 	bool message_pending = !CAN_buffer_empty();
 	while(message_pending){
 		message = CAN_buffer_read();
+		printf("Can\r\n");
 /*
 		printf("Address:	%d\n\r",message.address);
 		printf("Received data:\n\r");
@@ -21,12 +22,12 @@ void CAN_message_handler(){
 		*/
 		switch (message.address){
 			case CAN_JOYSTICK_X:
-				//printf("Joy value:	%i \n\r",(int8_t)message.data[0]);
-				dc_motor_set_speed(message.data[0]);
-				//code servo control goes here
+				printf("Joy value:	%i \n\r",(int8_t)message.data[0]);
+				dc_motor_set_refference_possition(message.data[0]);
+				dc_motor_PI_controller_update();
 				break;
 			case CAN_SLIDER:
-				//printf("Slider value:	%d \n\r",message.data[0]);
+				printf("Slider value:	%d \n\r",message.data[0]);
 				//dac_write(100);
 				break;
 			default:

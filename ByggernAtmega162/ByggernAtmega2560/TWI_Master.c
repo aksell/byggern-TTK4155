@@ -77,7 +77,7 @@ then initialize the next operation and return.
 void TWI_Start_Transceiver_With_Data( unsigned char *msg, unsigned char msgSize )
 {
 	unsigned char temp;
-
+	sei();
 	while ( TWI_Transceiver_Busy() );             // Wait until TWI is ready for next transmission.
 
 	TWI_msgSize = msgSize;                        // Number of data to transmit.
@@ -144,7 +144,6 @@ application.
 ISR(TWI_vect)
 {
 	static unsigned char TWI_bufPtr;
-	
 	switch (TWSR)
 	{
 		case TWI_START:             // START has been transmitted
@@ -212,4 +211,5 @@ ISR(TWI_vect)
 		(0<<TWEA)|(0<<TWSTA)|(0<<TWSTO)|           // No Signal requests
 		(0<<TWWC);                                 //
 	}
+	
 }

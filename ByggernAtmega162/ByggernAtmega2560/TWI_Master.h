@@ -25,7 +25,7 @@
 ****************************************************************************/
 #ifndef TWI_MASTER_H_
 #define TWI_MASTER_H_
-
+#include <util/atomic.h>
 #define TWI_BUFFER_SIZE 3   // Set this to the largest message size that will be sent including address byte.
 
 #define TWI_TWBR            0x0C        // TWI Bit rate Register setting.

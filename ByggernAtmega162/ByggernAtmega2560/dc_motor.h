@@ -16,6 +16,7 @@
 #include <util/delay.h>
 #include "uart.h"
 #include "utilities.h"
+#include "servo.h"
 
 
 
@@ -25,10 +26,10 @@ typedef enum dc_motor_dir_e{
 }dc_motor_dir;
 
 void dc_motor_init();
-void dc_motor_set_speed(int8_t speed);
+void dc_motor_set_speed(int16_t speed);
 int16_t dc_motor_encoder_read();
 void dc_motor_calibrate_limits();
 void dc_motor_set_refference_possition(int16_t pos);
-void dc_motor_PI_controller();
+void dc_motor_PI_controller_update();
 
 #endif /* DC_MOTOR_H_ */

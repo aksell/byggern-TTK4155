@@ -8,8 +8,8 @@
 #include "CAN_buffer.h"
 
 uint8_t buffer_data[CAN_BUFFER_SIZE];
-volatile uint8_t head;
-volatile uint8_t tail;
+uint8_t head;
+uint8_t tail;
 bool buffer_full;
 bool buffer_empty;
 
