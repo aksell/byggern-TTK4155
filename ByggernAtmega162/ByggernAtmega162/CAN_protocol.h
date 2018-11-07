@@ -35,11 +35,7 @@
 
 
 //Music messages
-#define CAN_START_MUSIC 20 //Request a start of music in node 2 with 1 byte data for selection song
-//Songs/sounds to play
-	#define CAN_MUSIC_GOT 1	//Game of Thrones
-	#define CAN_MUSIC_WALLACE_AND_GROMIT 2//Wallace and Gromit
-	#define CAN_MUSIC_GAME_OVER 2 //Play game over music
+#define CAN_START_MUSIC 20 //Request a start of music in node 2 with value of 1 byte of music_t from "music.h"
 	
 #define CAN_STOP_MUSIC 21 //Stops music on node 2
 
