@@ -32,22 +32,14 @@ int main(void)
 
 	servo_init_fast_pwm_3();
 	uart_init();
-	internal_ADC_init();
-
 	spi_init();
 	CAN_buffer_init();
 	CAN_init();
 	dac_init();
-
 	music_init();
+	ball_sensor_init();
 	sei();
 	stdout = &uart_stream;
-	
-	internal_ADC_init();
-	internal_ADC_set_channel(0);
-	internal_ADC_start_free_running_mode();
-	sei();
-	
 	can_message message;
 
     while (1) 

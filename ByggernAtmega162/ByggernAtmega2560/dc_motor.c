@@ -7,7 +7,7 @@
 #include "dc_motor.h"
 
 int16_t dc_motor_max_pos;
-int16_t dc_motor_refference_pos;
+int16_t dc_motor_reference_pos;
 uint8_t dc_motor_K_p;
 uint8_t dc_motor_K_i;
 int16_t dc_motor_accumulated_error;
@@ -36,7 +36,7 @@ void dc_motor_init(){
 		dc_motor_accumulated_error = 0;
 		dc_motor_sample_time = 1;
 		dc_motor_calibrate_limits();
-		dc_motor_refference_pos = dc_motor_max_pos/2;
+		dc_motor_reference_pos = dc_motor_max_pos/2;
 		update_pid = 0;
 
 }
@@ -101,8 +101,8 @@ int16_t dc_motor_encoder_read(){
 	return encoder_val;
 }
 
-void dc_motor_set_refference_possition(int16_t pos){
-	dc_motor_refference_pos = dc_motor_max_pos/2 + dc_motor_max_pos*pos/100;
+void dc_motor_set_reference_delta_position(int16_t pos){
+	dc_motor_reference_pos = dc_motor_max_pos/2 + dc_motor_max_pos*pos/100;
 }
 
 
@@ -111,7 +111,7 @@ void dc_motor_set_refference_possition(int16_t pos){
 void dc_motor_PI_controller_update(){
 	volatile int16_t current_position;
 	current_position = dc_motor_encoder_read();
-	int16_t error = (dc_motor_refference_pos - current_position)/256;
+	int16_t error = (dc_motor_reference_pos - current_position)/256;
 	dc_motor_accumulated_error += error;
 	//printf("E_a:%i	",dc_motor_accumulated_error);
 	//printf("E:%i	",error);
