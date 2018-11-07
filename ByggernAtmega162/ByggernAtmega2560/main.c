@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 
-#include "timer.h"
+//#include "timer.h"
 #include "uart.h"
 #include "utilities.h"
 #include "spi.h"
@@ -23,20 +23,27 @@
 #include "dc_motor.h"
 #include "internal_ADC.h"
 #include "utilities.h"
+#include "speaker.h"
+#include "music.h"
 
 int main(void)
 {
-	timer_init_fast_pwm_0();
+
+	servo_init_fast_pwm_3();
 	uart_init();
 	internal_ADC_init();
 
+	
 	spi_init();
 	CAN_init();
 	
 	dac_init();
 	internal_ADC_init();
-	dc_motor_init();
-	CAN_buffer_init();
+	//dc_motor_init();
+	//CAN_buffer_init();
+	
+	music_init();
+	
 	sei();
 	stdout = &uart_stream;
 	int i = 0;
@@ -45,9 +52,8 @@ int main(void)
 	
 	internal_ADC_set_channel(0);
 	internal_ADC_start_free_running_mode();
-
 	can_message message;
-
+	music_test();
     while (1) 
 	{	
 		//Update values from can buss
@@ -56,17 +62,9 @@ int main(void)
 		//Update Servo
 		//Update solanoide
 		
-		dc_motor_PI_controller();
-		int16_t encoder_data;
-		encoder_data = dc_motor_encoder_read();
-		printf("Encoder:	%i\n\r",encoder_data);
-		_delay_ms(1);
 		
-;
-		printf("ADC0: %i\n\r", internal_ADC_read_free_running_mode());
-
-
-		_delay_ms(200);
+		
+		_delay_ms(10000);
 
 
 	}
