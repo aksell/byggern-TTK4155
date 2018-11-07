@@ -29,13 +29,13 @@ Menu game_menu;
 Menu * current_menu;
 
 
-void menu_set_parent(Menu * menu, Menu * parent) {
+void oled_menu_set_parent(Menu * menu, Menu * parent) {
 	if(parent != NULL) {
 		menu->menu_items[0] = (Menu_element) {"Back", parent, NULL,-127,0};
 	}
 }
 
-void menu_element_print(Menu_element * menu_element){
+void oled_menu_element_print(Menu_element * menu_element){
 	if (menu_element->title[0] != NULL){ //Title exists
 		printf(" ");
 		printf(PSTR("%s"), menu_element->title);
@@ -47,7 +47,7 @@ void menu_element_print(Menu_element * menu_element){
 	}
 }
 
-void menu_print(Menu * menu) {
+void oled_menu_print(Menu * menu) {
 	oled_clear_screen();
 	oled_set_printf_page(0);
 	oled_columb_range_select(0,OLED_COLUMBS);
@@ -55,18 +55,18 @@ void menu_print(Menu * menu) {
 	for (int i = 0;i<8;i++){
 		if (i == menu->selected_item){ //Invert selected item
 			oled_printf_inverted();
-			menu_element_print(&(menu->menu_items[i]));
+			oled_menu_element_print(&(menu->menu_items[i]));
 			oled_printf_normal();
 			
 		}
 		else{
-			menu_element_print(&(menu->menu_items[i]));
+			oled_menu_element_print(&(menu->menu_items[i]));
 		}
 	}
 	
 }
 
-void menu_select_item(){
+void oled_menu_select_item(){
 	if (current_menu->menu_items[current_menu->selected_item].element_func != NULL){ //Element has assosiated function
 		current_menu->menu_items[current_menu->selected_item].element_func(current_menu->menu_items[current_menu->selected_item].value);
 	}
@@ -76,7 +76,7 @@ void menu_select_item(){
 	}		
 }
 
-void menu_up(){
+void oled_menu_up(){
 	for(int i = 0; i <8;i++){
 		current_menu->selected_item = (current_menu->selected_item - 1 + 8) % 8;		//Loop to top if at bottom of menu
 		if (current_menu->menu_items[current_menu->selected_item].title[0] != NULL){	//Check that the menu item exists
@@ -85,7 +85,7 @@ void menu_up(){
 	};
 }
 
-void menu_down(){
+void oled_menu_down(){
 	for(int i = 0; i <8;i++){
 		current_menu->selected_item = (current_menu->selected_item + 1) % 8;			//Loop to top if at bottom of menu
 		if (current_menu->menu_items[current_menu->selected_item].title[0] != NULL){	//Check that the menu item exists 
@@ -96,7 +96,7 @@ void menu_down(){
 }
 
 
-void menu_increment_value(Menu_element * menu_element){
+void oled_menu_increment_value(Menu_element * menu_element){
 	if (menu_element->increment_rate != 0){ //Value can be changed
 		if (menu_element->value >= (100-menu_element->increment_rate)){
 			menu_element->value = 100;
@@ -107,7 +107,7 @@ void menu_increment_value(Menu_element * menu_element){
 	}
 }
 
-void menu_decrement_value(Menu_element * menu_element){//Value can be changed
+void oled_menu_decrement_value(Menu_element * menu_element){//Value can be changed
 	if (menu_element->increment_rate != 0){
 		if (menu_element->value <= -100+menu_element->increment_rate){
 			menu_element->value = -100;
@@ -118,7 +118,7 @@ void menu_decrement_value(Menu_element * menu_element){//Value can be changed
 	}
 }
 
-void menu_set_value(Menu_element * menu_element, int8_t val){//Value can be changed
+void oled_menu_set_value(Menu_element * menu_element, int8_t val){//Value can be changed
 	if (menu_element->increment_rate != 0){
 		if (val< -100){
 			menu_element->value = -100;
@@ -132,72 +132,66 @@ void menu_set_value(Menu_element * menu_element, int8_t val){//Value can be chan
 	}
 }
 
-void menu_increment_score_value(){
+void oled_menu_increment_score_value(){
 	//menu_increment_value(&(game_menu->menu_items[game_menu->1]));
 }
 
 
-void menu_increment_current_value(){
-	menu_increment_value(&(current_menu->menu_items[current_menu->selected_item]));
+void oled_menu_increment_current_value(){
+	oled_menu_increment_value(&(current_menu->menu_items[current_menu->selected_item]));
 	//menu_increment_value(&settings_menu.menu_items[1]);
 }
 
-void menu_decrement_current_value(){
-	menu_decrement_value(&(current_menu->menu_items[current_menu->selected_item]));
+void oled_menu_decrement_current_value(){
+	oled_menu_decrement_value(&(current_menu->menu_items[current_menu->selected_item]));
 }
-void menu_update(){
+void oled_menu_update(){
 	if(timer1_done()){
-		if(joystick_get_dir() == UP){
-			menu_up();
-			menu_print(current_menu);
-			timer1_reset();
+		joystick_dir_t dir = joystick_get_dir();
+		if(dir == UP){
+			oled_menu_up();	
 		}
-		else if(joystick_get_dir() == DOWN) {
-			menu_down();
-			menu_print(current_menu);
-			timer1_reset();
+		else if(dir == DOWN) {
+			oled_menu_down();
 		}
-		else if(push_buttons_get_state(1)){//push button 1 for select
-			menu_select_item();
-			menu_print(current_menu);
-			timer1_reset();
+		else if(dir == LEFT) {
+			oled_menu_decrement_current_value();
+			oled_menu_print(current_menu);
+
 		}
-		else if(push_buttons_get_state(0)){
+		else if(dir == RIGHT) {
+			oled_menu_increment_current_value();
+		}
+		if(push_buttons_get_state(PUSH_BUTTON_RIGHT)){//push button right button for select
+			oled_menu_select_item();
+		}
+		else if(push_buttons_get_state(0)){//Push left button for back
 			if(current_menu->menu_items[0].child_menu != NULL){//Not in main menu
-				current_menu->selected_item = 0;
-				menu_select_item();
-				menu_print(current_menu);
-				timer1_reset();
+				current_menu->selected_item = 0; //go to back button
+				oled_menu_select_item();
+				oled_menu_print(current_menu);
 			}
 		}
-		else if(joystick_get_dir() == LEFT) {
-			menu_decrement_current_value();
-			menu_print(current_menu);
-			timer1_reset();
-		}
-		else if(joystick_get_dir() == RIGHT) {
-			menu_increment_current_value();
-			menu_print(current_menu);
-			timer1_reset();
-		}
-		
+
+		oled_menu_print(current_menu);
+		timer1_reset();	
 	}
 }
 
 
 
 //Test program for oled menu. Set screen white for one second
-void menu_white_screen_game(){
+void oled_menu_white_screen_game(){
 	oled_white_screen();
 	_delay_ms(1000);
-	menu_print(current_menu);
+	oled_menu_print(current_menu);
 }
 
-void menu_print_current_menu(){
-	menu_print(current_menu);
+void oled_menu_print_current_menu(){
+	oled_menu_print(current_menu);
 }
 
-void menu_init() {
+void oled_menu_init() {
 	main_menu = (Menu) {
 		.title = "MAIN MENU",
 		.menu_items[0] = (Menu_element) {"Play", &game_menu, NULL,-127,0},
@@ -225,7 +219,7 @@ void menu_init() {
 		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 1};
 		
-	menu_set_parent(&settings_menu, &main_menu);
+	oled_menu_set_parent(&settings_menu, &main_menu);
 	
 	
 	game_menu = (Menu) {
@@ -238,9 +232,9 @@ void menu_init() {
 		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 	.selected_item = 1};
-	menu_set_parent(&game_menu, &main_menu);
+	oled_menu_set_parent(&game_menu, &main_menu);
 	
 	current_menu = &main_menu;
-	menu_print(current_menu);
+	oled_menu_print(current_menu);
 	
 }

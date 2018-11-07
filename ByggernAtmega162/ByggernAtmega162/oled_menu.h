@@ -22,15 +22,15 @@
 typedef struct Menu_element_s Menu_element;
 typedef struct Menu_s Menu;
 
-void menu_print(Menu * menu);
-void menu_print_current_menu();
-void menu_init();
-void menu_select_item();
-void menu_update();
+void oled_menu_print(Menu * menu);
+void oled_menu_print_current_menu();
+void oled_menu_init();
+void oled_menu_select_item();
+void oled_menu_update();
 
-void menu_increment_score_value();
-void menu_reset_score_value();
+void oled_menu_increment_score_value();
+void oled_menu_reset_score_value();
 
-void menu_increment_current_value();
+void oled_menu_increment_current_value();
 
 #endif /* OLED_MENUE_H_ */
