@@ -11,7 +11,7 @@ void CAN_message_handler(){
 	bool message_pending = !CAN_buffer_empty();
 	while(message_pending){
 		message = CAN_buffer_read();
-		printf("Can\r\n");
+		//printf("Can\r\n");
 /*
 		printf("Address:	%d\n\r",message.address);
 		printf("Received data:\n\r");
@@ -22,14 +22,24 @@ void CAN_message_handler(){
 		*/
 		switch (message.address){
 			case CAN_JOYSTICK_X:
-				printf("Joy value:	%i \n\r",(int8_t)message.data[0]);
-				dc_motor_set_refference_possition(message.data[0]);
-				dc_motor_PI_controller_update();
+				message.data[0]*=-1;
+				//printf("Joy value:	%i \n\r",(int8_t)message.data[0]);
+				//dc_motor_set_speed((int8_t)message.data[0]);
+				dc_motor_set_refference_possition((int8_t)message.data[0]);
 				break;
 			case CAN_SLIDER:
-				printf("Slider value:	%d \n\r",message.data[0]);
-				//dac_write(100);
+				{
+					
+				
+				uint16_t slider_percent;
+				slider_percent = message.data[0]*100/255;
+				if(slider_percent > 100){
+					slider_percent = 100;
+				}
+				//printf("Slider value:	%d \n\r",slider_percent);
+				timer_fast_pwm_duty_cycle(slider_percent);
 				break;
+				}
 			default:
 				break;
 		}
