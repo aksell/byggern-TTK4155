@@ -8,11 +8,16 @@
 
 int16_t dc_motor_max_pos;
 int16_t dc_motor_refference_pos;
+int16_t dc_motor_middle_pos;
+
 uint8_t dc_motor_K_p;
 uint8_t dc_motor_K_i;
 int16_t dc_motor_accumulated_error;
 uint16_t dc_motor_sample_time;
-bool update_pid;
+
+#define DC_MOTOR_HYSTERESIS_UPPER 20
+#define DC_MOTOR_HYSTERESIS_LOWER 5
+#define DC_MOTOR_MAX_ERROR 2000
 
 
 void dc_motor_encoder_reset_togle(){
@@ -26,18 +31,15 @@ void dc_motor_init(){
 		PORTH |= (1<<PH1);//Direction right
 		PORTH|=(1<<PH4);//Enable motor
 		PORTH|= ~(1<<PH5); 
-		/*PORTH &=~(1<<PH6); //Reset encoder
-		_delay_us(10);
-		PORTH |=(1<<PH6);*/
 		dc_motor_encoder_reset_togle();
-		dc_motor_K_i = 7;
-		dc_motor_K_p = 15;
+		dc_motor_K_i = 1;
+		dc_motor_K_p = 10;
 		
 		dc_motor_accumulated_error = 0;
 		dc_motor_sample_time = 1;
 		dc_motor_calibrate_limits();
-		dc_motor_refference_pos = dc_motor_max_pos/2;
-		update_pid = 0;
+		dc_motor_middle_pos = dc_motor_max_pos/2;
+		dc_motor_refference_pos = dc_motor_middle_pos;
 
 }
 
@@ -67,18 +69,21 @@ void dc_motor_set_speed(int16_t speed){
 	
 	if(speed < 0){
 		dc_motor_set_dir(DC_MOTOR_RIGHT);
-		if(speed < -255){
-			speed = -255;
-		}
-		dac_write(speed*(-1));
+		speed *= -1;
+	}
+	else{	
+		dc_motor_set_dir(DC_MOTOR_LEFT);
+	}
+	if(speed > (255-DC_MOTOR_HYSTERESIS_UPPER)){
+		speed = 255;
+	}
+	if (speed > DC_MOTOR_HYSTERESIS_LOWER){ //
+		dac_write(speed+DC_MOTOR_HYSTERESIS_UPPER);
 	}
 	else{
-		if(speed > 255){
-			speed = 255;
-		}
-		dc_motor_set_dir(DC_MOTOR_LEFT);
-		dac_write(speed);
-	}	
+		dac_write(0);
+	}
+
 }
 
 
@@ -102,9 +107,19 @@ int16_t dc_motor_encoder_read(){
 }
 
 void dc_motor_set_refference_possition(int16_t pos){
-	dc_motor_refference_pos = dc_motor_max_pos/2 + dc_motor_max_pos*pos/100;
+	int32_t offset = pos*(dc_motor_max_pos/256)/2;
+	//dc_motor_refference_pos = dc_motor_middle_pos + (int16_t)offset;
+	dc_motor_refference_pos += (int16_t)offset;
+	//printf("Offset:	%d",offset);
+	//printf("Reference: %d\n\r",dc_motor_refference_pos);
 }
 
+void dc_motor_accumulate_error(int16_t eror){
+	
+	if (abs(dc_motor_accumulated_error + eror) < DC_MOTOR_MAX_ERROR){
+		dc_motor_accumulated_error += eror;
+	}
+}
 
 
 
@@ -112,7 +127,7 @@ void dc_motor_PI_controller_update(){
 	volatile int16_t current_position;
 	current_position = dc_motor_encoder_read();
 	int16_t error = (dc_motor_refference_pos - current_position)/256;
-	dc_motor_accumulated_error += error;
+	dc_motor_accumulate_error(error);
 	//printf("E_a:%i	",dc_motor_accumulated_error);
 	//printf("E:%i	",error);
 	int16_t u;

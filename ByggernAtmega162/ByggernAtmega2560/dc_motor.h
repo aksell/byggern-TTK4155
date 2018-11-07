@@ -13,6 +13,7 @@
 #include <avr/io.h>
 #include "dac.h"
 #include <stdint.h>
+#include <stdlib.h>
 #include <util/delay.h>
 #include "uart.h"
 #include "utilities.h"
