@@ -14,6 +14,7 @@
 #include "adc.h"
 #include <stdio.h>
 
+
 typedef enum joystick_axis_e{
 	JOYSTICK_X, 
 	JOYSTICK_Y}joystick_axis;
@@ -32,6 +33,9 @@ void joystick_init(bool lowpass_enable);
 
 // Returns a number between -100 to 100 indicating the joystick position
 volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p);
+
+// Returns a number between -127 to 127 indicating the joystick position
+volatile int8_t joystick_get_value(joystick_axis joystick_axis_p);
 
 //Returns a the joystick direction
 joystick_dir joystick_get_dir();

@@ -6,6 +6,8 @@
  */ 
 #include "joystick.h"
 
+#define JOYSTICK_DEAD_ZONE 10
+
 bool lowpass_enabled;
 float alpha = 0.3;
 
@@ -27,6 +29,23 @@ void joystick_init(bool lowpass_enable) {
 
 volatile int8_t get_unfiltered_percent(joystick_axis joystick_axis_p) {
 	return (int8_t)((((int16_t)(adc_read(joystick_axis_p+1)) - offset_value[joystick_axis_p])*100)/128);
+	
+}
+
+volatile int8_t get_unfiltered_value(joystick_axis joystick_axis_p) {
+	int16_t value = adc_read(joystick_axis_p+1) - offset_value[joystick_axis_p];
+	if (abs(value) <= JOYSTICK_DEAD_ZONE){
+		value = 0;
+	}
+	if(value > 127){
+		value = 127;
+	}
+	else if(value < -127){
+		value = -127;
+	}
+	printf("Value:	%d\n\r",value);
+	return (int8_t)value;
+	
 }
 
 volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p) {
@@ -35,6 +54,15 @@ volatile int8_t joystick_get_percent(joystick_axis joystick_axis_p) {
 		return prev_value[joystick_axis_p];
 	} else {
 		return get_unfiltered_percent(joystick_axis_p);
+	}
+}
+
+volatile int8_t joystick_get_value(joystick_axis joystick_axis_p) {
+	if(lowpass_enabled) {
+		prev_value[joystick_axis_p]  = (get_unfiltered_value(joystick_axis_p)*alpha + prev_value[joystick_axis_p]*(1.0-alpha));
+		return prev_value[joystick_axis_p];
+		} else {
+		return get_unfiltered_value(joystick_axis_p);
 	}
 }
 
