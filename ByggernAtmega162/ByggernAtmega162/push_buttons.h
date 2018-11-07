@@ -11,6 +11,9 @@
 
 #include "utilities.h"
 
+#define PUSH_BUTTON_LEFT 0
+#define PUSH_BUTTON_RIGHT 1
+
 void push_buttons_init();
 
 bool push_buttons_get_state(int button_index);
