@@ -38,8 +38,8 @@ void push_buttons_poll() {
 }
 
 
-bool push_buttons_get_state(int button_index) {
-	int temp = buttons[button_index].state;
-	buttons[button_index].state = false;
+bool push_buttons_get_state(push_button_t button) {
+	int temp = buttons[button].state;
+	buttons[button].state = false;
 	return temp;
 }

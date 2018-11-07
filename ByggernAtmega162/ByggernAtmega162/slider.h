@@ -14,8 +14,15 @@
 typedef enum slider_side_e{
 	SLIDER_RIGHT,
 	SLIDER_LEFT
-};
+}slider_t;
 
-volatile uint8_t slider_get(enum slider_side_e slider_side_p);
+//Get slider state
+volatile uint8_t slider_get(slider_t slider);
+
+//Poll single slider
+void slider_poll(slider_t slider);
+
+//Poll all sliders
+void sliders_poll();
 
 #endif /* SLIDER_H_ */

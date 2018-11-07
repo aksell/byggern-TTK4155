@@ -11,12 +11,15 @@
 
 #include "utilities.h"
 
-#define PUSH_BUTTON_LEFT 0
-#define PUSH_BUTTON_RIGHT 1
+
+typedef enum push_button_e{
+	PUSH_BUTTON_LEFT,
+	PUSH_BUTTON_RIGHT
+}push_button_t;
 
 void push_buttons_init();
 
-bool push_buttons_get_state(int button_index);
+bool push_buttons_get_state(push_button_t button);
 
 void push_buttons_poll();
 
