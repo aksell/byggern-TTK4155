@@ -172,10 +172,13 @@ Note *current_song;
 uint8_t note_index;
 uint16_t music_bar;
 uint16_t note_pause;
-
+bool looping;
 void music_init() {
 		speaker_init();
 		music_timer_init();
+		looping = false;
+		current_song = game_over_music;
+		note_index = 0;
 }
 
 
@@ -202,10 +205,26 @@ void music_test() {
 	music_set_bpm(120);
 	music_play(wallace_and_gromit);
 }
+void music_play_loop(music_t music) {
+	looping = true;
+	music_play(music);	
+}
 
-void music_play(Note * melodi) {
+void music_play(music_t music) {
+	switch(music){
+		case GOT:
+			current_song = GoT;;
+		break;
+		case WALLACE_AND_GROMMIT:
+			current_song = wallace_and_gromit;
+		break;
+		case GAME_OVER_MUSIC:
+			current_song = game_over_music;
+		break;
+		default:
+		break;
+	}
 	note_index = 0;
-	current_song = melodi;
 	speaker_on();
 	music_timer_start();
 }
@@ -232,15 +251,23 @@ void music_timer_start() {
 }
 
 void music_reset() {
+	looping = false;
 	note_index = 0;
 	music_timer_stop();
 	speaker_off();
 }
 
 ISR(TIMER5_COMPA_vect) {
-	if(current_song[note_index][0] == STOP_NOTE) {
-		music_reset();
-}	else {
+	if(!looping && current_song[note_index][0] == STOP_NOTE) {
+		if(looping) {
+			note_index = 0;	
+		} else {
+			music_reset();
+		}
+	} else {
+		if(current_song[note_index][0] == STOP_NOTE) {
+			note_index = 0;
+		}
 		ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 			OCR5A = music_bar*current_song[note_index][1];
 			OCR5B = OCR5A - note_pause;

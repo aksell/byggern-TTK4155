@@ -17,14 +17,20 @@
 
 typedef uint16_t Note[2];
 
+typedef enum music_e {
+	GOT,
+	WALLACE_AND_GROMMIT,
+	GAME_OVER_MUSIC	
+}music_t;
+
 void music_init();
 
 void music_timer_init();
 void music_set_bpm(uint16_t bpm);
-void music_play(Note * melodi);
-
+void music_play(music_t music);
+void music_play_loop(music_t music);
+void music_reset();
 bool music_is_playing();
-
 void music_test();
 
 #endif /* MUSIC_H_ */
