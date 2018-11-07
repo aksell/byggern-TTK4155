@@ -23,7 +23,7 @@ void CAN_message_handler(){
 		switch (message.address){
 			case CAN_JOYSTICK_X:
 				printf("Joy value:	%i \n\r",(int8_t)message.data[0]);
-				dc_motor_set_refference_possition(message.data[0]);
+				dc_motor_set_reference_delta_position(message.data[0]);
 				dc_motor_PI_controller_update();
 				break;
 			case CAN_SLIDER:

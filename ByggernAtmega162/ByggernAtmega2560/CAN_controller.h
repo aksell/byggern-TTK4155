@@ -31,8 +31,6 @@ typedef struct can_message_s{
 #include "CAN_buffer.h"
 
 
-
-
 void CAN_init();
 
 void CAN_transmit_message(can_message* message);
