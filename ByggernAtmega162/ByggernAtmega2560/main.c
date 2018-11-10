@@ -25,6 +25,7 @@
 #include "utilities.h"
 #include "speaker.h"
 #include "music.h"
+#include "solenoide.h"
 
 int main(void)
 {
@@ -37,16 +38,20 @@ int main(void)
 	dac_init();
 	ball_sensor_init();
 	music_init();
+	solenoide_init();
 	sei();
 
 	stdout = &uart_stream;
 	can_message message;
 	
-	music_set_bpm(60);
-	music_play_loop(0);
+	music_set_bpm(90);
+	music_play_loop(2);
     while (1) 
 	{		
-			_delay_ms(20000);
-
+			//solenoide_trigger(500);
+			solenoide_set_position(1);
+			_delay_ms(500);
+			solenoide_set_position(0);
+			_delay_ms(500);
 	}
 }

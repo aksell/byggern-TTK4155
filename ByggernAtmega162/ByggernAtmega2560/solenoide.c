@@ -1,20 +1,39 @@
 #include "solenoide.h"
 
-void init_solenoide(){
-    DDRE |= (1 << PE4); // set pin as output
-    PORTE &= ~(1 << PORTE4);  // set pin low
+#define SOLENOID_PRE_SCALAR 1024
+#define SOLENOID_PRE_SCALAR_BM 0b101
+#define SOLENOID_TRIGGER_PIN PH1
+void solenoide_init(){
+    DDRH |= (1 << SOLENOID_TRIGGER_PIN); // set pin as output
+    PORTH &= ~(1 << SOLENOID_TRIGGER_PIN);  // set pin low
+	
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		TCCR1A = (0b00 << COM1A0) | (0b00 << COM1B0) |  (0b00 << WGM10);	//Toggle OC1A on Compare Match, OC1B and OC1C disconnected
+		//Set Wave gen to 15 (Fast PWM) and
+		TCCR1B = (0b000 << CS10) | (0b01 << WGM12);
+		TIMSK1 |= (1 << OCIE1A);
+		OCR1A = F_CPU/SOLENOID_PRE_SCALAR-1;
+	}
 }
 
-void trigger_solenoide(uint8_t solenoide_trigger_time){
-    set_solenoide_position(1);
-    _delay_ms(solenoide_trigger_time);
-    set_solenoide_position(0);
+ISR(TIMER1_COMPA_vect) {
+	solenoide_set_position(0); 
+	TCCR1B &= ~(0b111 << CS10); //Stop timer
 }
 
-void set_solenoide_position(uint8_t position){
-    if !(position){
-        PORTE &= ~(1 << PORTE);
+void solenoide_trigger(uint8_t solenoide_trigger_time_ms){
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		solenoide_set_position(1);
+		OCR1A = F_CPU*solenoide_trigger_time_ms/(SOLENOID_PRE_SCALAR*1000); //Set time interval
+		TCNT1 = 0; 
+		TCCR1B |= (SOLENOID_PRE_SCALAR_BM << CS10); //Start timer
+	}
+}
+
+void solenoide_set_position(uint8_t position){
+    if (!position){
+        PORTH &= ~(1 << SOLENOID_TRIGGER_PIN);
     } else {
-        PORTE |= (1 << PORTE4);
+        PORTH |= (1 << SOLENOID_TRIGGER_PIN);
     }
 }

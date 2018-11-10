@@ -9,8 +9,6 @@
 #define PWM_PRESCALER 8
 #define PWM_TOP F_CPU*2/(PWM_PRESCALER*100)
 
-#define TIMER0_PRESCALER 1024
-
 
 //Initalizes and starts a PWM signal on pin 5/PE3
 void servo_init_fast_pwm_3() {
@@ -38,21 +36,3 @@ void servo_fast_pwm_duty_cycle(uint8_t duty) {
 
 
 
-void timer0_init(){
-
-	TCCR0A |= (1<<COM3A1)|(1<<WGM01); //Clear on compare match
-	TCCR0B |= (1<<CS02)|(1<<CS00); //Prescaler 1024
-	if (TIMER0_FREQUENZY < 31){
-		OCR0A = 0xff;
-	}
-	else{
-		OCR0A = F_CPU/2/TIMER0_FREQUENZY/TIMER0_PRESCALER - 1;
-	}
-	TIMSK0 |= (1<<OCIE0A);	
-
-}
-
-
-ISR(TIMER0_COMPA_vect){
-	dc_motor_PI_controller_update();
-}

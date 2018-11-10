@@ -106,8 +106,6 @@ void dc_motor_set_reference_delta_position(int16_t pos){
 }
 
 
-
-
 void dc_motor_PI_controller_update(){
 	volatile int16_t current_position;
 	current_position = dc_motor_encoder_read();
