@@ -18,5 +18,5 @@ void speaker_init();
 void speaker_set_hz(uint16_t hz);
 void speaker_off();
 void speaker_on();
-uint16_t hz_to_timer_top(uint16_t hz, uint16_t prescalar);
+uint16_t hz_to_timer_top(uint16_t hz);
 #endif /* speaker_H_ */

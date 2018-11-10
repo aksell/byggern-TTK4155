@@ -10,11 +10,11 @@
 #define BALL_SENSOR_H_
 
 #include <avr/io.h>
-#include "adc.h"
-
+#include "internal_ADC.h"
+#include "utilities.h"
 
 void ball_sensor_init();
-void ball_sensor_is_triggered();
+bool ball_sensor_is_triggered();
 
 
 #endif /* BALL_SENSOR_H_ */

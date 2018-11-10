@@ -19,7 +19,6 @@
 #include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
-#include "CAN_message_handler.h"
 #include "internal_ADC.h"
 #include "dc_motor.h"
 #include "internal_ADC.h"
@@ -36,16 +35,18 @@ int main(void)
 	CAN_buffer_init();
 	CAN_init();
 	dac_init();
-	music_init();
 	ball_sensor_init();
+	music_init();
 	sei();
+
 	stdout = &uart_stream;
 	can_message message;
-
+	
+	music_set_bpm(60);
+	music_play_loop(0);
     while (1) 
-	{	
-			_delay_ms(10000);
-
+	{		
+			_delay_ms(20000);
 
 	}
 }

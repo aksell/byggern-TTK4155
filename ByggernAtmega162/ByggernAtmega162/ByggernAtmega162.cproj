@@ -116,7 +116,7 @@
     <Compile Include="adc.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_adresses.h">
+    <Compile Include="CAN_protocol.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="CAN_buffer.c">
@@ -129,12 +129,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="CAN_controller.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="CAN_message_handler.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="CAN_message_handler.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="config.h">

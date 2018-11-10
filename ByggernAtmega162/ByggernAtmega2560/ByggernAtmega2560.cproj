@@ -111,6 +111,19 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\ByggernAtmega162\CAN_protocol.h">
+      <SubType>compile</SubType>
+      <Link>CAN_protocol.h</Link>
+    </Compile>
+    <Compile Include="ball_sensor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ball_sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="servo.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="speaker.c">
       <SubType>compile</SubType>
     </Compile>
@@ -177,7 +190,10 @@
     <Compile Include="servo.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="servo.h">
+    <Compile Include="state_machine.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="state_machine.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TWI_Master.c">

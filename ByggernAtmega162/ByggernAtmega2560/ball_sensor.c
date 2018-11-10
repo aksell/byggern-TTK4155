@@ -10,11 +10,11 @@
 #define BALL_SENSOR_CH 0
 
 void ball_sensor_init() {
-	adc_init();
+	internal_ADC_init();
 	internal_ADC_set_channel(0);
 	internal_ADC_start_free_running_mode();
 }
 
-void ball_sensor_is_triggered() {
+bool ball_sensor_is_triggered() {
 	return internal_ADC_read_free_running_mode() == 0;	
 }

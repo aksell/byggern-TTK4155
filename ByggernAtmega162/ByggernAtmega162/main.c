@@ -26,7 +26,6 @@
 #include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
-#include "CAN_message_handler.h"
 
 
 int main(void)
@@ -64,8 +63,6 @@ int main(void)
 		//CAN_buffer_test_2();
 		//printf("MAin\n\r");
 		stdout = &uart_stream;
-		CAN_joystick_X_transmit();
-		CAN_message_handler();
 		//CAN_buffer_test_2();
 		//ping_pong_loop();
 		//CAN_test();

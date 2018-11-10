@@ -32,7 +32,7 @@ void servo_init_fast_pwm_3() {
 void servo_fast_pwm_duty_cycle(uint8_t duty) {
 
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		OCR3A = PWM_TOP/20+per_cent_duty*PWM_TOP/(20*255);
+		OCR3A = PWM_TOP/20+duty*PWM_TOP/(20*255);
 	}
 }
 

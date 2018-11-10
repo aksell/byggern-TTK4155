@@ -12,7 +12,6 @@
 #include "stdint.h"
 #include "utilities.h"
 #include "timer.h"
-#include "CAN_message_handler.h"
 #include "oled_menu.h"
 
 
