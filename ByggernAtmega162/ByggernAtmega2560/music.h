@@ -18,9 +18,10 @@
 typedef uint16_t Note[2];
 
 typedef enum music_e {
-	GOT,
-	WALLACE_AND_GROMMIT,
-	GAME_OVER_MUSIC	
+	GOT_MUSIC,
+	WALLACE_AND_GROMMIT_MUSIC,
+	GAME_OVER_MUSIC,
+	ONE_MUSIC	
 }music_t;
 
 void music_init();

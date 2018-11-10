@@ -126,7 +126,7 @@ uint16_t bpm_to_timer_top(uint16_t bpm);
 void music_timer_start();
 void music_timer_stop();
 void music_reset();
-
+void music_play_next_note();
 
 Note GoT[] =  {		
 {G5, 4}, {C5, 4}, {E6, 2}, {F5, 2},
@@ -148,7 +148,7 @@ Note GoT[] =  {
 {C5, 4}, {F4, 4}, {G_x4, 2}, {A_x4, 2},
 {C5, 4}, {F4, 4}, {G_x4, 2}, {A_x4, 2},
 {C5, 4}, {F4, 4}, {G_x4, 2}, {A_x4, 2},
-{C5, 4}, {F4, 4}, {G_x4, 4},
+{C5, 4}, {F4, 4}, {G_x4, 4}, 
 {STOP_NOTE, 0}};
 						
 Note game_over_music[] = {
@@ -158,7 +158,7 @@ Note game_over_music[] = {
 {C4, 4}, 
 {STOP_NOTE, 0}};
 	
-Note one_music[] {
+Note one_music[] = {
 {B3, 2}, {F_x4, 2}, {B3, 2}, {D4, 10},
 {G3, 2}, {F_x4, 2}, {G3, 2}, {D4, 10},
 {B3, 2}, {F_x4, 2}, {B3, 2}, {D4, 10},
@@ -174,7 +174,7 @@ Note one_music[] {
 {B4, 10}, {A4, 2}, {B4, 2}, {C_x5, 1}, {D5, 1},
 {C_x5, 6}, {A4, 2}, {B4, 2}, {C_x5, 2}, {D5, 1}, {C_x5, 1}, {A4, 2},
 {B4, 12}, {PAUSE_NOTE, 4},
-{STOP_NOTE, 0}
+{STOP_NOTE, 0}};
 
 Note wallace_and_gromit[] = {
 {D5, 4}, {C5, 2}, {B4, 2}, {D5, 4}, {C5, 2}, {B4, 2},
@@ -184,7 +184,7 @@ Note wallace_and_gromit[] = {
 {D5, 4}, {C5, 2}, {B4, 2}, {D5, 4}, {C5, 2}, {B4, 2},
 {D5, 4}, {A4, 8}, {PAUSE_NOTE, 4},
 {E5, 2}, {D5, 2}, {E5, 2}, {F_x5, 4}, {E5, 4}, {F5, 2},
-{G5, 2}, {PAUSE_NOTE, 2},{D5, 2}, {PAUSE_NOTE, 2},{G5, 2},
+{G5, 2}, {PAUSE_NOTE, 2},{D5, 2}, {PAUSE_NOTE, 2},{G5, 2}, {PAUSE_NOTE, 6},
 {STOP_NOTE, 0}};
 
 
@@ -194,8 +194,8 @@ uint16_t music_bar;
 uint16_t note_pause;
 bool looping;
 void music_init() {
-		speaker_init();
 		music_timer_init();
+		speaker_init();
 		looping = false;
 		current_song = game_over_music;
 		note_index = 0;
@@ -203,17 +203,14 @@ void music_init() {
 
 
 void music_timer_init() {
-	DDRA = (1 << PA0);
-	
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		TCCR5A = (0b00 << COM5A0) | (0b00 << COM5B0) |  (0b00 << WGM50);	//Toggle OC1A on Compare Match, OC1B and OC1C disconnected
 		//Set Wave gen to 15 (Fast PWM) and
 		TCCR5B = (0b000 << CS50) | (0b01 << WGM52);		//Prescaler to 0
-		music_set_bpm(100);
-		OCR5A = music_bar;
-		OCR5B = OCR5A - note_pause;
-		TIMSK5 |=(1 << OCIE5A) | (1 << OCIE5B);
-		speaker_off();
+		music_set_bpm(120);
+		OCR5A = 20;
+		OCR5B = 20;
+		TIMSK5 |= (1 << OCIE5A) | (1 << OCIE5B);
 	}
 }
 
@@ -222,8 +219,8 @@ bool music_is_playing() {
 }
 
 void music_test() {
-	music_set_bpm(120);
-	music_play(wallace_and_gromit);
+	music_set_bpm(80);
+	music_play(3);
 }
 void music_play_loop(music_t music) {
 	looping = true;
@@ -232,32 +229,35 @@ void music_play_loop(music_t music) {
 
 void music_play(music_t music) {
 	switch(music){
-		case GOT:
+		case GOT_MUSIC:
 			current_song = GoT;;
 		break;
-		case WALLACE_AND_GROMMIT:
+		case WALLACE_AND_GROMMIT_MUSIC:
 			current_song = wallace_and_gromit;
 		break;
 		case GAME_OVER_MUSIC:
 			current_song = game_over_music;
 		break;
+		case ONE_MUSIC:
+			current_song = one_music;
+			break;
 		default:
 		break;
 	}
 	note_index = 0;
-	speaker_on();
 	music_timer_start();
+	music_play_next_note();
 }
 
 void music_set_bpm(uint16_t bpm) {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		music_bar = bpm_to_timer_top(bpm/16);
+		music_bar = bpm_to_timer_top(bpm);
 		note_pause = music_bar/4;
 	}
 }
 
 uint16_t bpm_to_timer_top(uint16_t bpm) {
-	return ((F_CPU*60)/PWM_PRESCALER)/(2*bpm)-1;
+	return ((F_CPU*60)/PWM_PRESCALER)/(bpm*8)-1;
 }
 void music_timer_stop() {
 	TCCR5B = TCCR5B & ~(0b111 << CS50);//Set prescalar to 0
@@ -276,6 +276,21 @@ void music_reset() {
 	music_timer_stop();
 	speaker_off();
 }
+void music_play_next_note() {
+	if(current_song[note_index][0] == STOP_NOTE) {
+		note_index = 0;
+	}
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		OCR5A = music_bar*current_song[note_index][1];
+		OCR5B = OCR5A - note_pause;
+	}
+	if(current_song[note_index][0] != PAUSE_NOTE) {
+		speaker_set_hz(current_song[note_index][0]);
+		speaker_on();
+	}
+	note_index += 1;
+}
+	
 
 ISR(TIMER5_COMPA_vect) {
 	if(!looping && current_song[note_index][0] == STOP_NOTE) {
@@ -285,18 +300,7 @@ ISR(TIMER5_COMPA_vect) {
 			music_reset();
 		}
 	} else {
-		if(current_song[note_index][0] == STOP_NOTE) {
-			note_index = 0;
-		}
-		ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-			OCR5A = music_bar*current_song[note_index][1];
-			OCR5B = OCR5A - note_pause;
-		}
-		if(current_song[note_index][0] != PAUSE_NOTE) {
-			speaker_set_hz(current_song[note_index][0]);
-			speaker_on();
-		}
-		note_index += 1;
+		music_play_next_note();
 	}
 }
 
