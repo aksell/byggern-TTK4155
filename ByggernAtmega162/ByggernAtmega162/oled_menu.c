@@ -26,7 +26,8 @@ struct Menu_s{
 Menu main_menu;
 Menu settings_menu;
 Menu game_menu;
-Menu * current_menu;
+Menu score_menu;
+Menu *current_menu;
 
 
 void oled_menu_set_parent(Menu * menu, Menu * parent) {
@@ -132,8 +133,9 @@ void oled_menu_set_value(Menu_element * menu_element, int8_t val){//Value can be
 	}
 }
 
-void oled_menu_increment_score_value(){
-	//menu_increment_value(&(game_menu->menu_items[game_menu->1]));
+void oled_menu_set_score(int8_t val){
+	oled_menu_set_value(&(game_menu.menu_items[1]),val);
+	oled_menu_set_value(&(score_menu.menu_items[1]),val);
 }
 
 
@@ -145,6 +147,12 @@ void oled_menu_increment_current_value(){
 void oled_menu_decrement_current_value(){
 	oled_menu_decrement_value(&(current_menu->menu_items[current_menu->selected_item]));
 }
+
+void oled_menu_display_stats(){
+	current_menu = &score_menu;
+	oled_menu_print_current_menu();
+}
+
 void oled_menu_update(){
 	if(timer1_done()){
 		joystick_dir_t dir = joystick_get_dir();
@@ -194,7 +202,7 @@ void oled_menu_print_current_menu(){
 void oled_menu_init() {
 	main_menu = (Menu) {
 		.title = "MAIN MENU",
-		.menu_items[0] = (Menu_element) {"Play", &game_menu, NULL,-127,0},
+		.menu_items[0] = (Menu_element) {"Play", NULL, &state_machine_set_next_state,IDLE,0},
 		.menu_items[1] = (Menu_element) {"Settings", &settings_menu, NULL,-127,0},
 		.menu_items[2] = (Menu_element) {"Test", NULL, NULL,-12,1},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -211,7 +219,7 @@ void oled_menu_init() {
 	settings_menu = (Menu) {
 		.title = "SETTINGS",
 		.menu_items[1] = (Menu_element) {"Brightness", NULL, NULL,0,10},
-		.menu_items[2] = (Menu_element) {"Test", NULL, NULL,-127,0},
+		.menu_items[2] = (Menu_element) {"Game Music", NULL, &state_machine_set_game_music,0,1},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -223,8 +231,9 @@ void oled_menu_init() {
 	
 	
 	game_menu = (Menu) {
-		.title = "SCORE",
-		.menu_items[1] = (Menu_element) {"Score", NULL, NULL,0,1},
+		.title = "PLAYING",
+		.menu_items[0] = (Menu_element) {"Abort game", &main_menu, state_machine_set_next_state,MENU,0},
+		.menu_items[1] = (Menu_element) {"Score", NULL, NULL,0,0},
 		.menu_items[2] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -232,7 +241,18 @@ void oled_menu_init() {
 		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 	.selected_item = 1};
-	oled_menu_set_parent(&game_menu, &main_menu);
+	
+	score_menu = (Menu) {
+		.title = "GAME OVER",
+		.menu_items[0] = (Menu_element) {"Back", &main_menu, state_machine_set_next_state,MENU,0},
+		.menu_items[1] = (Menu_element) {"Score", NULL, NULL,0,0},
+		.menu_items[2] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
+	.selected_item = 1};
 	
 	current_menu = &main_menu;
 	oled_menu_print(current_menu);
