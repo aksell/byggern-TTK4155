@@ -10,7 +10,7 @@
 #define BALL_SENSOR_H_
 
 #include <avr/io.h>
-#include "adc.h"
+#include "internal_ADC.h"
 
 
 void ball_sensor_init();
