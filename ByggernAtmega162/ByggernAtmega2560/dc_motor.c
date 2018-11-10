@@ -114,6 +114,13 @@ void dc_motor_set_refference_possition(int16_t pos){
 	//printf("Reference: %d\n\r",dc_motor_refference_pos);
 }
 
+void dc_motor_set_refference_possition_absolute(int16_t pos){
+	int32_t offset = pos*(dc_motor_max_pos/256)/2;
+	dc_motor_refference_pos = dc_motor_middle_pos + (int16_t)offset;
+	//printf("Offset:	%d",offset);
+	//printf("Reference: %d\n\r",dc_motor_refference_pos);
+}
+
 void dc_motor_accumulate_error(int16_t eror){
 	
 	if (abs(dc_motor_accumulated_error + eror) < DC_MOTOR_MAX_ERROR){
