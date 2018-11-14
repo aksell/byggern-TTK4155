@@ -6,7 +6,7 @@
 #include <util/atomic.h>
 
 void solenoide_init();
-void solenoide_trigger(uint8_t solenoide_trigger_time_ms);
+void solenoide_trigger(uint16_t solenoide_trigger_time_ms);
 
 void solenoide_set_position(uint8_t position);
 

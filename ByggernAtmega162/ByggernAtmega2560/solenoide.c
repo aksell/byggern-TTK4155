@@ -19,19 +19,20 @@ void solenoide_init(){
 ISR(TIMER1_COMPA_vect) {
 	solenoide_set_position(0); 
 	TCCR1B &= ~(0b111 << CS10); //Stop timer
+	TCNT1 = 0;
 }
 
-void solenoide_trigger(uint8_t solenoide_trigger_time_ms){
+void solenoide_trigger(uint16_t solenoide_trigger_time_ms){
+	solenoide_set_position(1);
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		solenoide_set_position(1);
-		OCR1A = F_CPU*solenoide_trigger_time_ms/(SOLENOID_PRE_SCALAR*1000); //Set time interval
+		OCR1A = F_CPU*solenoide_trigger_time_ms*4/(SOLENOID_PRE_SCALAR*1000); //Set time interval
 		TCNT1 = 0; 
 		TCCR1B |= (SOLENOID_PRE_SCALAR_BM << CS10); //Start timer
 	}
 }
 
 void solenoide_set_position(uint8_t position){
-    if (!position){
+    if (position){
         PORTH &= ~(1 << SOLENOID_TRIGGER_PIN);
     } else {
         PORTH |= (1 << SOLENOID_TRIGGER_PIN);
