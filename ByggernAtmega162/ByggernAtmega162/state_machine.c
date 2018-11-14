@@ -104,7 +104,7 @@ Update oled menu
 */
 
 void menu_state_update(){
-	if (timer3_done()){//Check poling frequency for IO
+	if (timer1_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		timer3_reset();
@@ -242,9 +242,9 @@ void state_machine_update(){
 					sc_in_game_to_menu();
 					state_machine_state = MENU;
 					break;
-				case DISPLAY_STATS:
-					sc_ingame_to_display_stats();
-					state_machine_state = DISPLAY_STATS;
+				case IDLE:
+					sc_ingame_to_idle();
+					state_machine_state = IDLE;
 					break;
 			}		
 		case DISPLAY_STATS:
