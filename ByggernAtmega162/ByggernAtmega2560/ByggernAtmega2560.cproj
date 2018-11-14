@@ -111,6 +111,18 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ball_sensor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ball_sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_message_handler.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_message_handler.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="speaker.c">
       <SubType>compile</SubType>
     </Compile>
@@ -178,6 +190,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="servo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TWI_Master.c">
