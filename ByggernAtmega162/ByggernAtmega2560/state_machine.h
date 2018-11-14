@@ -17,4 +17,7 @@
 #include "dc_motor.h"
 #include "ball_sensor.h"
 
+void state_machine_init();
+void state_machine_update();
+
 #endif /* STATE_MACHINE_H_ */

@@ -4,7 +4,6 @@
  * Created: 07.11.2018 18:29:49
  *  Author: EdvardOlaf
  */ 
-
 #include "state_machine.h"
 
 typedef enum state_e{
@@ -19,10 +18,14 @@ void standby_update();
 void ingame_update();
 void game_over_update();
 
-void state_update() {
+void state_machine_init() {
+	state = STANDBY;	
+}
+
+void state_machine_update() {
 	switch(state) {
 		case STANDBY:
-		stanby_update();
+		standby_update();
 		switch(next_state) {
 			case INGAME:
 				music_reset();
@@ -31,25 +34,26 @@ void state_update() {
 				state = STANDBY;
 			break;
 		}
-	break;
+		break;
 	
-	case INGAME:
+		case INGAME:
 		ingame_update();
 		switch(next_state) {
 			case STANDBY:
 				music_reset();
 			break;
 			default:
-				state = INGAME;
+			state = INGAME;
 			break;
 		}
-	break;
-	default:
-		printf("Error: unknown state");
-	break;
+		break;
+		default:
+			printf("Error: unknown state");
+		break;
 	}
 	state = next_state;
 }
+
 void standby_update() {
 	uint8_t messages_handled = 0;
 	can_message message;
@@ -113,13 +117,13 @@ void ingame_update() {
 				music_reset();
 				break;
 			case CAN_SOLANOIDE_TRIGGER_MS:
-				//Solanoide trigger in ms
+				solenoide_trigger(((uint16_t)message.data[0] << 7) | (uint16_t)message.data[1]);
 				break;
 			case CAN_SOLANOIDE_TRIGGER_AND_HOLD:
-				//Solanoide Trigger
+				solenoide_set_position(1);
 				break;
 			case CAN_SOLANOIDE_RELIASE:
-				//Solanoide reliase
+				solenoide_set_position(0);
 				break;
 			case CAN_MOTOR_DELTA_POS:
 				dc_motor_set_reference_delta_position(message.data[0]);
