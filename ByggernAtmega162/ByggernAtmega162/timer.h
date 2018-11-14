@@ -14,13 +14,18 @@
 
 #include "utilities.h"
 
+void timer0_init();
+void timer0_enable();
+void timer0_dissable();
+
+
 void timer1_init();
 void timer1_reset();
 bool timer1_done();
 
-void timer2_init();
-void timer2_reset();
-bool timer2_done();
+void timer3_init();
+void timer3_reset();
+bool timer3_done();
 
 
 

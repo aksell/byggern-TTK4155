@@ -5,7 +5,18 @@
  *  Author: akselsl
  */ 
 #include "slider.h"
+#define NUM_SLIDERS 2
 
-volatile uint8_t slider_get(enum slider_side_e slider_side_p) {
-	return adc_read(slider_side_p+3);
+slider_t sliders[NUM_SLIDERS];
+
+volatile uint8_t slider_get(slider_t slider) {
+	return sliders[slider];
+}
+
+void slider_poll(slider_t slider){
+	sliders[slider] = adc_read(slider+3);
+}
+void sliders_poll(){
+	slider_poll(SLIDER_LEFT);
+	slider_poll(SLIDER_RIGHT);
 }

@@ -126,7 +126,7 @@ void ingame_update() {
 				solenoide_set_position(0);
 				break;
 			case CAN_MOTOR_DELTA_POS:
-				dc_motor_set_reference_delta_position(message.data[0]);
+				//dc_motor_set_reference_delta_position(message.data[0]);
 				break;
 			case CAN_SERVO_POS:
 				servo_fast_pwm_duty_cycle(message.data[0]);
