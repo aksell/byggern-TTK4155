@@ -125,8 +125,8 @@ void ingame_update() {
 			case CAN_SOLANOIDE_RELIASE:
 				solenoide_set_position(0);
 				break;
-			case CAN_MOTOR_DELTA_POS:
-				//dc_motor_set_reference_delta_position(message.data[0]);
+			case CAN_MOTOR_POS:
+				dc_motor_set_refference_possition(message.data[0]);
 				break;
 			case CAN_SERVO_POS:
 				servo_fast_pwm_duty_cycle(message.data[0]);
@@ -136,6 +136,7 @@ void ingame_update() {
 		}
 		message_pending = !CAN_buffer_empty();
 	}
+	dc_motor_update_encoder();
 	if(ball_sensor_is_triggered()) {
 		can_message solenoid_message;
 		solenoid_message.address = CAN_BALL_SENSOR_TRIGGERED;

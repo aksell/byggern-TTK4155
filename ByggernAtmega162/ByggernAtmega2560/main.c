@@ -46,8 +46,9 @@ int main(void)
 	stdout = &uart_stream;
 	can_message message;
 	
-	music_set_bpm(80);
-	music_play_loop(GOT_MUSIC);
+	//music_set_bpm(80);
+	//music_play_loop(GOT_MUSIC);
+	printf("Hei\n\r");
     while (1) 
 	{		
 		state_machine_update();

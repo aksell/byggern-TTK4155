@@ -49,10 +49,10 @@ void transmit_game_music_stop(){
 	CAN_transmit_message(&message);
 }
 
-void transmit_delta_pos_message(){
+void transmit_pos_message(){
 	uint8_t	data =  slider_get(SLIDER_LEFT);
 	can_message message;
-	message = CAN_message_construct(CAN_MOTOR_DELTA_POS,1,&data);
+	message = CAN_message_construct(CAN_MOTOR_POS,1,&data);
 	CAN_transmit_message(&message);
 }
 
@@ -93,7 +93,7 @@ void transmit_start_game_message(){
 void in_game_CAN_transmit(){
 	transmit_solenoide_pos_message();
 	transmit_servo_pos_message();
-	transmit_delta_pos_message();
+	transmit_pos_message();
 }
 
 //State update functions
@@ -104,7 +104,7 @@ Update oled menu
 */
 
 void menu_state_update(){
-	if (timer1_done()){//Check poling frequency for IO
+	if (1 || timer1_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		timer3_reset();
@@ -139,7 +139,7 @@ void in_game_update(){
 
 //State CAN receive functions
 void idle_state_CAN_recieve(){
-	volatile can_message message;
+	can_message message;
 	bool buffer_empty = CAN_buffer_empty();
 	while (!buffer_empty){
 		message = CAN_buffer_read();
@@ -178,27 +178,37 @@ void in_game_can_recieve(){
 
 //State transition functions
 void sc_menu_to_idle(){
+	stdout = &uart_stream;
+	printf("IDLE\n\r");
 	transmit_start_game_message();
 }
 
 void sc_idle_to_in_game(){
+	stdout = &uart_stream;
+	printf("IN GAME\n\r");
 	score_reset();
 	transmit_loop_game_music_message();
 	score_start_counting();
 }
 
 void sc_idle_to_display_stats(){
+	stdout = &uart_stream;
+	printf("DIPS STATS\n\r");
 	oled_menu_display_stats();
 }
 
 
 void sc_in_game_to_menu(){
+	stdout = &uart_stream;
+	printf("MENU\n\r");
 	score_stop_counting();
 	transmit_game_music_stop();
 }
 
 
 void sc_ingame_to_idle(){
+	stdout = &uart_stream;
+	printf("IDLE _ 2\n\r");
 	score_stop_counting();
 }
 
@@ -260,3 +270,6 @@ void state_machine_update(){
 	}
 }
 
+void state_machine_set_in_game(int dummy_int) {
+	state_machine_set_next_state(IDLE);	
+}

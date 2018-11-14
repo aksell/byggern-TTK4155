@@ -14,7 +14,7 @@
 
 
 //takes a integer from 1 to 4 and returns the analog value of the corresponding channel of the ADC
-volatile uint8_t adc_read(uint8_t channel);
+uint8_t adc_read(uint8_t channel);
 
 
 

@@ -9,7 +9,7 @@
 
 
 struct Menu_element_s{
-	char title[8];
+	char title[10];
 	Menu * child_menu;
 	void (*element_func)(int);
 	int8_t value;			//-127 means not applicable
@@ -18,8 +18,8 @@ struct Menu_element_s{
 
 
 struct Menu_s{
-	char title[8];
-	Menu_element menu_items[8];
+	char title[10];
+	Menu_element menu_items[6];
 	int selected_item;
 };
 
@@ -49,16 +49,16 @@ void oled_menu_element_print(Menu_element * menu_element){
 }
 
 void oled_menu_print(Menu * menu) {
+	stdout = &oled_stream;
 	oled_clear_screen();
 	oled_set_printf_page(0);
 	oled_columb_range_select(0,OLED_COLUMBS);
 	printf("%s\n", menu->title);
-	for (int i = 0;i<8;i++){
+	for (int i = 0;i<6;i++){
 		if (i == menu->selected_item){ //Invert selected item
 			oled_printf_inverted();
 			oled_menu_element_print(&(menu->menu_items[i]));
 			oled_printf_normal();
-			
 		}
 		else{
 			oled_menu_element_print(&(menu->menu_items[i]));
@@ -154,7 +154,7 @@ void oled_menu_display_stats(){
 }
 
 void oled_menu_update(){
-	if(timer1_done()){
+	if(1 || timer1_done()){
 		joystick_dir_t dir = joystick_get_dir();
 		if(dir == UP){
 			oled_menu_up();	
@@ -203,14 +203,12 @@ void oled_menu_init() {
 	oled_main_menu = (Menu) {
 		.title = "MAIN MENU",
 		//.menu_items[0] = (Menu_element) {"Play", NULL, &state_machine_set_next_state,IDLE,0},
-		.menu_items[0] = (Menu_element) {"Play", NULL, NULL,IDLE,0},
-		.menu_items[1] = (Menu_element) {"Settings", NULL, NULL,-127,0},
+		.menu_items[0] = (Menu_element) {"Play", NULL, state_machine_set_in_game,IDLE,0},
+		.menu_items[1] = (Menu_element) {"Settings", &oled_settings_menu, NULL,-127,0},
 		.menu_items[2] = (Menu_element) {"Test", NULL, NULL,-12,1},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 0
 	};
 	
@@ -222,8 +220,6 @@ void oled_menu_init() {
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 1
 	};
 	oled_menu_set_parent(&oled_settings_menu, &oled_main_menu);
@@ -237,8 +233,6 @@ void oled_menu_init() {
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 1
 	};
 	oled_score_menu = (Menu) {
@@ -249,8 +243,6 @@ void oled_menu_init() {
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 1
 	};
 	oled_current_menu = &oled_main_menu;

@@ -43,10 +43,6 @@ int main(void)
 	CAN_buffer_init();
 	uart_buffer_init();
 	
-	_delay_ms(500);
-	//external_mem_test();
-
-	
 	oled_init();
 	stdout = &oled_stream;
 	oled_menu_init();
@@ -54,29 +50,15 @@ int main(void)
 	state_machine_init();
 	interrupt_init();
 	sei();
-	//stdout = &uart_stream;
-	//printf("\n\rInit\n\r");
-	
+	stdout = &uart_stream;
+	printf("Hei tann\n\r");
     while (1) 
 		{
-		state_machine_update();
-		//CAN_buffer_test_2();
-		//printf("MAin\n\r");
 		//stdout = &uart_stream;
-		//printf("Hei\n\r");
-		//CAN_buffer_test_2();
-		//ping_pong_loop();
-		//CAN_test();
-		//CAN_interrupt_routine();
-		/*uint8_t c;
-		bool uart_empty;
-		uart_empty = uart_buffer_empty();
-		while(!uart_empty){
-			c = uart_buffer_read();
-			printf("%c",c);
-			uart_empty = uart_buffer_empty();
-		}*/
-		
+		//printf("An: %i, %i, %i, %i\n\r", adc_read(1), adc_read(2),adc_read(3), adc_read(4));
+		_delay_ms(100);
+		state_machine_update();
+		_delay_ms(100);
 		}
 
     return 0;

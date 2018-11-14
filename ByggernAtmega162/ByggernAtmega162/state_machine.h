@@ -33,7 +33,7 @@ void state_machine_update();
 void state_machine_set_next_state(state_t next_state);
 void state_machine_start_game(int dummy_int);
 void state_machine_set_game_music(uint8_t song);
-
+void state_machine_set_in_game(int dummy_int);
 
 
 

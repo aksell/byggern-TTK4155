@@ -34,5 +34,5 @@ int16_t dc_motor_encoder_read();
 void dc_motor_calibrate_limits();
 //void dc_motor_set_reference_delta_position(int16_t pos);
 void dc_motor_PI_controller_update();
-
+void dc_motor_set_refference_possition(int16_t pos);
 #endif /* DC_MOTOR_H_ */

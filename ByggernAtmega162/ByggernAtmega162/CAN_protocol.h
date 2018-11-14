@@ -21,7 +21,7 @@
 #define CAN_START_GAME_ACK 4 //Acknowledge that node 2 has reacted to START_GAME
 
 //IO messages
-#define CAN_MOTOR_DELTA_POS	10 //Send 1 signed byte of desired delta position of main motor
+#define CAN_MOTOR_POS	10 //Send 1 signed byte of desired position of main motor
 
 #define CAN_SERVO_POS 12 //Send 1 unsigned byte to set servo position. 
 

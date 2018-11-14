@@ -144,6 +144,4 @@ void dc_motor_PI_controller_update() {
 	u = (dc_motor_K_p*error) + 2*dc_motor_K_i*dc_motor_accumulated_error/PI_FREQUENZY;
 	//printf("u:%d\n\r",u);
 	dc_motor_set_speed(u);
-	
-	
 }

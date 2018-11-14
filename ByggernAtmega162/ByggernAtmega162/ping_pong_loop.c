@@ -15,7 +15,6 @@ void ping_pong_init(){
 	score = 0;
 	game_state = PLAYING;
 	timer2_init();
-	timer1_init();
 }
 
 void play_game(){

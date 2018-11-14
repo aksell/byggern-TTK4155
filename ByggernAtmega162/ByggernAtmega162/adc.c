@@ -7,7 +7,7 @@
 
 #include "adc.h"
 
-volatile uint8_t adc_read(volatile uint8_t channel){
+volatile uint8_t adc_read(uint8_t channel){
 	if (channel <= 4 && channel > 0)
 	{
 		volatile uint8_t *p = ADC_OFFSET;
