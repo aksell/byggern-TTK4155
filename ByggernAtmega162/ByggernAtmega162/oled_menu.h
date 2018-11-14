@@ -14,6 +14,7 @@
 #include <util/delay.h>
 
 #include "oled.h"
+#include "uart.h"
 #include "utilities.h"
 #include "joystick.h"
 #include "push_buttons.h"
