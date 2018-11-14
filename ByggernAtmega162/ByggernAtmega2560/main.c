@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 
-//#include "timer.h"
+#include "timer.h"
 #include "uart.h"
 #include "utilities.h"
 #include "spi.h"
@@ -26,32 +26,31 @@
 #include "speaker.h"
 #include "music.h"
 #include "solenoide.h"
-
+#include "state_machine.h"
 int main(void)
 {
-
 	servo_init_fast_pwm_3();
 	uart_init();
 	spi_init();
 	CAN_buffer_init();
 	CAN_init();
 	dac_init();
+	timer0_init();
+	dc_motor_init();
 	ball_sensor_init();
 	music_init();
 	solenoide_init();
+	state_machine_init();
 	sei();
 
 	stdout = &uart_stream;
 	can_message message;
 	
-	music_set_bpm(90);
-	music_play_loop(2);
+	music_set_bpm(80);
+	music_play_loop(GOT_MUSIC);
     while (1) 
 	{		
-			//solenoide_trigger(500);
-			solenoide_set_position(1);
-			_delay_ms(500);
-			solenoide_set_position(0);
-			_delay_ms(500);
+		state_machine_update();
+		_delay_ms(10);
 	}
 }
