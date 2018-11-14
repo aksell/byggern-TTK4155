@@ -35,10 +35,10 @@ void joystick_init(bool lowpass_enable);
 void joystick_poll();
 
 // Returns a number between -100 to 100 indicating the joystick position
-volatile int8_t joystick_get_percent(joystick_axis_t joystick_axis_p);
+volatile int16_t joystick_get_percent(joystick_axis_t joystick_axis_p);
 
 // Returns a number between -127 to 127 indicating the joystick position
-volatile int8_t joystick_get_value(joystick_axis_t joystick_axis_p);
+volatile int16_t joystick_get_value(joystick_axis_t joystick_axis_p);
 
 //Returns a the joystick direction
 joystick_dir_t joystick_get_dir();
