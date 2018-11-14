@@ -16,7 +16,7 @@ volatile uint8_t slider_get(slider_t slider) {
 void slider_poll(slider_t slider){
 	sliders[slider] = adc_read(slider+3);
 }
-void slider_polls(){
+void sliders_poll(){
 	slider_poll(SLIDER_LEFT);
 	slider_poll(SLIDER_RIGHT);
 }
