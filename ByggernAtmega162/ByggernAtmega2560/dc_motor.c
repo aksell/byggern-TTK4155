@@ -9,6 +9,7 @@
 int16_t dc_motor_max_pos;
 int16_t dc_motor_refference_pos;
 int16_t dc_motor_middle_pos;
+int16_t dc_motor_last_encoder_read;
 
 uint8_t dc_motor_K_p;
 uint8_t dc_motor_K_i;
@@ -19,6 +20,9 @@ uint16_t dc_motor_sample_time;
 #define DC_MOTOR_HYSTERESIS_LOWER 5
 #define DC_MOTOR_MAX_ERROR 2000
 
+void dc_motor_update_encoder() {
+	dc_motor_last_encoder_read = dc_motor_encoder_read();
+}
 
 void dc_motor_encoder_reset_togle(){
 	PORTH &=~(1<<PH6); //Reset encoder
@@ -130,15 +134,16 @@ void dc_motor_accumulate_error(int16_t eror){
 
 
 
-void dc_motor_PI_controller_update(){
+void dc_motor_PI_controller_update() {
+
 	volatile int16_t current_position;
-	current_position = dc_motor_encoder_read();
+	current_position = dc_motor_last_encoder_read;
 	int16_t error = (dc_motor_refference_pos - current_position)/256;
 	dc_motor_accumulate_error(error);
-	//printf("E_a:%i	",dc_motor_accumulated_error);
-	//printf("E:%i	",error);
 	int16_t u;
 	u = (dc_motor_K_p*error) + 2*dc_motor_K_i*dc_motor_accumulated_error/PI_FREQUENZY;
 	//printf("u:%d\n\r",u);
 	dc_motor_set_speed(u);
+	
+	
 }

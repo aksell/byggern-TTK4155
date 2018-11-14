@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <util/delay.h>
+#include <util/atomic.h>
 #include "uart.h"
 #include "utilities.h"
 #include "timer.h"
@@ -28,6 +29,7 @@ typedef enum dc_motor_dir_e{
 
 void dc_motor_init();
 void dc_motor_set_speed(int16_t speed);
+void dc_motor_update_encoder();
 int16_t dc_motor_encoder_read();
 void dc_motor_calibrate_limits();
 //void dc_motor_set_reference_delta_position(int16_t pos);
