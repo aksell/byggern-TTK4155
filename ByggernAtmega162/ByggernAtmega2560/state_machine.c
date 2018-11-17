@@ -19,7 +19,9 @@ void ingame_update();
 void game_over_update();
 
 void state_machine_init() {
-	state = STANDBY;	
+	printf("STANDBY\n\r");
+	state = STANDBY;
+	next_state = STANDBY;	
 }
 
 void state_machine_update() {
@@ -29,9 +31,10 @@ void state_machine_update() {
 		switch(next_state) {
 			case INGAME:
 				music_reset();
+				printf("IN GAME \r\n");
 			break;
 			default:
-				state = STANDBY;
+				next_state = STANDBY;
 			break;
 		}
 		break;
@@ -40,10 +43,12 @@ void state_machine_update() {
 		ingame_update();
 		switch(next_state) {
 			case STANDBY:
+				printf("STANDBY\n\r");
 				music_reset();
 			break;
 			default:
-			state = INGAME;
+				next_state = INGAME;
+				
 			break;
 		}
 		break;
@@ -67,16 +72,19 @@ void standby_update() {
 		
 		switch (message.address){
 			case CAN_START_GAME:
+				printf("start game message\n\r");
 				message.address = CAN_START_GAME_ACK;
 				CAN_transmit_message(&message);
 				next_state = INGAME;
 				break;
 				
 			case CAN_START_MUSIC:
+				printf("Start music messgae\n\r");
 				music_play(message.data[0]);
 				break;
 				
 			case CAN_START_MUSIC_LOOP:
+				printf("start music loop message\n\r");
 				music_play_loop(message.data[0]);
 				break;
 			case CAN_STOP_MUSIC:
@@ -101,34 +109,43 @@ void ingame_update() {
 		message = CAN_buffer_read();
 		switch (message.address){
 			case CAN_GAME_OVER:
+				printf("end game message\n\r");
 				message.address = CAN_GAME_OVER_ACK;
 				CAN_transmit_message(&message);
 				next_state = STANDBY;
 				break;
 			
 			case CAN_START_MUSIC:
+				printf("start music message\n\r");
 				music_play(message.data[0]);
 				break;
 			
 			case CAN_START_MUSIC_LOOP:
+				//printf("start music loop message\n\r");
 				music_play_loop(message.data[0]);
 				break;
 			case CAN_STOP_MUSIC:
+				//printf("stop music message\n\r");
 				music_reset();
 				break;
 			case CAN_SOLANOIDE_TRIGGER_MS:
+				//printf("solenoid trigger message\n\r");
 				solenoide_trigger(((uint16_t)message.data[0] << 7) | (uint16_t)message.data[1]);
 				break;
 			case CAN_SOLANOIDE_TRIGGER_AND_HOLD:
+				//printf("solenoid trig and hold message\n\r");
 				solenoide_set_position(1);
 				break;
 			case CAN_SOLANOIDE_RELIASE:
+				//printf("solenoid release message\n\r");
 				solenoide_set_position(0);
 				break;
 			case CAN_MOTOR_POS:
+				//printf("motor message\n\r");
 				dc_motor_set_refference_possition(message.data[0]);
 				break;
 			case CAN_SERVO_POS:
+				//printf("servo message\n\r");
 				servo_fast_pwm_duty_cycle(message.data[0]);
 				break;
 			default:
@@ -138,8 +155,10 @@ void ingame_update() {
 	}
 	dc_motor_update_encoder();
 	if(ball_sensor_is_triggered()) {
-		can_message solenoid_message;
-		solenoid_message.address = CAN_BALL_SENSOR_TRIGGERED;
-		CAN_transmit_message(&solenoid_message);
+		printf("Sent ball sensor msg\n\r");
+		can_message message;
+		message.address = CAN_BALL_SENSOR_TRIGGERED;
+		message.data_size = 0;
+		CAN_transmit_message(&message);
 	}
 }
