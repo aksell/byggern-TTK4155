@@ -106,7 +106,7 @@ void CAN_interrupt_routine(){
 		}
 	}
 	else{
-		printf("Buffer full\n\r");
+		//printf("Buffer full\n\r");
 	}
 }
 
