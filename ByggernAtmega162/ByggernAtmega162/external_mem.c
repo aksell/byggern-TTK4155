@@ -42,10 +42,10 @@ void external_mem_test(void)
 
 void external_mem_init() {
 	
-	DDRC = 0xFF; 
-	PORTC = 0x00;
+	DDRC = 0xFF; //Set port C to output
+	PORTC = 0x00; //Pull port C down
 	
-	SFIOR = (1<<XMM2); // Use only 4 pins on port C for adressing
+	SFIOR = (1<<XMM2); // Use only 4 pins on port C for addressing
 	
 	MCUCR = (1<<SRE); // Enable external memory (XMEM)
 }

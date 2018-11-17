@@ -25,9 +25,17 @@ typedef struct Menu_element_s Menu_element;
 typedef struct Menu_s Menu;
 
 
-void oled_menu_print(Menu * menu);
-void oled_menu_print_current_menu();
+//Initilize the oled menu
 void oled_menu_init();
+
+//Prints the menu on the oled screen
+void oled_menu_print(Menu * menu);
+
+//Print the menu that last selected 
+void oled_menu_print_current_menu();
+
+//When this function is called the selected item in the current menu runs 
+//its function and if the item is a pointer to a new menu, that menu is set as current menu
 void oled_menu_select_item();
 void oled_menu_update();
 
@@ -37,7 +45,9 @@ void oled_menu_set_score(int8_t val);
 //Go to game over menu
 void oled_menu_display_stats();
 
-
+//Increments the selected item in the menu with 1
 void oled_menu_increment_current_value();
 
+//Decrements the selected item in the menu with 1
+void oled_menu_decrement_current_value();
 #endif /* OLED_MENUE_H_ */

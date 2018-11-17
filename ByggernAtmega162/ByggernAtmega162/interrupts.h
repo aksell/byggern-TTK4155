@@ -19,8 +19,8 @@
 #include "uart.h"
 #include "uart_buffer.h"
 
-//Sets up interrupts on INT0 and INT1
-void interrupt_init();
+//Sets up interrupts on INT0 for CAN_interrupt_routine
+void interrupt0_init();
 
 
 #endif /* INTERRUPTS_H_ */
