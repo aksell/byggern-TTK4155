@@ -11,6 +11,8 @@
 state_t state_machine_state;
 state_t state_machine_next;
 
+bool stop_game_ack_recieved;
+
 uint8_t game_music;
 
 void transmit_single_game_music_message(); //Forward 
@@ -19,6 +21,7 @@ void state_machine_init(){
 	state_machine_state = MENU;
 	state_machine_next = MENU;
 	game_music = 0;
+	stop_game_ack_recieved = false;
 	timer3_init();
 }
 
@@ -83,6 +86,13 @@ void transmit_start_game_message(){
 	CAN_transmit_message(&message);
 }
 
+void transmit_end_game_message(){
+	uint8_t	data = 1;
+	can_message message;
+	message = CAN_message_construct(CAN_GAME_OVER,0,&data);
+	CAN_transmit_message(&message);
+}
+
 
 
 
@@ -90,10 +100,17 @@ void transmit_start_game_message(){
 
 //State transmit functions
 
+
 void in_game_CAN_transmit(){
 	transmit_solenoide_pos_message();
 	transmit_servo_pos_message();
 	transmit_pos_message();
+}
+
+void display_stats_CAN_transmit(){
+	if(!stop_game_ack_recieved){	
+		transmit_end_game_message();
+	}
 }
 
 //State update functions
@@ -104,22 +121,50 @@ Update oled menu
 */
 
 void menu_state_update(){
-	if (1 || timer1_done()){//Check poling frequency for IO
+	if (1 || timer3_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
+		if(!stop_game_ack_recieved){
+			transmit_end_game_message();
+		}
 		timer3_reset();
 	}
-	oled_menu_update();
+	if (1 || timer1_done()){
+		joystick_dir_t dir = joystick_get_dir();
+		if(dir == UP){
+			oled_menu_up();
+		}
+		else if(dir == DOWN) {
+			oled_menu_down();
+		}
+		else if(dir == LEFT) {
+			oled_menu_decrement_current_value();
+		}
+		else if(dir == RIGHT) {
+			oled_menu_increment_current_value();
+		}
+		if (push_buttons_get_state(PUSH_BUTTON_LEFT)){
+			oled_menu_back();	
+		}
+		else if(push_buttons_get_state(PUSH_BUTTON_RIGHT)){//push button right button for select
+			oled_menu_select_item();
+		}
+		oled_menu_print_current_menu();
+		timer1_reset();
+	}
 }
 
 /*
 Poll button while waiting for player to confirm or abort game start
 */
 void idle_state_update(){
-	if(timer3_done()){
+	if(1 || timer3_done()){
 		push_buttons_poll();
 	}
-	oled_menu_update();
+	if(timer1_done()){
+		oled_menu_print_current_menu();
+		timer1_reset();
+	}
 }
 
 /*
@@ -127,17 +172,63 @@ Poll user input for game
 NEED TO ADD SCORE MODULE
 */
 void in_game_update(){
-	if (timer3_done()){//Check poling frequency for IO
+	if (1 || timer3_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		sliders_poll();
 		in_game_CAN_transmit();
 		timer3_reset();
 	}
-	oled_menu_update();
+	if (1||timer1_done())
+	{	
+		if(push_buttons_get_state(0)){
+			oled_menu_back();
+		}
+		oled_menu_set_score(score_get());
+		oled_menu_print_current_menu();
+		
+		timer1_reset();
+	}
+	
+}
+
+void display_stats_update(){
+	
+	if (1||timer3_done()){
+		push_buttons_poll();
+		display_stats_CAN_transmit();
+	}
+	if(1||timer1_done()){
+		if (push_buttons_get_state(PUSH_BUTTON_LEFT)){
+			state_machine_next = MENU;
+			oled_menu_back();
+		}
+		else if(push_buttons_get_state(PUSH_BUTTON_RIGHT)){//push button right button for select
+			state_machine_next =MENU;
+			oled_menu_back();
+		}
+		oled_menu_print_current_menu();
+		timer1_reset();
+	}
 }
 
 //State CAN receive functions
+void menu_CAN_recieve(){
+	volatile can_message message;
+	bool buffer_empty = CAN_buffer_empty();
+	while (!buffer_empty){
+		message = CAN_buffer_read();
+		switch(message.address){
+			case CAN_GAME_OVER_ACK:
+			stop_game_ack_recieved = true;
+			break;
+			default:
+			break;
+		}
+		buffer_empty = CAN_buffer_empty();
+	}
+}
+
 void idle_state_CAN_recieve(){
 	can_message message;
 	bool buffer_empty = CAN_buffer_empty();
@@ -166,8 +257,21 @@ void in_game_can_recieve(){
 			case CAN_BALL_SENSOR_TRIGGERED:
 				state_machine_next = DISPLAY_STATS;
 				break;
-			case CAN_GAME_OVER:
-				state_machine_next = MENU;
+			default:
+				break;
+		}
+		buffer_empty = CAN_buffer_empty();
+	}
+}
+
+void display_stats_CAN_recieve(){
+	volatile can_message message;
+	bool buffer_empty = CAN_buffer_empty();
+	while (!buffer_empty){
+		message = CAN_buffer_read();
+		switch(message.address){
+			case CAN_GAME_OVER_ACK:
+				stop_game_ack_recieved = true;
 				break;
 			default:
 				break;
@@ -191,12 +295,6 @@ void sc_idle_to_in_game(){
 	score_start_counting();
 }
 
-void sc_idle_to_display_stats(){
-	stdout = &uart_stream;
-	printf("DIPS STATS\n\r");
-	oled_menu_display_stats();
-}
-
 
 void sc_in_game_to_menu(){
 	stdout = &uart_stream;
@@ -206,14 +304,16 @@ void sc_in_game_to_menu(){
 }
 
 
-void sc_ingame_to_idle(){
+void sc_ingame_to_display_stats(){
 	stdout = &uart_stream;
-	printf("IDLE _ 2\n\r");
+	printf("DISPLAY\n\r");
+	oled_menu_display_stats();
 	score_stop_counting();
+	stop_game_ack_recieved = false;
 }
 
 void sc_display_stats_to_menu(){
-	
+	printf("MENU f disp\n\r");
 }
 
 
@@ -222,6 +322,7 @@ void state_machine_update(){
 	switch (state_machine_state){
 		case MENU:
 			menu_state_update();
+			menu_CAN_recieve();
 			switch (state_machine_next){
 				case IDLE:
 					sc_menu_to_idle();
@@ -232,18 +333,23 @@ void state_machine_update(){
 			}
 			break;
 		case IDLE:
+			idle_state_update();
 			idle_state_CAN_recieve(); //Wait for ACK from node 2
+			transmit_start_game_message();
 			switch (state_machine_next){
 				case IN_GAME:
+					stdout = &uart_stream;
 					sc_idle_to_in_game();
 					state_machine_state = IN_GAME;
 					break;
+/*
 				case DISPLAY_STATS:
 					sc_idle_to_display_stats();
-					state_machine_state = DISPLAY_STATS;
+					state_machine_state = DISPLAY_STATS;*/
 				default:
 					break;
 			}
+			break;
 		case IN_GAME:
 			in_game_update();
 			in_game_can_recieve();
@@ -252,19 +358,23 @@ void state_machine_update(){
 					sc_in_game_to_menu();
 					state_machine_state = MENU;
 					break;
-				case IDLE:
-					sc_ingame_to_idle();
-					state_machine_state = IDLE;
+				case DISPLAY_STATS:
+					sc_ingame_to_display_stats();
+					state_machine_state = DISPLAY_STATS;
 					break;
-			}		
+			}
+			break;		
 		case DISPLAY_STATS:
-			oled_menu_update();
+			display_stats_CAN_recieve();
+			display_stats_update();
+			
 			switch (state_machine_next){
 				case MENU:
 					sc_display_stats_to_menu();
 					state_machine_state = MENU;
 					break;
 			}
+			break;
 		default:
 			break;
 	}
