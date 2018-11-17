@@ -204,18 +204,18 @@ void music_init() {
 
 void music_timer_init() {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		TCCR5A = (0b00 << COM5A0) | (0b00 << COM5B0) |  (0b00 << WGM50);	//Toggle OC1A on Compare Match, OC1B and OC1C disconnected
+		TCCR4A = (0b00 << COM4A0) | (0b00 << COM5B0) |  (0b00 << WGM40);	//Toggle OC1A on Compare Match, OC1B and OC1C disconnected
 		//Set Wave gen to 15 (Fast PWM) and
-		TCCR5B = (0b000 << CS50) | (0b01 << WGM52);		//Prescaler to 0
+		TCCR4B = (0b000 << CS40) | (0b01 << WGM42);		//Prescaler to 0
 		music_set_bpm(120);
-		OCR5A = 20;
-		OCR5B = 20;
-		TIMSK5 |= (1 << OCIE5A) | (1 << OCIE5B);
+		OCR4A = 20;
+		OCR4B = 20;
+		TIMSK4 |= (1 << OCIE4A) | (1 << OCIE4B);
 	}
 }
 
 bool music_is_playing() {
-	return (TCCR5B & (0b111 << CS50)) != 0;
+	return (TCCR4B & (0b111 << CS40)) != 0;
 }
 
 void music_test() {
@@ -260,13 +260,13 @@ uint16_t bpm_to_timer_top(uint16_t bpm) {
 	return ((F_CPU*60)/PWM_PRESCALER)/(bpm*8)-1;
 }
 void music_timer_stop() {
-	TCCR5B = TCCR5B & ~(0b111 << CS50);//Set prescalar to 0
+	TCCR4B = TCCR4B & ~(0b111 << CS40);//Set prescalar to 0
 }
 
 void music_timer_start() {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		OCR5A = 0;
-		TCCR5B = (TCCR5B & ~(0b111 << CS50)) | (PWM_PRESCALER_BITMAP << CS50); //Set prescalar to 1
+		OCR4A = 0;
+		TCCR4B = (TCCR4B & ~(0b111 << CS40)) | (PWM_PRESCALER_BITMAP << CS40); //Set prescalar to 1
 	}
 }
 
@@ -281,8 +281,8 @@ void music_play_next_note() {
 		note_index = 0;
 	}
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		OCR5A = music_bar*current_song[note_index][1];
-		OCR5B = OCR5A - note_pause;
+		OCR4A = music_bar*current_song[note_index][1];
+		OCR4B = OCR4A - note_pause;
 	}
 	if(current_song[note_index][0] != PAUSE_NOTE) {
 		speaker_set_hz(current_song[note_index][0]);
@@ -292,7 +292,7 @@ void music_play_next_note() {
 }
 	
 
-ISR(TIMER5_COMPA_vect) {
+ISR(TIMER4_COMPA_vect) {
 	if(!looping && current_song[note_index][0] == STOP_NOTE) {
 		if(looping) {
 			note_index = 0;	
@@ -304,6 +304,6 @@ ISR(TIMER5_COMPA_vect) {
 	}
 }
 
-ISR(TIMER5_COMPB_vect) { 
+ISR(TIMER4_COMPB_vect) { 
 	speaker_off();
 }

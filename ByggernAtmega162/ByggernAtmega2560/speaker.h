@@ -13,6 +13,7 @@
 #include <util/atomic.h>
 #include "config.h"
 
+//Initilize the speaker using Timer 4 and port PH3
 void speaker_init();
 
 void speaker_set_hz(uint16_t hz);
