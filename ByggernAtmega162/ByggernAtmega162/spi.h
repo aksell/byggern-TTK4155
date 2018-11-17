@@ -12,6 +12,7 @@
 #define MAX_CAN_LENGTH 10
 
 #include <avr/io.h>
+#include <util/atomic.h>
 #include "config.h"
 
 //Initialize spi as master
