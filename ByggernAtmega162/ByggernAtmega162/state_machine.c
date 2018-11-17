@@ -6,7 +6,7 @@
  */ 
 #include "state_machine.h"
 
-#define SOLENOIDE_TRIGGER_TIME_MS 500
+#define SOLENOIDE_TRIGGER_TIME_MS 100
 
 state_t state_machine_state;
 state_t state_machine_next;
@@ -121,7 +121,7 @@ Update oled menu
 */
 
 void menu_state_update(){
-	if (1 || timer3_done()){//Check poling frequency for IO
+	if (timer3_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		if(!stop_game_ack_recieved){
@@ -129,7 +129,7 @@ void menu_state_update(){
 		}
 		timer3_reset();
 	}
-	if (1 || timer1_done()){
+	if (timer1_done()){
 		joystick_dir_t dir = joystick_get_dir();
 		if(dir == UP){
 			oled_menu_up();
@@ -158,8 +158,9 @@ void menu_state_update(){
 Poll button while waiting for player to confirm or abort game start
 */
 void idle_state_update(){
-	if(1 || timer3_done()){
+	if(timer3_done()){
 		push_buttons_poll();
+		timer3_reset();
 	}
 	if(timer1_done()){
 		oled_menu_print_current_menu();
@@ -172,14 +173,14 @@ Poll user input for game
 NEED TO ADD SCORE MODULE
 */
 void in_game_update(){
-	if (1 || timer3_done()){//Check poling frequency for IO
+	if (timer3_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		sliders_poll();
 		in_game_CAN_transmit();
 		timer3_reset();
 	}
-	if (1||timer1_done())
+	if (timer1_done())
 	{	
 		if(push_buttons_get_state(0)){
 			oled_menu_back();
@@ -194,11 +195,12 @@ void in_game_update(){
 
 void display_stats_update(){
 	
-	if (1||timer3_done()){
+	if (timer3_done()){
 		push_buttons_poll();
 		display_stats_CAN_transmit();
+		timer3_reset();
 	}
-	if(1||timer1_done()){
+	if(timer1_done()){
 		if (push_buttons_get_state(PUSH_BUTTON_LEFT)){
 			state_machine_next = MENU;
 			oled_menu_back();
