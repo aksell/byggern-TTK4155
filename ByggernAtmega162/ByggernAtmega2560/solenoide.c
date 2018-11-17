@@ -5,7 +5,7 @@
 #define SOLENOID_TRIGGER_PIN PH0
 void solenoide_init(){
     DDRH |= (1 << SOLENOID_TRIGGER_PIN); // set pin as output
-    PORTH &= ~(1 << SOLENOID_TRIGGER_PIN);  // set pin low
+    PORTH |= (1 << SOLENOID_TRIGGER_PIN);  // initialize solenoide to retracted position
 	
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		TCCR1A = (0b00 << COM1A0) | (0b00 << COM1B0) |  (0b00 << WGM10);	//Toggle OC1A on Compare Match, OC1B and OC1C disconnected
