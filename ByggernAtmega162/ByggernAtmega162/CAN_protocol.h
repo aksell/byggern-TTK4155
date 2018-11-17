@@ -23,7 +23,7 @@
 //IO messages
 #define CAN_MOTOR_POS	10 //Send 1 signed byte of desired position of main motor
 
-#define CAN_SERVO_POS 12 //Send 1 unsigned byte to set servo position. 
+#define CAN_SERVO_POS 12 //Send 1 signed byte to set servo position. 
 
 #define CAN_SOLANOIDE_TRIGGER_MS 14 //Request node 2 to activate solenoid together with two bytes of data indicating the ms of activation
 
