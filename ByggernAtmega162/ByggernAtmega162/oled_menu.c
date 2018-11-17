@@ -153,6 +153,9 @@ void oled_menu_display_stats(){
 	oled_menu_print_current_menu();
 }
 
+
+
+
 void oled_menu_update(){
 	if(1 || timer1_done()){
 		joystick_dir_t dir = joystick_get_dir();
