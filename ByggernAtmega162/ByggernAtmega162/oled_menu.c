@@ -64,7 +64,7 @@ void oled_menu_print(Menu * menu) {
 			oled_menu_element_print(&(menu->menu_items[i]));
 		}
 	}
-	//stdout = &uart_stream;
+	stdout = &uart_stream;
 	
 }
 
@@ -164,8 +164,6 @@ void oled_menu_update(){
 		}
 		else if(dir == LEFT) {
 			oled_menu_decrement_current_value();
-			oled_menu_print(oled_current_menu);
-
 		}
 		else if(dir == RIGHT) {
 			oled_menu_increment_current_value();
@@ -186,6 +184,13 @@ void oled_menu_update(){
 	}
 }
 
+void oled_menu_back(){
+	if(oled_current_menu->menu_items[0].child_menu != NULL){//Menu has a deffined parrent menu
+		oled_current_menu->selected_item = 0; //go to back button at the top
+		oled_menu_select_item();
+		oled_menu_print(oled_current_menu);
+	}	
+}
 
 
 //Test program for oled menu. Set screen white for one second
@@ -203,7 +208,7 @@ void oled_menu_init() {
 	oled_main_menu = (Menu) {
 		.title = "MAIN MENU",
 		//.menu_items[0] = (Menu_element) {"Play", NULL, &state_machine_set_next_state,IDLE,0},
-		.menu_items[0] = (Menu_element) {"Play", NULL, state_machine_set_in_game,IDLE,0},
+		.menu_items[0] = (Menu_element) {"Play", &oled_game_menu, state_machine_set_in_game,IDLE,0},
 		.menu_items[1] = (Menu_element) {"Settings", &oled_settings_menu, NULL,-127,0},
 		.menu_items[2] = (Menu_element) {"Test", NULL, NULL,-12,1},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -215,8 +220,8 @@ void oled_menu_init() {
 
 	oled_settings_menu = (Menu) {
 		.title = "SETTINGS",
-		.menu_items[1] = (Menu_element) {"Brightness", NULL, NULL,0,10},
-		.menu_items[2] = (Menu_element) {"Game Music", NULL, &state_machine_set_game_music,0,1},
+		.menu_items[1] = (Menu_element) {"Brightnes", NULL, NULL,0,10},
+		.menu_items[2] = (Menu_element) {"Music", NULL, &state_machine_set_game_music,0,1},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -227,7 +232,7 @@ void oled_menu_init() {
 	
 	oled_game_menu = (Menu) {
 		.title = "PLAYING",
-		.menu_items[0] = (Menu_element) {"Abort game", &oled_main_menu, state_machine_set_next_state,MENU,0},
+		.menu_items[0] = (Menu_element) {"Abort", &oled_main_menu, state_machine_set_next_state,MENU,0},
 		.menu_items[1] = (Menu_element) {"Score", NULL, NULL,0,0},
 		.menu_items[2] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -238,7 +243,7 @@ void oled_menu_init() {
 	oled_score_menu = (Menu) {
 		.title = "GAME OVER",
 		.menu_items[0] = (Menu_element) {"Back", &oled_main_menu, state_machine_set_next_state,MENU,0},
-		.menu_items[1] = (Menu_element) {"Score", NULL, NULL,0,0},
+		.menu_items[1] = (Menu_element) {"Score", &oled_main_menu, NULL,0,0},
 		.menu_items[2] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},

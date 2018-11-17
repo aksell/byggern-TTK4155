@@ -25,7 +25,7 @@ typedef struct Menu_element_s Menu_element;
 typedef struct Menu_s Menu;
 
 
-//Initilize the oled menu
+//Initialize the oled menu
 void oled_menu_init();
 
 //Prints the menu on the oled screen
@@ -50,4 +50,7 @@ void oled_menu_increment_current_value();
 
 //Decrements the selected item in the menu with 1
 void oled_menu_decrement_current_value();
-#endif /* OLED_MENUE_H_ */
+
+//Go back to parent menu
+void oled_menu_back();
+#endif /* OLED_MENU_H_ */
