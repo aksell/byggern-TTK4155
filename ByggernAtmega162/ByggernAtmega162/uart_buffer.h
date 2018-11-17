@@ -19,15 +19,24 @@
 
 #define UART_BUFFER_SIZE 32
 
+//Initialize the uart ring buffer
 void uart_buffer_init();
+
+//Write 1 byte to the uart buffer
 void uart_buffer_write(uint8_t data);
+
+//Reads the oldest message of the uart buffer
 uint8_t uart_buffer_read();
 
+//Returns true if buffer is empty
+bool uart_buffer_empty();
+
+//Returns true if buffer is full
+bool uart_buffer_full();
+
+//Buffer test
 void uart_buffer_test();
 
-bool uart_buffer_empty();
-bool uart_buffer_full();
-void uart_buffer_set_full();
 
 
 
