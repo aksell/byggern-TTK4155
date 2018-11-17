@@ -26,6 +26,7 @@ void CAN_buffer_init();
 
 
 void CAN_buffer_write(can_message *message);
+
 can_message CAN_buffer_read();
 
 uint8_t CAN_buffer_remaining_size();

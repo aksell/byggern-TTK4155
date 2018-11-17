@@ -26,8 +26,6 @@ typedef struct can_message_s{
 }can_message;
 
 
-
-
 void CAN_init();
 
 void CAN_transmit_message(can_message* message);

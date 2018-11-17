@@ -36,7 +36,7 @@ int main(void)
 	uart_init();
 	joystick_init(false);
 	push_buttons_init();
-	interrupt_init();
+	interrupt0_init();
 	timer1_init();
 	spi_init();
 	CAN_init();
@@ -48,7 +48,6 @@ int main(void)
 	oled_menu_init();
 	
 	state_machine_init();
-	interrupt_init();
 	sei();
 	stdout = &uart_stream;
 	printf("Hei tann\n\r");

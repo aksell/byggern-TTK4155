@@ -18,6 +18,8 @@ void MCP2515_read(uint8_t address, uint8_t  * data, uint8_t data_size);
 void MCP2515_write(uint8_t address, const uint8_t * data, uint8_t data_size);
 void MCP2515_rqt_send(uint8_t TXBn_mask);
 uint8_t MCP2515_read_status();
+
+//Modifies a register in MCP2515 with a mask that spesifies witch bits that can be edited
 void MCP2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
 void MCP2515_reset();
 

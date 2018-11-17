@@ -15,9 +15,16 @@
 #include <stdint.h>
 #include <avr/interrupt.h>
 
+//Initilize  the score timer counter
 void score_init();
+
+//Resets the score
 void score_reset();
+
+//Starts the score counting
 void score_start_counting();
+
+//Stops the score counting
 void score_stop_counting();
 void score_set(uint8_t score);
 void score_increment();
