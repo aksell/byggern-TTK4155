@@ -13,6 +13,7 @@
 #include "utilities.h"
 #include "adc.h"
 #include <stdio.h>
+#include "uart.h"
 
 
 typedef enum joystick_axis_e{
@@ -31,14 +32,14 @@ typedef enum joystick_dir_e {
 //Init the the joystick, if lowpass_enable the value of the joystick will be filtered
 void joystick_init(bool lowpass_enable);
 
-//Poles and stores the joystick possition
+//Poles and stores the joystick position
 void joystick_poll();
 
 // Returns a number between -100 to 100 indicating the joystick position
-volatile int16_t joystick_get_percent(joystick_axis_t joystick_axis_p);
+volatile int8_t joystick_get_percent(joystick_axis_t joystick_axis_p);
 
 // Returns a number between -127 to 127 indicating the joystick position
-volatile int16_t joystick_get_value(joystick_axis_t joystick_axis_p);
+volatile int8_t joystick_get_value(joystick_axis_t joystick_axis_p);
 
 //Returns a the joystick direction
 joystick_dir_t joystick_get_dir();
