@@ -13,7 +13,10 @@
 #include "internal_ADC.h"
 #include "utilities.h"
 
+//Initialize IR ball sensor on analog input 0
 void ball_sensor_init();
+
+//Returns true if ball sensor is triggered
 bool ball_sensor_is_triggered();
 
 

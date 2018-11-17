@@ -28,15 +28,20 @@ typedef enum states_e {
 	DISPLAY_STATS
 }state_t;
 
+//Initialize the state machine
 void state_machine_init();
+
+//Updates the state machine
 void state_machine_update();
+
+//Sets the next state of the state machine
 void state_machine_set_next_state(state_t next_state);
-void state_machine_start_game(int dummy_int);
+
+//Start a song on the state machine
 void state_machine_set_game_music(uint8_t song);
+
+//Function to let the oled menu start a game
 void state_machine_set_in_game(int dummy_int);
-
-
-
 
 
 #endif /* STATE_MACHINE_H_ */

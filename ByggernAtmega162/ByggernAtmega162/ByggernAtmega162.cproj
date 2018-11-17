@@ -140,6 +140,12 @@
     <Compile Include="config.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="EEPROM.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="EEPROM.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="external_mem.c">
       <SubType>compile</SubType>
     </Compile>

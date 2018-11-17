@@ -12,12 +12,12 @@
 #include "adc.h"
 
 typedef enum slider_side_e{
-	SLIDER_RIGHT,
-	SLIDER_LEFT
+	SLIDER_RIGHT, //Slider connected to ADC 3
+	SLIDER_LEFT //Slicer connected to ADC4
 }slider_t;
 
 //Get slider state
-volatile uint8_t slider_get(slider_t slider);
+uint8_t slider_get(slider_t slider);
 
 //Poll single slider
 void slider_poll(slider_t slider);

@@ -14,9 +14,17 @@
 #include <avr/io.h>
 #include "config.h"
 
+//Initialize spi as master
 void spi_init();
+
+//As master sends an array send_data of uint8_t of length data_lenth and records received values on the array recived_data
 void spi_transmit_recieve(uint8_t * send_data, uint8_t * recieve_data, uint8_t data_length);
+
+//Reads as master data_length bytes of the SPI bus
 void spi_receive(uint8_t * recieve_data, uint8_t data_length);
+
+
+//Writes as master data_length bytes on the SPI bus
 void spi_transmit(uint8_t * send_data,uint8_t data_length);
 
 #endif /* SPI_H_ */

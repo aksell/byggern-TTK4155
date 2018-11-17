@@ -9,7 +9,7 @@
 
 slider_t sliders[NUM_SLIDERS];
 
-volatile uint8_t slider_get(slider_t slider) {
+uint8_t slider_get(slider_t slider) {
 	return sliders[slider];
 }
 

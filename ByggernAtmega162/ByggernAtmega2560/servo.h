@@ -17,7 +17,7 @@
 void servo_init_fast_pwm_3();
 
 //Sets the PWM output on pin 5/PE3
-//Expects a value from 0 to 255
-void servo_fast_pwm_duty_cycle(uint8_t duty);
+//Expects a value from -128 to 127
+void servo_fast_pwm_duty_cycle(int8_t duty);
 
 #endif /* SERVO_H_ */
