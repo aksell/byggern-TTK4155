@@ -27,10 +27,10 @@ void servo_init_fast_pwm_3() {
 
 //Sets the PWM output on pin 5/PE3
 //Expects a value from 0 to 255
-void servo_fast_pwm_duty_cycle(uint8_t duty) {
-
+void servo_fast_pwm_duty_cycle(int8_t duty) {
+	int16_t duty_cycle = duty;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
-		OCR3A = PWM_TOP/20+duty*PWM_TOP/(20*255);
+		OCR3A = PWM_TOP/20+(duty_cycle+128)*PWM_TOP/(20*255);
 	}
 }
 
