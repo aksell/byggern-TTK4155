@@ -80,7 +80,7 @@ void oled_menu_select_item(){
 
 void oled_menu_up(){
 	for(int i = 0; i <8;i++){
-		oled_current_menu->selected_item = (oled_current_menu->selected_item - 1 + 8) % 8;		//Loop to top if at bottom of menu
+		oled_current_menu->selected_item = (oled_current_menu->selected_item - 1 + 6) % 6;		//Loop to top if at bottom of menu
 		if (oled_current_menu->menu_items[oled_current_menu->selected_item].title[0] != NULL){	//Check that the menu item exists
 			break;
 		}
@@ -89,7 +89,7 @@ void oled_menu_up(){
 
 void oled_menu_down(){
 	for(int i = 0; i <8;i++){
-		oled_current_menu->selected_item = (oled_current_menu->selected_item + 1) % 8;			//Loop to top if at bottom of menu
+		oled_current_menu->selected_item = (oled_current_menu->selected_item + 1) % 6;			//Loop to top if at bottom of menu
 		if (oled_current_menu->menu_items[oled_current_menu->selected_item].title[0] != NULL){	//Check that the menu item exists 
 			break;
 		}
