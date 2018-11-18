@@ -14,11 +14,11 @@
 
 
 //State messages
-#define CAN_GAME_OVER 1 //Message sendt to force other node out of game mode
-#define CAN_GAME_OVER_ACK 2 //Acknowledge that other node has changed out of game mode
+#define CAN_GAME_OVER 2 //Message sendt to force other node out of game mode
+#define CAN_GAME_OVER_ACK 1 //Acknowledge that other node has changed out of game mode
 
-#define CAN_START_GAME 3 //Message sent from node 1 indicating that a game is stating
-#define CAN_START_GAME_ACK 4 //Acknowledge that node 2 has reacted to START_GAME
+#define CAN_START_GAME 4 //Message sent from node 1 indicating that a game is stating
+#define CAN_START_GAME_ACK 3 //Acknowledge that node 2 has reacted to START_GAME
 
 //IO messages
 #define CAN_MOTOR_POS	10 //Send 1 signed byte of desired position of main motor
@@ -37,5 +37,5 @@
 #define CAN_START_MUSIC_LOOP 21	 //Request a start of music played in loop in node 2 with value of 1 byte of music_t from "music.h"
 #define CAN_STOP_MUSIC 22 //Stops music on node 2
 
-
+#define CAN_TEST 0
 #endif /* CAN_ADRESSES_H_ */
