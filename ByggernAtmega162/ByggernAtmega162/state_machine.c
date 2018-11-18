@@ -62,7 +62,7 @@ void transmit_pos_message(){
 
 
 void transmit_servo_pos_message(){
-	uint8_t	data = joystick_get_percent(JOYSTICK_X);
+	uint8_t	data = joystick_get_value(JOYSTICK_X);
 	can_message message;
 	message = CAN_message_construct(CAN_SERVO_POS,1,&data);
 	CAN_transmit_message(&message);
