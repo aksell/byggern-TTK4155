@@ -6,7 +6,7 @@
  */ 
 #include "state_machine.h"
 
-#define SOLENOIDE_TRIGGER_TIME_MS 500
+#define SOLENOIDE_TRIGGER_TIME_MS 100
 
 state_t state_machine_state;
 state_t state_machine_next;
@@ -53,7 +53,7 @@ void transmit_game_music_stop(){
 }
 
 void transmit_pos_message(){
-	uint8_t	data =  slider_get(SLIDER_LEFT);
+	uint8_t	data =  slider_get(SLIDER_RIGHT);
 	can_message message;
 	message = CAN_message_construct(CAN_MOTOR_POS,1,&data);
 	CAN_transmit_message(&message);
@@ -84,6 +84,7 @@ void transmit_start_game_message(){
 	can_message message;
 	message = CAN_message_construct(CAN_START_GAME,1,&data);
 	CAN_transmit_message(&message);
+	//printf("A\n\r");
 }
 
 void transmit_end_game_message(){
@@ -92,9 +93,6 @@ void transmit_end_game_message(){
 	message = CAN_message_construct(CAN_GAME_OVER,0,&data);
 	CAN_transmit_message(&message);
 }
-
-
-
 
 
 
@@ -121,15 +119,16 @@ Update oled menu
 */
 
 void menu_state_update(){
-	if (1 || timer3_done()){//Check poling frequency for IO
+	if (timer3_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		if(!stop_game_ack_recieved){
 			transmit_end_game_message();
+			printf("A");
 		}
 		timer3_reset();
 	}
-	if (1 || timer1_done()){
+	if (timer1_done()){
 		joystick_dir_t dir = joystick_get_dir();
 		if(dir == UP){
 			oled_menu_up();
@@ -158,8 +157,13 @@ void menu_state_update(){
 Poll button while waiting for player to confirm or abort game start
 */
 void idle_state_update(){
-	if(1 || timer3_done()){
+	if(timer3_done()){
 		push_buttons_poll();
+		if(push_buttons_get_state(PUSH_BUTTON_LEFT)){
+			state_machine_next = MENU;
+		}
+		transmit_start_game_message();
+		timer3_reset();
 	}
 	if(timer1_done()){
 		oled_menu_print_current_menu();
@@ -172,14 +176,14 @@ Poll user input for game
 NEED TO ADD SCORE MODULE
 */
 void in_game_update(){
-	if (1 || timer3_done()){//Check poling frequency for IO
+	if (timer3_done()){//Check poling frequency for IO
 		joystick_poll();
 		push_buttons_poll();
 		sliders_poll();
 		in_game_CAN_transmit();
 		timer3_reset();
 	}
-	if (1||timer1_done())
+	if (timer1_done())
 	{	
 		if(push_buttons_get_state(0)){
 			oled_menu_back();
@@ -196,11 +200,12 @@ void in_game_update(){
 
 void display_stats_update(){
 	
-	if (1||timer3_done()){
+	if (timer3_done()){
 		push_buttons_poll();
 		display_stats_CAN_transmit();
+		timer3_reset();
 	}
-	if(1||timer1_done()){
+	if(timer1_done()){
 		if (push_buttons_get_state(PUSH_BUTTON_LEFT)){
 			state_machine_next = MENU;
 			oled_menu_back();
@@ -240,12 +245,10 @@ void idle_state_CAN_recieve(){
 			case CAN_START_GAME_ACK:
 				state_machine_next = IN_GAME;
 				break;
-			case CAN_GAME_OVER_ACK:
-				state_machine_next = DISPLAY_STATS;
-				break; 
 			default:
 				break;
 		}
+		printf("%d\n\r",message.address);
 		buffer_empty = CAN_buffer_empty();
 	}
 }
@@ -298,11 +301,20 @@ void sc_idle_to_in_game(){
 	score_start_counting();
 }
 
+void sc_idle_to_menu(){
+	stdout = &uart_stream;
+	printf("MENU\n\r");
+	score_stop_counting();
+	transmit_game_music_stop();
+	stop_game_ack_recieved = false;
+}
 
 void sc_in_game_to_menu(){
 	stdout = &uart_stream;
 	printf("MENU\n\r");
 	score_stop_counting();
+	oled_menu_back();
+	stop_game_ack_recieved = false;
 	transmit_game_music_stop();
 }
 
@@ -326,6 +338,7 @@ void sc_ingame_to_display_stats(){
 
 void sc_display_stats_to_menu(){
 	printf("MENU f disp\n\r");
+	stop_game_ack_recieved = false;
 }
 
 
@@ -347,17 +360,15 @@ void state_machine_update(){
 		case IDLE:
 			idle_state_update();
 			idle_state_CAN_recieve(); //Wait for ACK from node 2
-			transmit_start_game_message();
+			
 			switch (state_machine_next){
+				case MENU:
+					sc_idle_to_menu();
 				case IN_GAME:
 					stdout = &uart_stream;
 					sc_idle_to_in_game();
 					state_machine_state = IN_GAME;
 					break;
-/*
-				case DISPLAY_STATS:
-					sc_idle_to_display_stats();
-					state_machine_state = DISPLAY_STATS;*/
 				default:
 					break;
 			}

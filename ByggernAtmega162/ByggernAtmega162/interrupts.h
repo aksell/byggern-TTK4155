@@ -11,6 +11,7 @@
 
 
 #include <avr/interrupt.h>
+#include <util/atomic.h>
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
 #include "push_buttons.h"

@@ -49,7 +49,7 @@ void CAN_buffer_set_full(){
 }
 
 uint8_t CAN_buffer_remaining_size(){
-	if(buffer_full){
+	if(!buffer_empty && head == tail){
 		return 0;
 	}
 	else if (head >= tail) {
@@ -78,14 +78,23 @@ void CAN_buffer_reset(){
 
 
 void CAN_buffer_write(can_message *message){
+	volatile uint8_t remaning_size = CAN_buffer_remaining_size();
+	while(remaning_size < message->data_size+3){
+		printf("Deleted message\n\r");
+		tail = (tail + buffer_data[tail]+3)%CAN_BUFFER_SIZE;
+		
+		//buffer_full = false;
+		remaning_size = CAN_buffer_remaining_size();
+	}
+	buffer_data[head] = message->data_size;
+	CAN_buffer_increment_head();
 	uint8_t adress_array[2] = {0,0};
 	convert_from_16_to_8(message->address,adress_array);
 	buffer_data[head] = adress_array[0];
 	CAN_buffer_increment_head();
 	buffer_data[head] = adress_array[1];
 	CAN_buffer_increment_head();
-	buffer_data[head] = message->data_size;
-	CAN_buffer_increment_head();
+	
 	for (int i = 0; i < message->data_size; i++){
 		buffer_data[head] = message->data[i];
 		CAN_buffer_increment_head();
@@ -97,6 +106,9 @@ void CAN_buffer_write(can_message *message){
 can_message CAN_buffer_read(){
 	can_message message;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		message.data_size = buffer_data[tail];
+		CAN_buffer_increment_tail();
+		
 		if(tail < CAN_BUFFER_SIZE-1){
 			message.address = convert_from_8_to_16(buffer_data[tail],buffer_data[tail+1]);
 			CAN_buffer_increment_tail();
@@ -107,18 +119,17 @@ can_message CAN_buffer_read(){
 			CAN_buffer_increment_tail();
 			CAN_buffer_increment_tail();
 		}
-		message.data_size = buffer_data[tail];
-		CAN_buffer_increment_tail();
+		
 	
 		for(int i = 0; i<message.data_size ; i++){
 			message.data[i] = buffer_data[tail];
 			CAN_buffer_increment_tail();
 		}
-		if(buffer_full){
+		/*if(buffer_full){
 			buffer_full = false;
 			CAN_interrupt_routine();
 			
-		}
+		}*/
 	}
 	return message;
 }

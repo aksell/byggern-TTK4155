@@ -21,7 +21,9 @@ void game_over_update();
 void state_machine_init() {
 	printf("STANDBY\n\r");
 	state = STANDBY;
-	next_state = STANDBY;	
+	next_state = STANDBY;
+	dc_motor_set_refference_possition_absolute(0);
+	timer0_enable();
 }
 
 void state_machine_update() {
@@ -30,7 +32,7 @@ void state_machine_update() {
 		standby_update();
 		switch(next_state) {
 			case INGAME:
-				music_reset();
+				//music_reset();
 				printf("IN GAME \r\n");
 			break;
 			default:
@@ -44,7 +46,7 @@ void state_machine_update() {
 		switch(next_state) {
 			case STANDBY:
 				printf("STANDBY\n\r");
-				music_reset();
+				//music_reset();
 			break;
 			default:
 				next_state = INGAME;
@@ -69,11 +71,21 @@ void standby_update() {
 			break;
 		}
 		message = CAN_buffer_read();
-		
 		switch (message.address){
+			case CAN_GAME_OVER:
+			printf("end game message\n\r");
+			message.address = CAN_GAME_OVER_ACK;
+			message.data_size = 0;
+			CAN_transmit_message(&message);
+			dc_motor_set_refference_middle();
+			next_state = STANDBY;
+			break;
+		
+		
 			case CAN_START_GAME:
 				printf("start game message\n\r");
 				message.address = CAN_START_GAME_ACK;
+				message.data_size = 0;
 				CAN_transmit_message(&message);
 				next_state = INGAME;
 				break;
@@ -111,7 +123,9 @@ void ingame_update() {
 			case CAN_GAME_OVER:
 				printf("end game message\n\r");
 				message.address = CAN_GAME_OVER_ACK;
+				message.data_size = 0;
 				CAN_transmit_message(&message);
+				dc_motor_set_refference_middle();
 				next_state = STANDBY;
 				break;
 			
@@ -129,7 +143,7 @@ void ingame_update() {
 				music_reset();
 				break;
 			case CAN_SOLANOIDE_TRIGGER_MS:
-				//printf("solenoid trigger message\n\r");
+				printf("solenoid trigger message\n\r");
 				solenoide_trigger(((uint16_t)message.data[0] << 7) | (uint16_t)message.data[1]);
 				break;
 			case CAN_SOLANOIDE_TRIGGER_AND_HOLD:
@@ -141,8 +155,9 @@ void ingame_update() {
 				solenoide_set_position(0);
 				break;
 			case CAN_MOTOR_POS:
-				//printf("motor message\n\r");
-				dc_motor_set_refference_possition(message.data[0]);
+				//printf("motor message	%d\n\r",((int16_t)(message.data[0])-127)*2);
+				//int16_t pos = ((int16_t)(message.data[0])-127)*2);
+				dc_motor_set_refference_possition_absolute(((int16_t)message.data[0]-127)*2);
 				break;
 			case CAN_SERVO_POS:
 				//printf("servo message\n\r");

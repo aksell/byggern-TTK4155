@@ -51,10 +51,10 @@ int main(void)
 	sei();
 	stdout = &uart_stream;
 	printf("Hei tann\n\r");
+	timer3_init();
     while (1) 
 	{
 		state_machine_init();
 	}
-
     return 0;
 }

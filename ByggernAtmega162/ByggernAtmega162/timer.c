@@ -56,10 +56,10 @@ void timer3_init(){
 	TCNT3= 0;
 }
 bool timer3_done(){
-	return (TIFR & (1<<OCF3A));
+	return (ETIFR & (1<<OCF3A));
 }
 void timer3_reset(){
 	TCNT3 = 0; //Set counter to zero
-	TIFR |= (1<<OCF3A); //Reset 
+	ETIFR |= (1<<OCF3A); //Reset 
 }
 

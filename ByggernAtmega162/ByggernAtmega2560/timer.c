@@ -9,22 +9,36 @@
 
 
 #define TIMER0_PRESCALER 1024
+uint16_t timer_counter;
+uint16_t timer0_post_scaler;
+uint16_t time;
 
 void timer0_init(){
 
-	TCCR0A = (0<COM0A1)|(1<<WGM01); //Clear on compare match
+	TCCR0A = (1<<WGM01); //Clear on compare match
 	TCCR0B = (1<<CS02)|(1<<CS00); //Prescaler 1024
-	if (TIMER0_FREQUENZY < 31){
+	if (TIMER0_FREQUENZY < 62){
 		OCR0A = 0xff;
 	}
 	else{
-		OCR0A = F_CPU/(2*TIMER0_FREQUENZY*TIMER0_PRESCALER) - 1;
+		OCR0A = F_CPU/TIMER0_PRESCALER/TIMER0_FREQUENZY - 1;
 	}
-	TIMSK0 |= (1<<OCIE0A);
+	timer0_post_scaler = 0;
+}
 
+void timer0_enable(){
+	TIMSK0 |= (1<<OCIE0A);
+}
+
+void timer0_dissable(){
+	TIMSK0 &= ~(1<<OCIE0A);
 }
 
 
 ISR(TIMER0_COMPA_vect){
-	dc_motor_PI_controller_update();
+	if(++timer0_post_scaler >= TIMER0_POST_SCALER){
+		timer0_post_scaler = 0;
+		dc_motor_PI_controller_update();
+		//printf("	Time:	%d\n\r",timer_counter/PI_FREQUENZY);
+	}
 }
