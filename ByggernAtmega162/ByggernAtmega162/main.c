@@ -58,13 +58,7 @@ int main(void)
 		//printf("An: %i, %i, %i, %i\n\r", adc_read(1), adc_read(2),adc_read(3), adc_read(4));
 		//_delay_ms(100);
 		state_machine_update();
-		/*if (timer3_done()){
-			printf("Done\n\r");
-			timer3_reset();
-		}*/
 		
-		
-		//_delay_ms(100);
 		}
 
     return 0;

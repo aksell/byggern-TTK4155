@@ -31,27 +31,48 @@ int main(void)
 {
 	servo_init_fast_pwm_3();
 	uart_init();
+	stdout = &uart_stream;
 	spi_init();
-	CAN_buffer_init();
 	CAN_init();
+	CAN_buffer_init();
+	
 	dac_init();
-	timer0_init();
+
 	dc_motor_init();
 	ball_sensor_init();
 	music_init();
 	solenoide_init();
+	timer0_init();
 	state_machine_init();
 	sei();
 
-	stdout = &uart_stream;
-	can_message message;
-	
-	//music_set_bpm(80);
-	//music_play_loop(GOT_MUSIC);
+
+
+	//timer0_enable();
+	music_set_bpm(80);
+	music_play_loop(GOT_MUSIC);
 	printf("Hei\n\r");
     while (1) 
-	{		
+	{			
+		//printf("2");
+		//dac_write(-100);
 		state_machine_update();
-		_delay_ms(10);
+		//_delay_ms(10);
+/*
+		CAN_buffer_test_2();
+		bool C_buffer_empty= CAN_buffer_empty();
+		while(!C_buffer_empty){
+			message = CAN_buffer_read();
+			printf("\n\rAdd%d\n\r",message.address);
+			for(int i = 0;i<message.data_size;i++){
+				printf(" %d",message.data[i]);
+			}
+			C_buffer_empty = CAN_buffer_empty();
+		}
+		_delay_ms(1000);
+		printf("Done");*/
+		
+		
 	}
+	return 0;
 }
