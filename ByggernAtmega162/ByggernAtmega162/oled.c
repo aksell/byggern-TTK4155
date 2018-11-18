@@ -543,3 +543,9 @@ uint8_t oled_print_char_big(char letter) {
 	oled_set_add_mode(PAGE_ADD_MODE);
 	return 0;
 }
+
+void oled_set_contrast(int8_t contrast_p) {
+	uint8_t contrast = contrast_p+128;
+	oled_control_write(0x81);
+	oled_control_write(contrast);
+}

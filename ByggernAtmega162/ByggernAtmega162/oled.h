@@ -47,6 +47,9 @@ void oled_clear_page(uint8_t page);
 //Clears the screen and resets the memory
 void oled_clear_screen();
 
+//Sets screen contrast
+void oled_set_contrast(int8_t contrast_p);
+
 //Writes a chesspattern to the screen
 void oled_chess();
 

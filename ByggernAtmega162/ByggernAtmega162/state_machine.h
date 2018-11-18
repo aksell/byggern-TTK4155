@@ -20,11 +20,12 @@
 #include "oled_menu.h"
 #include "uart.h"
 #include "score.h"
-
+#include "EEPROM.h"
 typedef enum states_e {
 	MENU,
 	IDLE,
 	IN_GAME,
+	GAME_OVER,
 	DISPLAY_STATS
 }state_t;
 

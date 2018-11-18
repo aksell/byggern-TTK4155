@@ -98,7 +98,6 @@ void transmit_end_game_message(){
 
 //State transmit functions
 
-
 void in_game_CAN_transmit(){
 	transmit_solenoide_pos_message();
 	transmit_servo_pos_message();
@@ -111,6 +110,12 @@ void display_stats_CAN_transmit(){
 	}
 }
 
+
+void game_over_CAN_transmit(){
+	if(!stop_game_ack_recieved){
+		transmit_end_game_message();
+	}
+}
 //State update functions
 
 /*
@@ -124,7 +129,6 @@ void menu_state_update(){
 		push_buttons_poll();
 		if(!stop_game_ack_recieved){
 			transmit_end_game_message();
-			printf("A");
 		}
 		timer3_reset();
 	}
@@ -143,6 +147,7 @@ void menu_state_update(){
 			oled_menu_increment_current_value();
 		}
 		if (push_buttons_get_state(PUSH_BUTTON_LEFT)){
+			stdout = &uart_stream;
 			oled_menu_back();	
 		}
 		else if(push_buttons_get_state(PUSH_BUTTON_RIGHT)){//push button right button for select
@@ -197,6 +202,23 @@ void in_game_update(){
 	}
 	
 }
+void game_over_update() {
+	if (timer3_done()){
+		push_buttons_poll();
+		game_over_CAN_transmit();
+		timer3_reset();
+	}
+	
+	if(timer1_done()){
+		if (push_buttons_get_state(PUSH_BUTTON_LEFT)){
+			state_machine_next = DISPLAY_STATS;
+		}
+		else if(push_buttons_get_state(PUSH_BUTTON_RIGHT)){//push button right button for select
+			state_machine_next = DISPLAY_STATS;
+		}
+		timer1_reset();
+	}
+}
 
 void display_stats_update(){
 	
@@ -214,7 +236,6 @@ void display_stats_update(){
 			state_machine_next =MENU;
 			oled_menu_back();
 		}
-		oled_menu_print_current_menu();
 		timer1_reset();
 	}
 }
@@ -248,7 +269,6 @@ void idle_state_CAN_recieve(){
 			default:
 				break;
 		}
-		printf("%d\n\r",message.address);
 		buffer_empty = CAN_buffer_empty();
 	}
 }
@@ -260,7 +280,7 @@ void in_game_can_recieve(){
 		message = CAN_buffer_read();
 		switch(message.address){
 			case CAN_BALL_SENSOR_TRIGGERED:
-				state_machine_next = DISPLAY_STATS;
+				state_machine_next = GAME_OVER;
 				break;
 			default:
 				break;
@@ -268,6 +288,22 @@ void in_game_can_recieve(){
 		buffer_empty = CAN_buffer_empty();
 	}
 }
+void game_over_CAN_recieve(){
+	volatile can_message message;
+	bool buffer_empty = CAN_buffer_empty();
+	while (!buffer_empty){
+		message = CAN_buffer_read();
+		switch(message.address){
+			case CAN_GAME_OVER_ACK:
+			stop_game_ack_recieved = true;
+			break;
+		default:
+			break;
+		}
+		buffer_empty = CAN_buffer_empty();
+	}
+}
+
 
 void display_stats_CAN_recieve(){
 	volatile can_message message;
@@ -289,14 +325,15 @@ void display_stats_CAN_recieve(){
 void sc_menu_to_idle(){
 	stdout = &uart_stream;
 	printf("IDLE\n\r");
+	score_screen_init();
 	transmit_start_game_message();
 }
 
 void sc_idle_to_in_game(){
+	
 	stdout = &uart_stream;
 	printf("IN GAME\n\r");
 	score_reset();
-	score_screen_init();
 	transmit_loop_game_music_message();
 	score_start_counting();
 }
@@ -313,35 +350,46 @@ void sc_in_game_to_menu(){
 	stdout = &uart_stream;
 	printf("MENU\n\r");
 	score_stop_counting();
+	oled_clear_screen();
 	oled_menu_back();
 	stop_game_ack_recieved = false;
 	transmit_game_music_stop();
 }
 
 
-void sc_ingame_to_display_stats(){
-	stdout = &uart_stream;
-	printf("DISPLAY\n\r");
-	oled_menu_display_stats();
-	score_stop_counting();
-	stop_game_ack_recieved = false;
+void sc_ingame_to_game_over(){
 	
+	score_stop_counting();
 	
 	//Display Game Over
 	oled_clear_screen();
+	oled_set_contrast(-127);
 	stdout = &oled_big_stream;
-	oled_print_char_big_set_start(0,2);
-	printf("GAME OVER");
-	_delay_ms(500);
+	oled_print_char_big_set_start(0,0);
+	printf("GAME");
+	oled_print_char_big_set_start(0,4);
+	printf("OVER");
+	
 	stdout = &uart_stream;
+	printf("GAME OVER\n\r");
+	stop_game_ack_recieved = false;
+
 }
+
 
 void sc_display_stats_to_menu(){
+	stdout = &uart_stream;
 	printf("MENU f disp\n\r");
 	stop_game_ack_recieved = false;
+	oled_clear_screen();
 }
 
-
+void sc_game_over_to_stats() {
+	oled_set_contrast(oled_menu_get_contrast());
+	stdout = &uart_stream;
+	printf("STATS\n\r");
+	score_high_score_display_init();
+}
 
 void state_machine_update(){
 	switch (state_machine_state){
@@ -381,20 +429,36 @@ void state_machine_update(){
 					sc_in_game_to_menu();
 					state_machine_state = MENU;
 					break;
+				case GAME_OVER:
+					sc_ingame_to_game_over();
+					state_machine_state = GAME_OVER;
+					break;
+				default:
+					break;
+			}
+			break;
+				
+		case GAME_OVER:
+			game_over_CAN_recieve();
+			game_over_update();
+			switch (state_machine_next){
 				case DISPLAY_STATS:
-					sc_ingame_to_display_stats();
+					sc_game_over_to_stats();
 					state_machine_state = DISPLAY_STATS;
+					break;
+				default:
 					break;
 			}
 			break;		
 		case DISPLAY_STATS:
 			display_stats_CAN_recieve();
 			display_stats_update();
-			
 			switch (state_machine_next){
 				case MENU:
 					sc_display_stats_to_menu();
 					state_machine_state = MENU;
+					break;
+				default:
 					break;
 			}
 			break;

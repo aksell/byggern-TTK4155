@@ -19,6 +19,6 @@ typedef enum EEPROM_address_e{
 
 void EEPROM_write(EEPROM_address address, uint8_t data);
 
-uint8_t EEPROM_read(EEPROM_address address, uint8_t data);
+uint8_t EEPROM_read(EEPROM_address address);
 
 #endif /* EEPROM_H_ */

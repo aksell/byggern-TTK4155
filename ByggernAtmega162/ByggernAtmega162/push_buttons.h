@@ -10,7 +10,7 @@
 #define BUTTONS_H_
 
 #include "utilities.h"
-
+#include "uart.h"
 
 typedef enum push_button_e{
 	PUSH_BUTTON_LEFT,

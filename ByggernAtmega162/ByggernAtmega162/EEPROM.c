@@ -18,7 +18,7 @@ void EEPROM_write(EEPROM_address address, uint8_t data) {
 	}
 }
 
-uint8_t EEPROM_read(EEPROM_address address, uint8_t data) {
+uint8_t EEPROM_read(EEPROM_address address) {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		while(EECR & (1<<EEWE)); // Wait for completion of previous write
 		EEAR = address;

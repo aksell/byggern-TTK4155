@@ -80,10 +80,9 @@ void CAN_buffer_reset(){
 void CAN_buffer_write(can_message *message){
 	volatile uint8_t remaning_size = CAN_buffer_remaining_size();
 	while(remaning_size < message->data_size+3){
-		printf("Deleted message\n\r");
+		stdout = &uart_stream;
 		tail = (tail + buffer_data[tail]+3)%CAN_BUFFER_SIZE;
 		
-		//buffer_full = false;
 		remaning_size = CAN_buffer_remaining_size();
 	}
 	buffer_data[head] = message->data_size;
@@ -125,11 +124,6 @@ can_message CAN_buffer_read(){
 			message.data[i] = buffer_data[tail];
 			CAN_buffer_increment_tail();
 		}
-		/*if(buffer_full){
-			buffer_full = false;
-			CAN_interrupt_routine();
-			
-		}*/
 	}
 	return message;
 }
