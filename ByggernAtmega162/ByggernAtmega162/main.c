@@ -52,13 +52,9 @@ int main(void)
 	stdout = &uart_stream;
 	printf("Hei tann\n\r");
     while (1) 
-		{
-		//stdout = &uart_stream;
-		//printf("An: %i, %i, %i, %i\n\r", adc_read(1), adc_read(2),adc_read(3), adc_read(4));
-		_delay_ms(100);
-		state_machine_update();
-		_delay_ms(100);
-		}
+	{
+		state_machine_init();
+	}
 
     return 0;
 }

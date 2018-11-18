@@ -184,10 +184,12 @@ void in_game_update(){
 		if(push_buttons_get_state(0)){
 			oled_menu_back();
 		}
-		oled_menu_set_score(score_get());
-		oled_menu_print_current_menu();
 		
 		timer1_reset();
+	}
+	
+	if(score_is_screen_outdated()) {
+		score_screen_update();
 	}
 	
 }
@@ -291,6 +293,7 @@ void sc_idle_to_in_game(){
 	stdout = &uart_stream;
 	printf("IN GAME\n\r");
 	score_reset();
+	score_screen_init();
 	transmit_loop_game_music_message();
 	score_start_counting();
 }
@@ -310,6 +313,15 @@ void sc_ingame_to_display_stats(){
 	oled_menu_display_stats();
 	score_stop_counting();
 	stop_game_ack_recieved = false;
+	
+	
+	//Display Game Over
+	oled_clear_screen();
+	stdout = &oled_big_stream;
+	oled_print_char_big_set_start(0,2);
+	printf("GAME OVER");
+	_delay_ms(500);
+	stdout = &uart_stream;
 }
 
 void sc_display_stats_to_menu(){
