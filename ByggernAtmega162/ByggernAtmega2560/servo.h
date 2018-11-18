@@ -13,6 +13,7 @@
 
 
 #include "dc_motor.h"
+#include "uart.h"
 
 void servo_init_fast_pwm_3();
 

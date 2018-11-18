@@ -13,6 +13,7 @@
 
 #include <avr/io.h>
 #include <util/atomic.h>
+#include <avr/interrupt.h>
 #include "config.h"
 
 //Initialize spi as master

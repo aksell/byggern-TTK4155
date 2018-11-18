@@ -25,7 +25,7 @@ void dac_write(uint8_t data){
 	message[0] = 0b01010000;
 	message[1] = 0;
 	message[2] = data;
-	//printf("Speed:	%d",data);
+	//printf("Dac Write %d\n\r",data);
 	//unsigned char * msg_ptr = message;
 	TWI_Start_Transceiver_With_Data(message,TWI_BUFFER_SIZE);
 }

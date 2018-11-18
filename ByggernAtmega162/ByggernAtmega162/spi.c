@@ -15,18 +15,18 @@ void spi_init(){
 	DDRB = (1<<PB5)|(1<<PB7)|(1<<PB4);
 	PORTB |= 1<<PB4;
 	/* Enable interrupt */
-	//SPSR = (1<<SPIF);
+	
 	//SPCR = 1<<SPIE;
 	
 	
-	/* Enable SPI interrupt, SPI, Master, set clock rate fck/16 , SPI mode 0 by default*/
+	/* Enable SPI, Master, set clock rate fck/16 , SPI mode 0 by default*/
 	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);	
 }
 
 void spi_transmit_recieve(uint8_t * send_data, uint8_t * recieve_data, uint8_t data_length){
 	//Set chip select
 	PORTB &= ~(1<<PB4);
-	//SPSR &= ~(1<<SPIF);
+	SPSR &= ~(1<<SPIF);
 	for (int i = 0;i<data_length;i++){
 		SPDR = send_data[i];
 		while(!(SPSR & (1<<SPIF)));
@@ -64,3 +64,4 @@ void spi_transmit(uint8_t * send_data,uint8_t data_length){
 		}
 		printf("\n");
 		*/
+

@@ -19,16 +19,17 @@ void servo_init_fast_pwm_3() {
 														//Set Wave gen to 14 (Fast PWM) and 
 		TCCR3B = (0b010 << CS30) | (0b11 << WGM32);		//Prescaler to 8
 		ICR3 = PWM_TOP;
-		OCR3A = PWM_TOP/20;
+		OCR3A = PWM_TOP/20 + 100;
 	}
 }
 
 
 
 //Sets the PWM output on pin 5/PE3
-//Expects a value from 0 to 255
+//Expects a value from -128 to 127
 void servo_fast_pwm_duty_cycle(int8_t duty) {
 	int16_t duty_cycle = duty;
+	printf("%d,",duty);
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		OCR3A = PWM_TOP/20+(duty_cycle+128)*PWM_TOP/(20*255);
 	}

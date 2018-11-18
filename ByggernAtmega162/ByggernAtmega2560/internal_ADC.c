@@ -33,7 +33,7 @@ void internal_ADC_start_free_running_mode() {
 }
 
 void internal_ADC_stop_free_running_mode() {
-	ADCSRA &= ~(1 << ADATE);		//ADC Auto Trigger ENABLE
+	ADCSRA &= ~(1 << ADATE);		//ADC Auto Trigger Disable
 	ADCSRB &= ~(0b111 << ADTS0);	//ADC Auto Trigger Source to running mode
 }
 
