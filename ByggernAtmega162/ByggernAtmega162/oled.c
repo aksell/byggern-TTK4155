@@ -317,6 +317,12 @@ const unsigned char PROGMEM font4[95][4] = {
 };
 
 
+typedef add_mode_e{
+	HORIZONTAL_ADD_MODE,
+	VERTICA_ADD_MODE,
+	PAGE_ADD_MODE
+} add_mode;
+
 void oled_init()
 {
 	oled_control_write(0xae); //display off
@@ -343,6 +349,10 @@ void oled_init()
 	oled_control_write(0xaf); // display on
 	
 	oled_clear_screen();
+}
+void oled_set_add_mode(add_mode add_mode_p) {
+	oled_control_write(0x20); //Set Memory Addressing Mode
+	oled_control_write(add_mode_p);
 }
 
 void oled_columb_range_select(uint8_t start, uint8_t end){
@@ -486,4 +496,20 @@ void oled_print_char_of_size(char letter,  uint8_t size) {
 			oled_data_write(~pgm_read_byte(&(font8[letter - ' '][i])));
 		}
 	}
+}
+#define BIG_SIZE 4
+
+void oled_print_char_big(char letter) {
+	oled_set_add_mode(VERTICAL_ADD_MODE);
+	uint8_t char_length = 0;
+	unsigned char ** letter_bitmap font8;
+	char_length = 8;
+	
+	uint8_t current_bitmask = 0;
+	for(int i = 0; i < 8; i+=2) {
+		current_bitmask = pgm_read_byte(&(font8[letter - ' '][i]));
+			oled_data_write(((pgm_read_byte(&(font8[letter - ' '][i])) & (1 << y)) != 0) * 0xf0 | (( pgm_read_byte(&(font8[letter - ' '][i+1])) & (1 << y)) != 0) * 0x0f);
+
+	}
+	oled_set_add_mode(PAGE_ADD_MODE);
 }
