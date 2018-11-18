@@ -13,8 +13,8 @@
 #define TIMER3_FREQ 10
 
 void timer0_init(){
-	TCCR0 |= (1<<WGM01); //Clare on compare match
-	TCCR0 |= (1<<CS12)|(1 << CS10);  //Pre scaler 1024
+	
+	TCCR0 = (0b101 << CS10) |  (1<<WGM01);  //Pre scaler 1024,  Clare on compare match
 	if(TIMER0_FREQ > 10){
 		OCR0 =  F_CPU/PRE_SCALAR_0/TIMER0_FREQ/2 - 1;
 	}
@@ -24,10 +24,10 @@ void timer0_init(){
 }
 
 void timer0_enable(){
-	TIMSK |= (1<<TOIE0); //Enable timer interrupt
+	TIMSK |= (1<<OCIE0); //Enable timer interrupt
 }
 void timer0_dissable(){
-	TIMSK &= ~(1<<TOIE0); //Dissable timer interrupt
+	TIMSK &= ~(1<<OCIE0); //Dissable timer interrupt
 }
 
 

@@ -242,7 +242,8 @@ void music_play(music_t music) {
 			current_song = one_music;
 			break;
 		default:
-		break;
+			music_reset();
+			break;
 	}
 	note_index = 0;
 	music_timer_start();

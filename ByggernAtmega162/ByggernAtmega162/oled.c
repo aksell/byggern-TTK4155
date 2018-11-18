@@ -317,6 +317,12 @@ const unsigned char PROGMEM font4[95][4] = {
 };
 
 
+typedef enum add_mode_e{
+	HORIZONTAL_ADD_MODE,
+	VERTICAL_ADD_MODE,
+	PAGE_ADD_MODE
+} add_mode;
+
 void oled_init()
 {
 	oled_control_write(0xae); //display off
@@ -344,6 +350,10 @@ void oled_init()
 	
 	oled_clear_screen();
 }
+void oled_set_add_mode(add_mode add_mode_p) {
+	oled_control_write(0x20); //Set Memory Addressing Mode
+	oled_control_write(add_mode_p);
+}
 
 void oled_columb_range_select(uint8_t start, uint8_t end){
 	oled_control_write(OLED_COLUMB_SET);
@@ -367,6 +377,18 @@ void oled_page_select(uint8_t page){
 	if (page < OLED_PAGES){
 		oled_control_write(page);
 		oled_control_write(page);
+	}
+	else{
+		oled_control_write(OLED_PAGES-1);
+		oled_control_write(OLED_PAGES-1);
+	}
+}
+
+void oled_page_select_range(uint8_t start_page, uint8_t end_page){
+	oled_control_write(OLED_PAGE_SET);
+	if (end_page < OLED_PAGES){
+		oled_control_write(start_page);
+		oled_control_write(end_page);
 	}
 	else{
 		oled_control_write(OLED_PAGES-1);
@@ -435,7 +457,7 @@ void oled_printf_normal() {
 }
 
 
-uint8_t printf_columb = 0;
+
 uint8_t printf_page = 0;
 uint8_t printf_size = 0;
 
@@ -486,4 +508,44 @@ void oled_print_char_of_size(char letter,  uint8_t size) {
 			oled_data_write(~pgm_read_byte(&(font8[letter - ' '][i])));
 		}
 	}
+}
+
+
+
+#define BIG_SIZE 4
+
+uint8_t big_char_start_x = 0;
+uint8_t big_char_start_y = 0;
+
+void oled_print_char_big_set_start(uint8_t x_pos, uint8_t y_pos) {
+	big_char_start_x = x_pos;
+	big_char_start_y = y_pos;
+}
+
+uint8_t oled_print_char_big(char letter) {
+	oled_set_add_mode(VERTICAL_ADD_MODE);
+	uint8_t char_length = 0;
+	unsigned char ** letter_bitmap = font8;
+	char_length = 8;
+	oled_columb_range_select(big_char_start_x, big_char_start_x+8*4-1);
+	oled_page_select_range(big_char_start_y, big_char_start_y+3);
+	
+		for(int i = 0; i < 8; i++) {
+			uint8_t bit_map = pgm_read_byte(&(font8[letter - ' '][i]));
+			for(int t = 0; t < 4; t++) {
+				for (int y = 0; y < 8; y+=2) {
+					oled_data_write(((bit_map & (1 << y+1)) > 0) * 0xf0 | ((bit_map & (1 << y)) > 0)*0x0f);
+				}
+			}
+		}
+	
+	big_char_start_x += 8*4;
+	oled_set_add_mode(PAGE_ADD_MODE);
+	return 0;
+}
+
+void oled_set_contrast(int8_t contrast_p) {
+	uint8_t contrast = contrast_p+128;
+	oled_control_write(0x81);
+	oled_control_write(contrast);
 }

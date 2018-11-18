@@ -28,6 +28,7 @@ void push_buttons_init() {
 }
 
 void push_buttons_poll() {
+	
 	for(int i = 0; i < NUMB_BUTTONS; i++) {
 		bool pushed = ((1<< buttons[i].pin) & PIND) != 0;
 		if(pushed == 1 && buttons[i].prev_state == 0) {

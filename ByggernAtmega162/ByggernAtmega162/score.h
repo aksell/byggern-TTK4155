@@ -14,7 +14,11 @@
 #include <avr/io.h>
 #include <stdint.h>
 #include <avr/interrupt.h>
-
+#include <stdio.h>
+#include "oled.h"
+#include "utilities.h"
+#include "EEPROM.h"
+#include <util/atomic.h>
 //Initilize  the score timer counter
 void score_init();
 
@@ -29,7 +33,10 @@ void score_stop_counting();
 void score_set(uint8_t score);
 void score_increment();
 uint8_t score_get();
-
-
+void score_screen_init();
+void score_screen_update();
+bool score_is_screen_outdated();
+void score_reset_high_score(int dummy_int);
+void score_high_score_display_init();
 
 #endif /* SCORE_H_ */

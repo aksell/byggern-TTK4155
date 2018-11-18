@@ -53,4 +53,7 @@ void oled_menu_decrement_current_value();
 
 //Go back to parent menu
 void oled_menu_back();
+
+
+int8_t oled_menu_get_contrast();
 #endif /* OLED_MENU_H_ */

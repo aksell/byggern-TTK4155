@@ -25,8 +25,7 @@ struct Menu_s{
 
 Menu oled_main_menu;
 Menu oled_settings_menu;
-Menu oled_game_menu;
-Menu oled_score_menu;
+Menu oled_credit_menu;
 Menu *oled_current_menu;
 
 
@@ -42,7 +41,7 @@ void oled_menu_element_print(Menu_element * menu_element){
 		printf("%s", menu_element->title);
 		
 		if(menu_element->value > -127){
-			printf(" %i",menu_element->value);
+			printf(" %4i",menu_element->value);
 		}
 		printf("\n");
 	}
@@ -50,7 +49,6 @@ void oled_menu_element_print(Menu_element * menu_element){
 
 void oled_menu_print(Menu * menu) {
 	stdout = &oled_stream;
-	oled_clear_screen();
 	oled_set_printf_page(0);
 	oled_columb_range_select(0,OLED_COLUMBS);
 	printf("%s\n", menu->title);
@@ -74,7 +72,7 @@ void oled_menu_select_item(){
 	}
 	if(oled_current_menu->menu_items[oled_current_menu->selected_item].child_menu != NULL) {//Element has child
 		oled_current_menu = (oled_current_menu->menu_items[oled_current_menu->selected_item].child_menu);
-		
+		oled_clear_screen();
 	}		
 }
 
@@ -134,12 +132,6 @@ void oled_menu_set_value(Menu_element * menu_element, int8_t val){		//Value can 
 	}
 }
 
-void oled_menu_set_score(int8_t val){
-	oled_menu_set_value(&(oled_game_menu.menu_items[1]),val);
-	oled_menu_set_value(&(oled_score_menu.menu_items[1]),val);
-}
-
-
 void oled_menu_increment_current_value(){
 	oled_menu_increment_value(&(oled_current_menu->menu_items[oled_current_menu->selected_item]));
 }
@@ -147,12 +139,6 @@ void oled_menu_increment_current_value(){
 void oled_menu_decrement_current_value(){
 	oled_menu_decrement_value(&(oled_current_menu->menu_items[oled_current_menu->selected_item]));
 }
-
-void oled_menu_display_stats(){
-	oled_current_menu = &oled_score_menu;
-	oled_menu_print_current_menu();
-}
-
 
 
 
@@ -207,13 +193,16 @@ void oled_menu_print_current_menu(){
 	oled_menu_print(oled_current_menu);
 }
 
+int8_t oled_menu_get_contrast() {
+	return oled_settings_menu.menu_items[1].value;
+}
+
 void oled_menu_init() {
 	oled_main_menu = (Menu) {
 		.title = "MAIN MENU",
-		//.menu_items[0] = (Menu_element) {"Play", NULL, &state_machine_set_next_state,IDLE,0},
-		.menu_items[0] = (Menu_element) {"Play", &oled_game_menu, state_machine_set_in_game,IDLE,0},
+		.menu_items[0] = (Menu_element) {"Play", NULL, state_machine_set_in_game,-127,0},
 		.menu_items[1] = (Menu_element) {"Settings", &oled_settings_menu, NULL,-127,0},
-		.menu_items[2] = (Menu_element) {"Test", NULL, NULL,-12,1},
+		.menu_items[2] = (Menu_element) {"Credits", &oled_credit_menu, NULL,-127,0},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
@@ -223,36 +212,27 @@ void oled_menu_init() {
 
 	oled_settings_menu = (Menu) {
 		.title = "SETTINGS",
-		.menu_items[1] = (Menu_element) {"Brightnes", NULL, NULL,0,10},
+		.menu_items[1] = (Menu_element) {"Contrast", NULL, &oled_set_contrast,0,10},
 		.menu_items[2] = (Menu_element) {"Music", NULL, &state_machine_set_game_music,0,1},
-		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[3] = (Menu_element) {"Reset HS", NULL, &score_reset_high_score, -127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.selected_item = 1
+		.selected_item = 0
 	};
 	oled_menu_set_parent(&oled_settings_menu, &oled_main_menu);
 	
+	oled_credit_menu = (Menu) {
+		.title = "CREDITS",
+		.menu_items[0] = (Menu_element) {"Aksel", NULL, NULL ,-127,0},
+		.menu_items[1] = (Menu_element) {"Lenes,", NULL, NULL,-127,0},
+		.menu_items[2] = (Menu_element) {"Edvard", NULL, NULL,-127,0},
+		.menu_items[3] = (Menu_element) {"Grodem,", NULL, NULL,-127,0},
+		.menu_items[4] = (Menu_element) {"Torbjorn", NULL, NULL,-127,0},
+		.menu_items[5] = (Menu_element) {"Fuglestad", NULL, NULL,-127,0},
+		.selected_item = 0
+	};
+	//oled_menu_set_parent(&oled_credit_menu, &oled_main_menu);
 	
-	oled_game_menu = (Menu) {
-		.title = "PLAYING",
-		.menu_items[0] = (Menu_element) {"Abort", &oled_main_menu, state_machine_set_next_state,MENU,0},
-		.menu_items[1] = (Menu_element) {"Score", NULL, NULL,0,0},
-		.menu_items[2] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.selected_item = 1
-	};
-	oled_score_menu = (Menu) {
-		.title = "GAME OVER",
-		.menu_items[0] = (Menu_element) {"Back", &oled_main_menu, state_machine_set_next_state,MENU,0},
-		.menu_items[1] = (Menu_element) {"Score", &oled_main_menu, NULL,0,0},
-		.menu_items[2] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
-		.selected_item = 1
-	};
 	oled_current_menu = &oled_main_menu;
 	oled_menu_print(oled_current_menu);
 	

@@ -47,6 +47,9 @@ void oled_clear_page(uint8_t page);
 //Clears the screen and resets the memory
 void oled_clear_screen();
 
+//Sets screen contrast
+void oled_set_contrast(int8_t contrast_p);
+
 //Writes a chesspattern to the screen
 void oled_chess();
 
@@ -55,6 +58,12 @@ void oled_print_char_of_size(char letter,  uint8_t size);
 
 //Prints a character of the last given size at the last location
 uint8_t oled_print_char(char letter);
+
+
+void oled_print_char_big_set_start(uint8_t x_pos, uint8_t y_pos);
+
+//Prints a BIG caracher at a position set by oled_print_char_big_set_start
+uint8_t oled_print_char_big(char letter);
 
 //Set the size of the charactes used by printf
 void oled_set_printf_size(uint8_t size);
@@ -70,5 +79,7 @@ void oled_printf_normal();
 
 //Maps printf to oled
 static FILE oled_stream = FDEV_SETUP_STREAM(oled_print_char, NULL, _FDEV_SETUP_WRITE);
+
+static FILE oled_big_stream = FDEV_SETUP_STREAM(oled_print_char_big, NULL, _FDEV_SETUP_WRITE);
 
 #endif /* OLED_H_ */

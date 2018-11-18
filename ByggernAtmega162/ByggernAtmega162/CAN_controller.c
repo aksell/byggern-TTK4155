@@ -52,6 +52,7 @@ uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	while (TXREQ_data & (1 << TXBnCTRL_TXREQ)){ //toFix
 		MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1);
 		if(read_errors++ > 10) {
+			stdout = &uart_stream;
 			printf("ERROR: Could not make contact with MPC2515\n\r");
 			return 0xff;
 		}
