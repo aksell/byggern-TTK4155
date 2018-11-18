@@ -9,7 +9,7 @@
 #ifndef CAN_BUFFER_H_
 #define CAN_BUFFER_H_
 
-#define CAN_BUFFER_SIZE 88
+#define CAN_BUFFER_SIZE 22
 
 
 #include <avr/io.h>
