@@ -18,8 +18,8 @@
 #include "utilities.h"
 #include "joystick.h"
 #include "push_buttons.h"
-#include "ping_pong_loop.h"
 #include "state_machine.h"
+#include "external_mem.h"
 
 typedef struct Menu_element_s Menu_element;
 typedef struct Menu_s Menu;

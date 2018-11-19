@@ -6,10 +6,11 @@
  */ 
 #include "oled_menu.h"
 
+#define MENU_LENGTH 8
+#define MENU_TITLE_LENGTH 14
 
-
-struct Menu_element_s{
-	char title[10];
+volatile struct Menu_element_s{
+	char title[MENU_TITLE_LENGTH];
 	Menu * child_menu;
 	void (*element_func)(int);
 	int8_t value;			//-127 means not applicable
@@ -17,15 +18,16 @@ struct Menu_element_s{
 };
 
 
-struct Menu_s{
-	char title[10];
-	Menu_element menu_items[6];
+volatile struct Menu_s{
+	char title[MENU_TITLE_LENGTH];
+	Menu_element menu_items[MENU_LENGTH];
 	int selected_item;
 };
 
-Menu oled_main_menu;
-Menu oled_settings_menu;
-Menu oled_credit_menu;
+//Save the menus in the external SRAM
+Menu * oled_main_menu = (Menu *)SRAM_OFFSET;
+Menu * oled_settings_menu = (Menu *)(SRAM_OFFSET+sizeof(Menu));
+Menu * oled_credit_menu = (Menu *)(SRAM_OFFSET+sizeof(Menu)*2);
 Menu *oled_current_menu;
 
 
@@ -52,7 +54,7 @@ void oled_menu_print(Menu * menu) {
 	oled_set_printf_page(0);
 	oled_columb_range_select(0,OLED_COLUMBS);
 	printf("%s\n", menu->title);
-	for (int i = 0;i<6;i++){
+	for (int i = 0;i<MENU_LENGTH;i++){
 		if (i == menu->selected_item){ //Invert selected item
 			oled_printf_inverted();
 			oled_menu_element_print(&(menu->menu_items[i]));
@@ -77,7 +79,7 @@ void oled_menu_select_item(){
 }
 
 void oled_menu_up(){
-	for(int i = 0; i <8;i++){
+	for(int i = 0; i <MENU_LENGTH;i++){
 		oled_current_menu->selected_item = (oled_current_menu->selected_item - 1 + 6) % 6;		//Loop to top if at bottom of menu
 		if (oled_current_menu->menu_items[oled_current_menu->selected_item].title[0] != NULL){	//Check that the menu item exists
 			break;
@@ -86,7 +88,7 @@ void oled_menu_up(){
 }
 
 void oled_menu_down(){
-	for(int i = 0; i <8;i++){
+	for(int i = 0; i <MENU_LENGTH;i++){
 		oled_current_menu->selected_item = (oled_current_menu->selected_item + 1) % 6;			//Loop to top if at bottom of menu
 		if (oled_current_menu->menu_items[oled_current_menu->selected_item].title[0] != NULL){	//Check that the menu item exists 
 			break;
@@ -194,46 +196,50 @@ void oled_menu_print_current_menu(){
 }
 
 int8_t oled_menu_get_contrast() {
-	return oled_settings_menu.menu_items[1].value;
+	return oled_settings_menu->menu_items[1].value;
 }
 
 void oled_menu_init() {
-	oled_main_menu = (Menu) {
+	*oled_main_menu = (Menu) {
 		.title = "MAIN MENU",
 		.menu_items[0] = (Menu_element) {"Play", NULL, state_machine_set_in_game,-127,0},
-		.menu_items[1] = (Menu_element) {"Settings", &oled_settings_menu, NULL,-127,0},
-		.menu_items[2] = (Menu_element) {"Credits", &oled_credit_menu, NULL,-127,0},
+		.menu_items[1] = (Menu_element) {"Settings", oled_settings_menu, NULL,-127,0},
+		.menu_items[2] = (Menu_element) {"Credits", oled_credit_menu, NULL,-127,0},
 		.menu_items[3] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 0
 	};
 	
-
-	oled_settings_menu = (Menu) {
+	*oled_settings_menu = (Menu) {
 		.title = "SETTINGS",
 		.menu_items[1] = (Menu_element) {"Contrast", NULL, &oled_set_contrast,0,10},
 		.menu_items[2] = (Menu_element) {"Music", NULL, &state_machine_set_game_music,0,1},
-		.menu_items[3] = (Menu_element) {"Reset HS", NULL, &score_reset_high_score, -127,0},
-		.menu_items[4] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[3] = (Menu_element) {"RS High Score", NULL, &score_reset_high_score, -127,0},
+		.menu_items[4] = (Menu_element) {"Cal Motor", NULL, &state_machine_calibrate_motor,-127,0},
 		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 0
 	};
-	oled_menu_set_parent(&oled_settings_menu, &oled_main_menu);
+	oled_menu_set_parent(oled_settings_menu, oled_main_menu);
 	
-	oled_credit_menu = (Menu) {
+	*oled_credit_menu = (Menu) {
 		.title = "CREDITS",
-		.menu_items[0] = (Menu_element) {"Aksel", NULL, NULL ,-127,0},
-		.menu_items[1] = (Menu_element) {"Lenes,", NULL, NULL,-127,0},
-		.menu_items[2] = (Menu_element) {"Edvard", NULL, NULL,-127,0},
-		.menu_items[3] = (Menu_element) {"Grodem,", NULL, NULL,-127,0},
-		.menu_items[4] = (Menu_element) {"Torbjorn", NULL, NULL,-127,0},
-		.menu_items[5] = (Menu_element) {"Fuglestad", NULL, NULL,-127,0},
+		.menu_items[1] = (Menu_element) {"Aksel Lenes,", NULL, NULL,-127,0},
+		.menu_items[2] = (Menu_element) {"Edvard Grodem,", NULL, NULL,-127,0},
+		.menu_items[3] = (Menu_element) {"Torbjorn", NULL, NULL,-127,0},
+		.menu_items[4] = (Menu_element) {"Fuglestad", NULL, NULL,-127,0},
+		.menu_items[5] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[6] = (Menu_element) {NULL, NULL, NULL,-127,0},
+		.menu_items[7] = (Menu_element) {NULL, NULL, NULL,-127,0},
 		.selected_item = 0
 	};
-	//oled_menu_set_parent(&oled_credit_menu, &oled_main_menu);
+	oled_menu_set_parent(oled_credit_menu, oled_main_menu);
 	
-	oled_current_menu = &oled_main_menu;
-	oled_menu_print(oled_current_menu);
+	oled_current_menu = oled_main_menu;
+	oled_menu_print(oled_main_menu);
 	
 }
