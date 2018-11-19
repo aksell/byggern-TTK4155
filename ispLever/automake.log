@@ -1,10 +1,252 @@
 ispLEVER Auto-Make Log File
 ---------------------------
 
-Updating: Hierarchy
+Updating: JEDEC File
 Start to record tcl script...
 Finished recording TCL script.
 
-Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\vhd2jhd.exe "chip_select.vhd" -o "chip_select.jhd" -m "C:\ispLEVER_Classic2_0\ispcpld/generic/lib/vhd/location.map" -p "C:\ispLEVER_Classic2_0\ispcpld/generic/lib"'
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\Synpwrap.exe -e chip_select -target ispGAL -pro '
+
+Copyright (c) 1991-2010 Lattice Semiconductor Corporation,  All rights reserved.
+Version : 2.0.00.17.20.15
+
+Done sucessfully with exit code 0.
+#Build: Synplify Pro I-2014.03LC , Build 063R, May 27 2014
+#install: C:\ispLEVER_Classic2_0\synpbase
+#OS: Windows 7 6.1
+#Hostname: ITK-D670
+
+#Implementation: isplever
+
+$ Start of Compile
+#Mon Nov 19 14:36:49 2018
+
+Synopsys VHDL Compiler, version comp201403rcp1, Build 060R, built May 27 2014
+@N|Running in 64-bit mode
+Copyright (C) 1994-2014 Synopsys, Inc. This software and the associated documentation are proprietary to Synopsys, Inc. This software may only be used in accordance with the terms and conditions of a written license agreement with Synopsys, Inc.  All other use, reproduction, or distribution of this software is strictly prohibited.
+
+@N: CD720 :"C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
+@N:"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":6:7:6:17|Top entity is set to chip_select.
+File C:\ispLEVER_Classic2_0\synpbase\bin64\c_vhdl.exe changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\location.map changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\snps_haps_pkg.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std1164.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\numeric.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\umr_capim.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\arith.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\unsigned.vhd changed - recompiling
+File C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd changed - recompiling
+VHDL syntax check successful!
+File C:\ispLEVER_Classic2_0\synpbase\bin64\c_vhdl.exe changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\location.map changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\snps_haps_pkg.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std1164.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\numeric.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\umr_capim.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\arith.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\unsigned.vhd changed - recompiling
+File C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd changed - recompiling
+@N: CD630 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":6:7:6:17|Synthesizing work.chip_select.behave 
+Post processing for work.chip_select.behave
+@W: CL159 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":11:2:11:3|Input a8 is unused
+@W: CL159 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":12:2:12:3|Input wr is unused
+@END
+
+At c_vhdl Exit (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 68MB peak: 69MB)
+
+Process took 0h:00m:01s realtime, 0h:00m:01s cputime
+# Mon Nov 19 14:36:49 2018
+
+###########################################################]
+Synopsys Netlist Linker, version comp201403rcp1, Build 060R, built May 27 2014
+@N|Running in 64-bit mode
+File C:\ispLEVER_Classic2_0\synpbase\bin64\syn_nfilter.exe changed - recompiling
+File C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synwork\chip_select_comp.srs changed - recompiling
+
+At syn_nfilter Exit (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 67MB peak: 68MB)
+
+Process took 0h:00m:01s realtime, 0h:00m:01s cputime
+# Mon Nov 19 14:36:51 2018
+
+###########################################################]
+Map & Optimize Report
+
+Synopsys CPLD Technology Mapper, Version maplat, Build 923R, Built May  6 2014
+Copyright (C) 1994-2013, Synopsys, Inc. This software and the associated documentation are proprietary to Synopsys, Inc. This software may only be used in accordance with the terms and conditions of a written license agreement with Synopsys, Inc.  All other use or distribution of the software is strictly prohibited.
+Product Version I-2014.03LC 
+@N: MF248 |Running in 64-bit mode.
+---------------------------------------
+Resource Usage Report
+
+Simple gate primitives:
+IBUF            5 uses
+OBUF            4 uses
+INV             6 uses
+AND2            3 uses
+
+
+@N: FC100 |Timing Report not generated for this device, please use place and route tools for timing analysis.
+I-2014.03LC 
+Mapper successful!
+
+At Mapper Exit (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 38MB peak: 102MB)
+
+Process took 0h:00m:01s realtime, 0h:00m:01s cputime
+# Mon Nov 19 14:36:52 2018
+
+###########################################################]
+
+Synplicity VHDL/Verilog HDL Synthesizer finished successfully
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\edif2blf.exe -edf "chip_select.edi" -out "chip_select.bl0" -err automake.err -log "chip_select.log" -prj address_decoding -lib "C:\ispLEVER_Classic2_0\ispcpld/dat/mach.edn" -cvt YES -net_Vcc VCC -net_GND GND -nbx...'
+
+Starting EDIF2BLIF....
+readEDIF ended normally.
+
+EDIF2BLIF: Warning: Remove floating instance: :
+	a8
+
+Inspect circuit chip_select
+    Number of input ports   : 5
+    Number of output ports  : 4
+    Number of bidir ports   : 0
+    Number of instances     : 16
+    Number of nets          : 19
+
+No design errors found in circuit chip_select
+
+WriteBLIF ended normally.
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\iblifopt.exe "chip_select.bl0" -red bypin choose -collapse -pterms 8 -family -err automake.err -gui'
+
+BLIFOPT  Open-ABEL Optimizer 
+ispLEVER Classic 2.0 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+U.C. Berkeley, SIS Ver. 1.0, supported by Lattice Semiconductor Corp.
+Reading Open-ABEL 2 file chip_select.bl0...
+Node a10_i has been collapsed.
+Node a11_c has been collapsed.
+Node a9_c_i has been collapsed.
+Node a9_c has been collapsed.
+Node a10_c has been collapsed.
+Node oled_dc_c_0 has been collapsed.
+Node adc_cs_c_0 has been collapsed.
+Node oled_cs_c_0 has been collapsed.
+Node a11_i has been collapsed.
+Node adc_cs_c has been collapsed.
+Node oled_cs_c has been collapsed.
+Node oled_dc_c has been collapsed.
+Performing 'bypin choose' optimization...
+Writing Open-ABEL 2 (BLIF) file chip_select.bl1...
+
+BLIFOPT complete - 0 errors, 0 warnings. Time: 1 seconds
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\iblflink.exe "chip_select.bl1" -o "address_decoding.bl2" -omod chip_select -family -err automake.err -gui'
+
+BLIFLINK  Top-Down Design Linker
+ispLEVER Classic 2.0 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+
+Top-level file: 'chip_select.bl1'
+
+Hierarchical BLIF: 'address_decoding.bl2'
+
+BLIFLINK complete.  Time: 1 second 
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\iblifopt.exe address_decoding.bl2 -red bypin choose -sweep -collapse all -pterms 8 -err automake.err -gui'
+
+BLIFOPT  Open-ABEL Optimizer 
+ispLEVER Classic 2.0 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+U.C. Berkeley, SIS Ver. 1.0, supported by Lattice Semiconductor Corp.
+Reading Open-ABEL 2 file address_decoding.bl2...
+Warning 13707:Unused pin 'wr' removed.
+Performing 'bypin choose' optimization...
+Writing Open-ABEL 2 (BLIF) file address_decoding.bl3...
+
+BLIFOPT complete - 0 errors, 1 warnings. Time: 1 seconds
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\idiofft.exe address_decoding.bl3 -pla -o address_decoding.tt2 -dev p16v8 -define N -err automake.err -gui'
+
+DIOFFT  Flip-Flop Transformation program
+ispLEVER Classic 2.0 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+Input file: address_decoding.bl3.
+Output file: address_decoding.tt2.
+Cross reference file: address_decoding.xrf.
+
+Shortening signal names...
+Writing signal name cross reference file address_decoding.xrf... 
+
+DIOFFT complete. - Time 0 seconds
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\fit.exe address_decoding.tt2 -dev p16v8 -str -err automake.err -gui'
+
+FIT  Generic Device Fitter
+ispLEVER Classic 2.0 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+Input file: 'address_decoding.tt2'
+Device 'p16v8'
+Note 4161: Using device architecture type P16V8AS.
+Warning 4154:Signal 'a8' (pin 1) is not used in the design -
+neither the signal nor its pin will be reassigned.
+Design FITS
+Pin-assigned pla: 'address_decoding.tt3'
+
+FIT complete.  Time: 1 second.
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic2_0\ispcpld\bin\fuseasm.exe address_decoding.tt3 -dev p16v8 -o address_decoding.jed -ivec NoInput.tmv -rep address_decoding.rpt -doc brief -con ptblown -for brief -err automake.err -gui'
+
+FUSEASM  Fusemap Assembler
+ispLEVER Classic 2.0 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+Note 5144: Could not open vector file NoInput.tmv
+
+Input file: 'address_decoding.tt3'
+Device: 'P16V8AS'
+Building model...
+Choosing best polarities...
+Mapping equations...
+.
+3 of 64 terms used; 0 vectors loaded
+Programmer load file: 'address_decoding.jed'
+Generating report...
+Report file: 'address_decoding.rpt'
+
+FUSEASM complete.  Time: 1 second 
 
 Done: completed successfully.

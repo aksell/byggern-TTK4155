@@ -6,7 +6,7 @@
 #Implementation: isplever
 
 $ Start of Compile
-#Wed Sep 19 09:43:31 2018
+#Mon Nov 19 14:36:49 2018
 
 Synopsys VHDL Compiler, version comp201403rcp1, Build 060R, built May 27 2014
 @N|Running in 64-bit mode
@@ -14,8 +14,27 @@ Copyright (C) 1994-2014 Synopsys, Inc. This software and the associated document
 
 @N: CD720 :"C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
 @N:"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":6:7:6:17|Top entity is set to chip_select.
-File C:\users\akselsl\documents\byggern\byggern-ttk4155\chip_select.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\bin64\c_vhdl.exe changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\location.map changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\snps_haps_pkg.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std1164.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\numeric.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\umr_capim.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\arith.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\unsigned.vhd changed - recompiling
+File C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd changed - recompiling
 VHDL syntax check successful!
+File C:\ispLEVER_Classic2_0\synpbase\bin64\c_vhdl.exe changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\location.map changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\snps_haps_pkg.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\std1164.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\numeric.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\umr_capim.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\arith.vhd changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\lib\vhd\unsigned.vhd changed - recompiling
+File C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd changed - recompiling
 @N: CD630 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":6:7:6:17|Synthesizing work.chip_select.behave 
 Post processing for work.chip_select.behave
 @W: CL159 :"C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\chip_select.vhd":11:2:11:3|Input a8 is unused
@@ -25,17 +44,18 @@ Post processing for work.chip_select.behave
 At c_vhdl Exit (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 68MB peak: 69MB)
 
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 19 09:43:32 2018
+# Mon Nov 19 14:36:49 2018
 
 ###########################################################]
 Synopsys Netlist Linker, version comp201403rcp1, Build 060R, built May 27 2014
 @N|Running in 64-bit mode
-File C:\users\akselsl\documents\byggern\byggern-ttk4155\synwork\chip_select_comp.srs changed - recompiling
+File C:\ispLEVER_Classic2_0\synpbase\bin64\syn_nfilter.exe changed - recompiling
+File C:\users\torbjfug\documents\byggern\byggern-ttk4155\isplever\synwork\chip_select_comp.srs changed - recompiling
 
 At syn_nfilter Exit (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 67MB peak: 68MB)
 
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 19 09:43:33 2018
+# Mon Nov 19 14:36:51 2018
 
 ###########################################################]
 Map & Optimize Report
@@ -61,6 +81,6 @@ Mapper successful!
 At Mapper Exit (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 38MB peak: 102MB)
 
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 19 09:43:34 2018
+# Mon Nov 19 14:36:52 2018
 
 ###########################################################]

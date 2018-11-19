@@ -1566,3 +1566,105 @@ if [runCmd "\"$cpld_bin/vhd2jhd\" \"chip_select.vhd\" -o \"chip_select.jhd\" -m 
 
 ########## Tcl recorder end at 09/19/18 10:58:35 ###########
 
+
+########## Tcl recorder starts at 11/19/18 14:36:27 ##########
+
+# Commands to make the Process: 
+# Hierarchy
+if [runCmd "\"$cpld_bin/vhd2jhd\" \"chip_select.vhd\" -o \"chip_select.jhd\" -m \"$install_dir/ispcpld/generic/lib/vhd/location.map\" -p \"$install_dir/ispcpld/generic/lib\""] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+
+########## Tcl recorder end at 11/19/18 14:36:27 ###########
+
+
+########## Tcl recorder starts at 11/19/18 14:36:41 ##########
+
+# Commands to make the Process: 
+# JEDEC File
+if [catch {open chip_select.cmd w} rspFile] {
+	puts stderr "Cannot create response file chip_select.cmd: $rspFile"
+} else {
+	puts $rspFile "STYFILENAME: address_decoding.sty
+PROJECT: chip_select
+WORKING_PATH: \"$proj_dir\"
+MODULE: chip_select
+VHDL_FILE_LIST: chip_select.vhd
+OUTPUT_FILE_NAME: chip_select
+SUFFIX_NAME: edi
+"
+	close $rspFile
+}
+if [runCmd "\"$cpld_bin/Synpwrap\" -e chip_select -target ispGAL -pro "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+file delete chip_select.cmd
+if [runCmd "\"$cpld_bin/edif2blf\" -edf \"chip_select.edi\" -out \"chip_select.bl0\" -err automake.err -log \"chip_select.log\" -prj address_decoding -lib \"$install_dir/ispcpld/dat/mach.edn\" -cvt YES -net_Vcc VCC -net_GND GND -nbx -dse -tlw"] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+if [runCmd "\"$cpld_bin/iblifopt\" \"chip_select.bl0\" -red bypin choose -collapse -pterms 8 -family -err automake.err "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+if [runCmd "\"$cpld_bin/iblflink\" \"chip_select.bl1\" -o \"address_decoding.bl2\" -omod chip_select -family -err automake.err "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+if [runCmd "\"$cpld_bin/iblifopt\" address_decoding.bl2 -red bypin choose -sweep -collapse all -pterms 8 -err automake.err "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+if [runCmd "\"$cpld_bin/idiofft\" address_decoding.bl3 -pla -o address_decoding.tt2 -dev p16v8 -define N -err automake.err "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+if [runCmd "\"$cpld_bin/fit\" address_decoding.tt2 -dev p16v8 -str -err automake.err "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+if [runCmd "\"$cpld_bin/fuseasm\" address_decoding.tt3 -dev p16v8 -o address_decoding.jed -ivec NoInput.tmv -rep address_decoding.rpt -doc brief -con ptblown -for brief -err automake.err "] {
+	return
+} else {
+	vwait done
+	if [checkResult $done] {
+		return
+	}
+}
+
+########## Tcl recorder end at 11/19/18 14:36:41 ###########
+
