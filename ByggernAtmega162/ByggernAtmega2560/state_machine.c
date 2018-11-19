@@ -14,7 +14,7 @@ typedef enum state_e{
 state_t state;
 state_t next_state;
 
-//Forward declarations
+//Forward declarations of state update functions
 void standby_update();
 void ingame_update();
 void game_over_update();
@@ -33,7 +33,6 @@ void state_machine_update() {
 		standby_update();
 		switch(next_state) {
 			case INGAME:
-				//music_reset();
 				printf("IN GAME \r\n");
 			break;
 			default:
@@ -94,13 +93,17 @@ void standby_update() {
 				printf("Start music message\n\r");
 				music_play(message.data[0]);
 				break;
-				
 			case CAN_START_MUSIC_LOOP:
 				printf("start music loop message\n\r");
 				music_play_loop(message.data[0]);
 				break;
 			case CAN_STOP_MUSIC:
 				music_reset();
+				break;
+			case CAN_MOTOR_CALIBRATE:
+				dc_motor_controller_dissable();
+				dc_motor_calibrate_limits();
+				dc_motor_controller_enable();
 				break;
 			default:
 				break;
@@ -141,14 +144,12 @@ void ingame_update() {
 				music_reset();
 				break;
 			case CAN_SOLANOIDE_TRIGGER_MS:
-				printf("solenoid trigger message\n\r");
 				solenoide_trigger(((uint16_t)message.data[0] << 7) | (uint16_t)message.data[1]);
 				break;
 			case CAN_SOLANOIDE_TRIGGER_AND_HOLD:
 				solenoide_set_position(1);
 				break;
 			case CAN_SOLANOIDE_RELIASE:
-				//printf("solenoid release message\n\r");
 				solenoide_set_position(0);
 				break;
 			case CAN_MOTOR_POS:

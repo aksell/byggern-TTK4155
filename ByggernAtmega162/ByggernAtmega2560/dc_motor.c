@@ -34,9 +34,7 @@ void dc_motor_init(){
 	dc_motor_K_i = 1;
 	dc_motor_K_p = 5;
 	dc_motor_accumulated_error = 0;
-
 	dc_motor_calibrate_limits();
-	dc_motor_middle_pos = dc_motor_max_pos/2;
 	dc_motor_refference_pos = dc_motor_middle_pos;
 	timer0_init();
 }
@@ -75,6 +73,7 @@ void dc_motor_calibrate_limits(){
 			dc_motor_set_speed(0);
 			_delay_ms(500);
 			dc_motor_max_pos = dc_motor_encoder_read();
+			dc_motor_middle_pos = dc_motor_max_pos/2;
 }
 void dc_motor_set_dir(dc_motor_dir dir){
 	if (dir == DC_MOTOR_LEFT){
