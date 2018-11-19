@@ -20,23 +20,20 @@
 #include "slider.h"
 #include "oled.h"
 #include "oled_menu.h"
-#include "interrupts.h"
 #include "push_buttons.h"
 #include "timer.h"
-#include "spi.h"
 #include "CAN_controller.h"
 #include "CAN_buffer.h"
-#include "CAN_message_handler.h"
 #include "state_machine.h"
 #include "score.h"
-#include "EEPROM.h"
+
+
 int main(void)
 {
 	external_mem_init();
 	uart_init();
-	joystick_init(false);
+	joystick_init(false); //Use joystick without filtering
 	push_buttons_init();
-	interrupt0_init();
 	timer1_init();
 	timer3_init();
 	spi_init();
@@ -44,17 +41,14 @@ int main(void)
 	CAN_buffer_init();
 	uart_buffer_init();
 	oled_init();
-	stdout = &oled_stream;
 	oled_menu_init();
 	state_machine_init();
 	score_init();
 	sei();
 	stdout = &uart_stream;
-	printf("Hei tann\n\r");
 	
     while (1) 
 	{
-		
 		state_machine_update();
 	}
     return 0;
