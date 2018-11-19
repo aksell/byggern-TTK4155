@@ -178,7 +178,6 @@ void idle_state_update(){
 
 /*
 Poll user input for game
-NEED TO ADD SCORE MODULE
 */
 void in_game_update(){
 	if (timer3_done()){//Check poling frequency for IO
@@ -191,7 +190,8 @@ void in_game_update(){
 	if (timer1_done())
 	{	
 		if(push_buttons_get_state(0)){
-			oled_menu_back();
+			state_machine_next = GAME_OVER;
+			
 		}
 		
 		timer1_reset();
@@ -334,6 +334,7 @@ void sc_idle_to_in_game(){
 	stdout = &uart_stream;
 	printf("IN GAME\n\r");
 	score_reset();
+	score_screen_init();
 	transmit_loop_game_music_message();
 	score_start_counting();
 }
