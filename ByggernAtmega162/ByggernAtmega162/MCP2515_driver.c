@@ -6,6 +6,10 @@
  */ 
 
 #include "MCP2515_driver.h"
+void MCP2515_init() {
+	spi_init();
+	MCP2515_reset();
+}
 
 void MCP2515_read(uint8_t address, uint8_t  * data, uint8_t data_size) {
 	uint8_t packet_length = data_size + 2;
