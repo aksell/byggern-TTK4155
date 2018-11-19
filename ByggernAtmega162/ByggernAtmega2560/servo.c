@@ -8,6 +8,7 @@
 #include "servo.h"
 #define PWM_PRESCALER 8
 #define PWM_TOP F_CPU*2/(PWM_PRESCALER*100)
+#define SERVO_CALIBRATION_OFFSET 45
 
 
 //Initalizes and starts a PWM signal on pin 5/PE3
@@ -21,6 +22,7 @@ void servo_init_fast_pwm_3() {
 		ICR3 = PWM_TOP;
 		OCR3A = PWM_TOP/20 + 100;
 	}
+	servo_fast_pwm_duty_cycle(0);
 }
 
 
@@ -28,7 +30,7 @@ void servo_init_fast_pwm_3() {
 //Sets the PWM output on pin 5/PE3
 //Expects a value from -128 to 127
 void servo_fast_pwm_duty_cycle(int8_t duty) {
-	int16_t duty_cycle = duty;
+	int16_t duty_cycle = -duty + SERVO_CALIBRATION_OFFSET;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		OCR3A = PWM_TOP/20+(duty_cycle+128)*PWM_TOP/(20*255);
 	}
