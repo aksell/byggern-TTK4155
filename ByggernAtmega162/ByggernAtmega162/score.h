@@ -3,32 +3,31 @@
  *
  * Created: 10.11.2018 14:26:54
  *  Author: torbjfug
- */ 
-
+ */
 
 #ifndef SCORE_H_
 #define SCORE_H_
 
+#include "EEPROM.h"
 #include "config.h"
+#include "oled.h"
 #include "timer.h"
+#include "utilities.h"
+#include <avr/interrupt.h>
 #include <avr/io.h>
 #include <stdint.h>
-#include <avr/interrupt.h>
 #include <stdio.h>
-#include "oled.h"
-#include "utilities.h"
-#include "EEPROM.h"
 #include <util/atomic.h>
-//Initilize  the score timer counter
+// Initilize  the score timer counter
 void score_init();
 
-//Resets the score
+// Resets the score
 void score_reset();
 
-//Starts the score counting
+// Starts the score counting
 void score_start_counting();
 
-//Stops the score counting
+// Stops the score counting
 void score_stop_counting();
 void score_set(uint8_t score);
 void score_increment();
