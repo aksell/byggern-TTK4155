@@ -14,13 +14,15 @@ state_t state_machine_next;
 bool stop_game_ack_recieved;
 
 uint8_t game_music;
+uint8_t game_over_music;
 
-void transmit_single_game_music_message(); //Forward 
+void transmit_single_game_music_message(uint8_t song); //Forward 
 
 void state_machine_init(){
 	state_machine_state = MENU;
 	state_machine_next = MENU;
 	game_music = 1;
+	game_over_music = 3;
 	stop_game_ack_recieved = false;
 	timer3_init();
 }
@@ -31,29 +33,35 @@ void state_machine_set_next_state(state_t next_state){
 
 void state_machine_set_game_music(uint8_t song){
 	game_music = song;
-	transmit_single_game_music_message();
+	transmit_single_game_music_message(song);
+}
+
+void state_machine_set_game_over_music(uint8_t song) {
+	game_over_music = song;
+	transmit_single_game_music_message(song);
 }
 
 //CAN message transmissions
-void transmit_single_game_music_message(){
+void transmit_single_game_music_message(uint8_t song){
 	can_message message;
-	message = CAN_message_construct(CAN_START_MUSIC,1,&game_music);
-	CAN_transmit_message(&message);
-}
-void transmit_loop_game_music_message(){
-	can_message message;
-	message = CAN_message_construct(CAN_START_MUSIC_LOOP,1,&game_music);
+	message = CAN_message_construct(CAN_START_MUSIC,1,&song);
 	CAN_transmit_message(&message);
 }
 
-void transmit_game_music_stop(){
+void transmit_loop_game_music_message(uint8_t song){
+	can_message message;
+	message = CAN_message_construct(CAN_START_MUSIC_LOOP,1,&song);
+	CAN_transmit_message(&message);
+}
+
+void transmit_music_stop(){
 	can_message message;
 	message = CAN_message_construct(CAN_STOP_MUSIC,1,&game_music);
 	CAN_transmit_message(&message);
 }
 
 void transmit_pos_message(){
-	uint8_t	data =  slider_get(SLIDER_RIGHT);
+	uint8_t	data =  255-slider_get(SLIDER_RIGHT);
 	can_message message;
 	message = CAN_message_construct(CAN_MOTOR_POS,1,&data);
 	CAN_transmit_message(&message);
@@ -341,15 +349,16 @@ void sc_idle_to_in_game(){
 	printf("IN GAME\n\r");
 	score_reset();
 	score_screen_init();
-	transmit_loop_game_music_message();
+	transmit_loop_game_music_message(game_music);
 	score_start_counting();
 }
 
 void sc_idle_to_menu(){
 	stdout = &uart_stream;
+	transmit_loop_game_music_message(game_music);
 	printf("MENU\n\r");
 	score_stop_counting();
-	transmit_game_music_stop();
+	transmit_music_stop();
 	stop_game_ack_recieved = false;
 }
 
@@ -360,7 +369,7 @@ void sc_in_game_to_menu(){
 	oled_clear_screen();
 	oled_menu_back();
 	stop_game_ack_recieved = false;
-	transmit_game_music_stop();
+	transmit_music_stop();
 }
 
 
@@ -369,7 +378,7 @@ void sc_ingame_to_game_over(){
 	score_stop_counting();
 	
 	//Display Game Over
-	state_machine_set_game_music(3); //Play game over music (One by Metallica)
+	transmit_loop_game_music_message(game_over_music); //Play game over music 
 	
 	oled_clear_screen();
 	oled_set_contrast(-127);

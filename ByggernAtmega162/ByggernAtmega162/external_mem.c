@@ -7,6 +7,16 @@
 #include "external_mem.h"
 
 
+void external_mem_init() {
+	
+	DDRC = 0xFF; //Set port C to output
+	PORTC = 0x00; //Pull port C down
+	
+	SFIOR = (1<<XMM2); // Use only 4 pins on port C for addressing
+	
+	MCUCR = (1<<SRE); // Enable external memory (XMEM)
+}
+
 void external_mem_test(void)
 {
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
@@ -40,12 +50,3 @@ void external_mem_test(void)
 	printf("SRAM test completed with\n%4d errors in write phase and \n%4d errors in retrieval phase \n\n\r", write_errors, retrieval_errors);
 }
 
-void external_mem_init() {
-	
-	DDRC = 0xFF; //Set port C to output
-	PORTC = 0x00; //Pull port C down
-	
-	SFIOR = (1<<XMM2); // Use only 4 pins on port C for addressing
-	
-	MCUCR = (1<<SRE); // Enable external memory (XMEM)
-}

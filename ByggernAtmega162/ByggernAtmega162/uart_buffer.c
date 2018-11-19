@@ -93,6 +93,15 @@ uint8_t uart_buffer_read(){
 	return data;
 }
 
+ISR(USART0_RXC_vect)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		uint8_t data = uart_recive();
+		uart_buffer_write(data);
+	}
+}
+
+
 void uart_buffer_test(){
 	printf("\n\rGje innput no\n\r");
 	_delay_ms(5000);

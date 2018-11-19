@@ -31,25 +31,19 @@ void CAN_init();
 void CAN_transmit_message(can_message* message);
 void CAN_recive_message(can_message* message);
 
-/* 
-Convert 16 bit address to hardware layout of registers in MCP2515
-*/
+ 
+//Convert 16 bit address to hardware layout of registers in MCP2515
 uint16_t CAN_addres_construct(uint16_t number);
 
-/*
-Convert address read from registers of MCP2515 to 16 bit number
-*/
+
+//Convert address read from registers of MCP2515 to 16 bit number
 uint16_t CAN_addres_read(uint16_t number);
+
 
 can_message CAN_message_construct(uint16_t address, uint8_t data_size, uint8_t * data);
 
-void CAN_interrupt_routine();
-
-/*
-Test for transmitting and receiving in loop back mode.
-*/
+//Test for transmitting and receiving in loop back mode.
 void CAN_test();
-
 
 
 #endif /* CAN_CONTROLLER_H_ */

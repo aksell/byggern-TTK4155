@@ -128,12 +128,6 @@
     <Compile Include="CAN_controller.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_message_handler.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="CAN_message_handler.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="CAN_protocol.h">
       <SubType>compile</SubType>
     </Compile>
@@ -150,12 +144,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="external_mem.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="interrupts.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="interrupts.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="joystick.c">
@@ -186,12 +174,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="oled_menu.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ping_pong_loop.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="ping_pong_loop.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="push_buttons.c">

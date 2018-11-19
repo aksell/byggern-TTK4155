@@ -14,6 +14,7 @@ bool buffer_full;
 bool buffer_empty;
 
 void CAN_buffer_init(){
+	interrupt0_init();
 	head = 0;
 	tail = head;
 	buffer_full = false;
@@ -23,6 +24,7 @@ void CAN_buffer_init(){
 	}
 	
 }
+
 
 void CAN_buffer_increment_head(){
 	head = (head + 1) % CAN_BUFFER_SIZE;

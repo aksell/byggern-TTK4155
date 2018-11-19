@@ -12,8 +12,7 @@
 //void CAN_recive(uint16_t * address, uint8_t * data, uint8_t * data_size);
 
 void CAN_init() {
-	MCP2515_reset();
-	
+	MCP2515_init();
 	uint8_t cmd[] = {MCP_RXBnCTRL_NOFILTER_bm};
 	MCP2515_write(MCP_RXB0CTRL, cmd, 1); //Set to no filter
 	
@@ -104,6 +103,23 @@ void CAN_interrupt_routine(){
 	CAN_buffer_write(&message); //Write message to buffer
 	MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);	//Set interrupt bit low
 }
+
+void interrupt0_init() {
+	
+	DDRD &= ~(1<<PD2);		// Set port D pin 2
+	cli();
+	GICR |= 1<<INT0;					// Enable INT0
+	MCUCR |= 1<<ISC01; //| 1<<ISC00;	// Trigger INT0 on falling edge
+	sei();
+}
+
+ISR(INT0_vect)
+{
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+		CAN_interrupt_routine();
+	}
+}
+
 
 void CAN_test() {
 	stdout = &uart_stream;
