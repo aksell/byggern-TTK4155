@@ -44,5 +44,8 @@ void state_machine_set_game_music(uint8_t song);
 //Function to let the oled menu start a game
 void state_machine_set_in_game(int dummy_int);
 
+//Forces node 2 to calibrate motor
+void state_machine_calibrate_motor(int dummy_int);
+
 
 #endif /* STATE_MACHINE_H_ */

@@ -20,7 +20,7 @@ void transmit_single_game_music_message(); //Forward
 void state_machine_init(){
 	state_machine_state = MENU;
 	state_machine_next = MENU;
-	game_music = 0;
+	game_music = 1;
 	stop_game_ack_recieved = false;
 	timer3_init();
 }
@@ -56,6 +56,12 @@ void transmit_pos_message(){
 	uint8_t	data =  slider_get(SLIDER_RIGHT);
 	can_message message;
 	message = CAN_message_construct(CAN_MOTOR_POS,1,&data);
+	CAN_transmit_message(&message);
+}
+
+void transmit_calibrate_motor_message() {
+	can_message message;
+	message = CAN_message_construct(CAN_MOTOR_CALIBRATE,1,&game_music);
 	CAN_transmit_message(&message);
 }
 
@@ -363,6 +369,8 @@ void sc_ingame_to_game_over(){
 	score_stop_counting();
 	
 	//Display Game Over
+	state_machine_set_game_music(3); //Play game over music (One by Metallica)
+	
 	oled_clear_screen();
 	oled_set_contrast(-127);
 	stdout = &oled_big_stream;
@@ -470,4 +478,8 @@ void state_machine_update(){
 
 void state_machine_set_in_game(int dummy_int) {
 	state_machine_set_next_state(IDLE);	
+}
+
+void state_machine_calibrate_motor(int dummy_int) {
+	transmit_calibrate_motor_message();
 }
