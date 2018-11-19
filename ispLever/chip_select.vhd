@@ -24,10 +24,10 @@ entity chip_select is
 
 	
 
-	attribute LOC of a11		: signal is "P1";
-	attribute LOC of a10		: signal is "P2";
-	attribute LOC of a9		: signal is "P3";
-	attribute LOC of a8		: signal is "P4";
+	attribute LOC of a8		: signal is "P1";
+	attribute LOC of a9		: signal is "P2";
+	attribute LOC of a10		: signal is "P3";
+	attribute LOC of a11		: signal is "P4";
 
 end chip_select;
 

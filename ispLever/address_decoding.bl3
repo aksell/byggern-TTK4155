@@ -1,7 +1,7 @@
 #$ TOOL ispLEVER Classic 2.0.00.17.20.15
-#$ DATE Wed Sep 19 09:43:38 2018
+#$ DATE Mon Nov 19 14:36:57 2018
 #$ MODULE chip_select
-#$ PINS 8 a11:1'ke'  a10:2'ke'  a9:3'ke'  a8:4'ke'  ram_cs:19'ke'  adc_cs:18'ke'  oled_cs:17'ke'  oled_dc:16'ke' 
+#$ PINS 8 a11:4'ke'  a10:3'ke'  a9:2'ke'  a8:1'ke'  ram_cs:19'ke'  adc_cs:18'ke'  oled_cs:17'ke'  oled_dc:16'ke' 
 
 .model chip_select
 .inputs a11.BLIF a10.BLIF a9.BLIF
