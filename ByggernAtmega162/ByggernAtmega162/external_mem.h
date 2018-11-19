@@ -1,10 +1,9 @@
 /*
  * external_mem.h
- * 
+ *
  * Created: 05.09.2018 10:15:43
  *  Author: akselsl
- */ 
-
+ */
 
 #ifndef EXTERNAL_MEM_H_
 #define EXTERNAL_MEM_H_
@@ -16,9 +15,10 @@
 #define ADC_OFFSET 0x1400
 #define SRAM_OFFSET 0x1800
 
-
+// Initialize external memory
 void external_mem_init();
-void external_mem_test(void);
 
+// Test the external memory by writing and reading to the IDT7164S
+void external_mem_test(void);
 
 #endif /* EXTERNAL_MEM_H_ */

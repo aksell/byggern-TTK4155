@@ -3,29 +3,25 @@
  *
  * Created: 10.10.2018 09:26:28
  *  Author: torbjfug
- */ 
-
+ */
 
 #ifndef CAN_BUFFER_H_
 #define CAN_BUFFER_H_
 
-#define CAN_BUFFER_SIZE 88
-
+#define CAN_BUFFER_SIZE 22
 
 #include <avr/io.h>
 #include <util/atomic.h>
 
-#include "config.h"
-#include "utilities.h"
 #include "CAN_controller.h"
+#include "config.h"
 #include "uart.h"
-
-
+#include "utilities.h"
 
 void CAN_buffer_init();
 
-
 void CAN_buffer_write(can_message *message);
+
 can_message CAN_buffer_read();
 
 uint8_t CAN_buffer_remaining_size();

@@ -43,14 +43,15 @@
       <ToolOptions>
         <InterfaceProperties>
           <JtagDbgClock>200000</JtagDbgClock>
+          <IspClock>125000</IspClock>
         </InterfaceProperties>
-        <InterfaceName>JTAG</InterfaceName>
+        <InterfaceName>ISP</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
-      <ToolNumber>J41800025554</ToolNumber>
+      <ToolNumber>J41800035793</ToolNumber>
       <ToolName>Atmel-ICE</ToolName>
     </com_atmel_avrdbg_tool_atmelice>
-    <avrtoolinterface>JTAG</avrtoolinterface>
+    <avrtoolinterface>ISP</avrtoolinterface>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -117,10 +118,10 @@
     <Compile Include="ball_sensor.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_message_handler.c">
+    <Compile Include="solenoide.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="CAN_message_handler.h">
+    <Compile Include="solenoide.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="speaker.c">
@@ -190,6 +191,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="servo.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="state_machine.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="state_machine.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="timer.c">
