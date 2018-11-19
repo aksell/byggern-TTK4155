@@ -20,21 +20,28 @@
 #include "CAN_controller.h"
 #include "uart.h"
 
+//Circular buffer with FIFO behaviour 
 
-
+//Initialize CAN buffer
 void CAN_buffer_init();
 
+//Write a CAN message to the can buffer
 void CAN_buffer_write(can_message *message);
+
+//Returns the firs ellement in the que
 can_message CAN_buffer_read();
 
+//Returns number between 0 and CAN_BUFFER_SIZE
 uint8_t CAN_buffer_remaining_size();
+
+//Returns 1 if buffer is empty. Zero otherwise
 bool CAN_buffer_empty();
-bool CAN_buffer_full();
-void CAN_buffer_set_full();
 
-void CAN_buffer_reset();
+//Reset the buffer and delete all data
+void CAN_buffer_flush();
 
+
+//Test function transmitting 3 can messages
 void CAN_buffer_test();
-void CAN_buffer_test_2();
 
 #endif /* CAN_BUFFER_H_ */

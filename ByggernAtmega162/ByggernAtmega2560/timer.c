@@ -8,7 +8,7 @@
 #include "timer.h"
 
 
-#define TIMER0_PRESCALER 1024
+
 uint16_t timer_counter;
 uint16_t timer0_post_scaler;
 uint16_t time;
@@ -34,11 +34,9 @@ void timer0_dissable(){
 	TIMSK0 &= ~(1<<OCIE0A);
 }
 
-
 ISR(TIMER0_COMPA_vect){
-	if(++timer0_post_scaler >= TIMER0_POST_SCALER){
+	if(++timer0_post_scaler >= TIMER0_POST_SCALER_MAX){
 		timer0_post_scaler = 0;
 		dc_motor_PI_controller_update();
-		//printf("	Time:	%d\n\r",timer_counter/PI_FREQUENZY);
 	}
 }

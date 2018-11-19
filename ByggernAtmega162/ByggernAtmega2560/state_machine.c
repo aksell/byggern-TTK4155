@@ -14,6 +14,7 @@ typedef enum state_e{
 state_t state;
 state_t next_state;
 
+//Forward declarations
 void standby_update();
 void ingame_update();
 void game_over_update();
@@ -22,8 +23,8 @@ void state_machine_init() {
 	printf("STANDBY\n\r");
 	state = STANDBY;
 	next_state = STANDBY;
-	dc_motor_set_refference_possition_absolute(0);
-	timer0_enable();
+	dc_motor_set_refference_middle();
+	dc_motor_controller_enable();
 }
 
 void state_machine_update() {
@@ -46,7 +47,6 @@ void state_machine_update() {
 		switch(next_state) {
 			case STANDBY:
 				printf("STANDBY\n\r");
-				//music_reset();
 			break;
 			default:
 				next_state = INGAME;
@@ -91,7 +91,7 @@ void standby_update() {
 				break;
 				
 			case CAN_START_MUSIC:
-				printf("Start music messgae\n\r");
+				printf("Start music message\n\r");
 				music_play(message.data[0]);
 				break;
 				
@@ -135,11 +135,9 @@ void ingame_update() {
 				break;
 			
 			case CAN_START_MUSIC_LOOP:
-				//printf("start music loop message\n\r");
 				music_play_loop(message.data[0]);
 				break;
 			case CAN_STOP_MUSIC:
-				//printf("stop music message\n\r");
 				music_reset();
 				break;
 			case CAN_SOLANOIDE_TRIGGER_MS:
@@ -147,7 +145,6 @@ void ingame_update() {
 				solenoide_trigger(((uint16_t)message.data[0] << 7) | (uint16_t)message.data[1]);
 				break;
 			case CAN_SOLANOIDE_TRIGGER_AND_HOLD:
-				//printf("solenoid trig and hold message\n\r");
 				solenoide_set_position(1);
 				break;
 			case CAN_SOLANOIDE_RELIASE:
@@ -155,12 +152,9 @@ void ingame_update() {
 				solenoide_set_position(0);
 				break;
 			case CAN_MOTOR_POS:
-				//printf("motor message	%d\n\r",((int16_t)(message.data[0])-127)*2);
-				//int16_t pos = ((int16_t)(message.data[0])-127)*2);
-				dc_motor_set_refference_possition_absolute(((int16_t)message.data[0]-127)*2);
+				dc_motor_set_refference_ofset(((int16_t)message.data[0]-127)*2);
 				break;
 			case CAN_SERVO_POS:
-				//printf("servo message\n\r");
 				servo_fast_pwm_duty_cycle(message.data[0]);
 				break;
 			default:
@@ -170,7 +164,6 @@ void ingame_update() {
 	}
 	dc_motor_update_encoder();
 	if(ball_sensor_is_triggered()) {
-		printf("Sent ball sensor msg\n\r");
 		can_message message;
 		message.address = CAN_BALL_SENSOR_TRIGGERED;
 		message.data_size = 0;

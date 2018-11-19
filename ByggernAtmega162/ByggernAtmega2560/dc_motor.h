@@ -27,6 +27,8 @@ typedef enum dc_motor_dir_e{
 	DC_MOTOR_RIGHT
 }dc_motor_dir;
 
+#define PI_FREQUENZY 20
+
 void dc_motor_init();
 
 //Signed between -255 and 255. Negative for left.
@@ -38,21 +40,24 @@ void dc_motor_update_encoder();
 //Return last polled encoder value
 int16_t dc_motor_encoder_read();
 
-//Calubration routine for setting the limits of the motor
+//Calibration routine for setting the limits of the motor
 void dc_motor_calibrate_limits();
-//void dc_motor_set_reference_delta_position(int16_t pos);
 
 //Discrete PI controller
 void dc_motor_PI_controller_update();
 
-//Set reference for controller
-void dc_motor_set_refference_possition(int16_t pos);
+//Set reference offset from center position. Expects value between -255 and 255
+void dc_motor_set_refference_ofset(int16_t pos);
 
-
-void dc_motor_set_refference_possition_absolute(int16_t pos);
-
-//Force reference to middle
+//Set reference to middle
 void dc_motor_set_refference_middle();
 
-//void dc_motor_set_dir(dc_motor_dir dir);
+
+//Enable motor controller
+void dc_motor_controller_dissable();
+
+
+//Disable motor controller
+void dc_motor_controller_enable();
+
 #endif /* DC_MOTOR_H_ */

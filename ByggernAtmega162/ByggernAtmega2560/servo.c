@@ -29,7 +29,6 @@ void servo_init_fast_pwm_3() {
 //Expects a value from -128 to 127
 void servo_fast_pwm_duty_cycle(int8_t duty) {
 	int16_t duty_cycle = duty;
-	printf("%d,",duty);
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		OCR3A = PWM_TOP/20+(duty_cycle+128)*PWM_TOP/(20*255);
 	}

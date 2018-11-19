@@ -38,11 +38,11 @@ void spi_transmit_recieve(uint8_t * send_data, uint8_t * recieve_data, uint8_t d
 
 
 void spi_receive(uint8_t * recieve_data, uint8_t data_length){
-	uint8_t dummy_data[MAX_CAN_LENGTH];
+	uint8_t dummy_data[MAX_SPI_LENGTH];
 	spi_transmit_recieve(dummy_data, recieve_data, data_length);
 }
 
 void spi_transmit(uint8_t * send_data,uint8_t data_length){
-	uint8_t dummy_recieve [MAX_CAN_LENGTH];
+	uint8_t dummy_recieve [MAX_SPI_LENGTH];
 	spi_transmit_recieve(send_data, dummy_recieve, data_length);
 }

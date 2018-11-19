@@ -228,26 +228,35 @@ void music_play_loop(music_t music) {
 }
 
 void music_play(music_t music) {
+	bool defined_song = true;
 	switch(music){
 		case GOT_MUSIC:
-			current_song = GoT;;
+			music_set_bpm(80);
+			current_song = GoT;
 		break;
 		case WALLACE_AND_GROMMIT_MUSIC:
+			music_set_bpm(80);
 			current_song = wallace_and_gromit;
 		break;
 		case GAME_OVER_MUSIC:
+			music_set_bpm(90);
 			current_song = game_over_music;
 		break;
 		case ONE_MUSIC:
+			music_set_bpm(65);
 			current_song = one_music;
 			break;
 		default:
+			
 			music_reset();
+			defined_song = false;
 			break;
 	}
-	note_index = 0;
-	music_timer_start();
-	music_play_next_note();
+	if (defined_song){
+		note_index = 0;
+		music_timer_start();
+		music_play_next_note();
+	}
 }
 
 void music_set_bpm(uint16_t bpm) {

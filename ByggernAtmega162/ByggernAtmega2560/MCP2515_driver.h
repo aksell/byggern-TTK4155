@@ -9,6 +9,8 @@
 #ifndef MCP2515_DRIVER_H_
 #define MCP2515_DRIVER_H_
 
+#define MAX_CAN_LENGTH 12
+
 
 #include "spi.h"
 #include <avr/io.h>

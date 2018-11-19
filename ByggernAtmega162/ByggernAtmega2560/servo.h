@@ -15,6 +15,7 @@
 #include "dc_motor.h"
 #include "uart.h"
 
+//Initialize servo
 void servo_init_fast_pwm_3();
 
 //Sets the PWM output on pin 5/PE3

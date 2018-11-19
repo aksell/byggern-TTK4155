@@ -11,8 +11,10 @@
 
 
 #define TIMER0_FREQUENZY 80
-#define PI_FREQUENZY 20
-#define TIMER0_POST_SCALER TIMER0_FREQUENZY/PI_FREQUENZY
+#define TIMER0_POST_SCALER_MAX TIMER0_FREQUENZY/PI_FREQUENZY
+#define TIMER0_PRESCALER 1024
+
+
 #include "config.h"
 #include <avr/io.h>
 #include "dc_motor.h"

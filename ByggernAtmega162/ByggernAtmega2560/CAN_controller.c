@@ -8,8 +8,12 @@
 #include "CAN_controller.h"
 
 
-//uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size);
-//void CAN_recive(uint16_t * address, uint8_t * data, uint8_t * data_size);
+//Convert address to offset in the address register of MCP2515
+uint16_t CAN_addres_construct(uint16_t number);
+
+//Convert from offset in the address register of MCP2515
+uint16_t CAN_addres_read(uint16_t number);
+
 
 void CAN_init() {
 	MCP2515_reset();
@@ -20,7 +24,7 @@ void CAN_init() {
 	MCP2515_bit_modify(MCP_CANINTE, 0b00000001,1); //Enable Interrupt on RX0
 	
 	MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL);
-	//MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL);
+	//MCP2515_bit_modify(MCP_CANCTRL, 0b11100000, MODE_LOOPBACK);
 	
 	//CAN recieve interrupt
 	cli();
@@ -37,7 +41,7 @@ uint16_t CAN_addres_read(uint16_t number){
 	return (number << CAN_ADDRESS_OFFSET)&CAN_ADDRESS_OFFSET_READ_bm;
 }
 
-uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
+void CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	//Check TXB0CTRL.TXREQ clear
 	uint8_t TXREQ_data;
 	MCP2515_read(MCP_TXB0CTRL, &TXREQ_data, 1); //Wait for transmit buffer is pending transmission
@@ -59,18 +63,12 @@ uint8_t CAN_transmit(const uint8_t * data, uint8_t data_size,uint16_t address) {
 	
 	MCP2515_write(MCP_TXB0D(0), data, data_size); //Write data to send
 	MCP2515_rqt_send(0b001);
-	volatile uint8_t status;
-	_delay_us(100);
-	MCP2515_read(MCP_TXB0CTRL, &status, 1);
-	return status;
 }
 
 void CAN_recive(uint16_t * address, uint8_t * data, uint8_t * data_size) {
 	uint8_t address_data[2];
 	
 	MCP2515_read(MCP_RXB0SIDH, address_data, 2); //Read identifier
-	//*address = convert_from_8_to_16(address_data[0],address_data[1]);
-	//*address = CAN_addres_read(*address);
 	
 	*address = (((uint16_t)address_data[0]) << 3) |  (((uint16_t)address_data[1]) >> 5);
 	
@@ -89,23 +87,6 @@ void CAN_recive_message(can_message* message){
 	CAN_recive(&(message->address),&(message->data),&(message->data_size));
 }
 
-void CAN_interrupt_routine(){
-	can_message message;
-	CAN_recive_message(&message); //Read message
-	CAN_buffer_write(&message); //Write message to buffer
-	MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);	//Set interrupt bit low
-}
-
-can_message CAN_message_construct(uint16_t address, uint8_t data_size, uint8_t * data){
-	can_message message;
-	message.address = address;
-	message.data_size = data_size;
-	for(int i = 0; i<data_size;i++){
-		message.data[i] = data[i];
-	}
-	return message;
-}
-
 
 
 
@@ -117,12 +98,18 @@ void CAN_test() {
 		CAN_transmit(&(data[i]),2,1);
 		uint8_t r_data_size = 0;
 		CAN_recive(&add, r_data, &r_data_size);
-		printf("Sendt: %d	Recieved: %d \n\r",data[i],r_data[0]);
+		printf("Sent: %d	Received: %d \n\r",data[i],r_data[0]);
 	}
 }
 
-ISR(INT2_vect)
-{
+void CAN_interrupt_routine(){
+	can_message message;
+	CAN_recive_message(&message); //Read message
+	CAN_buffer_write(&message); //Write message to buffer
+	MCP2515_bit_modify(MCP_CANINTF,(1<<0),0);	//Set interrupt bit low
+}
+
+ISR(INT2_vect){
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
 		CAN_interrupt_routine();
 	}

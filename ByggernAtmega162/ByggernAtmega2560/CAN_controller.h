@@ -30,20 +30,16 @@ typedef struct can_message_s{
 
 #include "CAN_buffer.h"
 
-
+//Initialize CAN driver
 void CAN_init();
 
+//Transmit can message to the CAN bus
 void CAN_transmit_message(can_message* message);
+
+//Read message from the CAN driver, through pointer
 void CAN_recive_message(can_message* message);
-uint16_t CAN_addres_construct(uint16_t number);
-uint16_t CAN_addres_read(uint16_t number);
-void CAN_interrupt_routine();
 
-can_message CAN_message_construct(uint16_t address, uint8_t data_size, uint8_t * data);
-
+//Test function sending and receiving CAN message
 void CAN_test();
-void CAN_test_2();
-
-
 
 #endif /* CAN_CONTROLLER_H_ */

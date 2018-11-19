@@ -20,12 +20,9 @@ void dac_init(){
 
 void dac_write(uint8_t data){	
 	uint8_t message[TWI_BUFFER_SIZE];
-	message[0] = DAC_SLAVE_ADDRES<<1;
-	message[0] &= ~(0b1); //Write operation
-	message[0] = 0b01010000;
+	message[0] = DAC_SLAVE_ADDRES<<1;//Set address of the slave
+	message[0] &= ~(0b1);	//Write operation
 	message[1] = 0;
 	message[2] = data;
-	//printf("Dac Write %d\n\r",data);
-	//unsigned char * msg_ptr = message;
 	TWI_Start_Transceiver_With_Data(message,TWI_BUFFER_SIZE);
 }

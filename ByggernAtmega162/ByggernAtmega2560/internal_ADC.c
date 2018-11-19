@@ -27,7 +27,7 @@ uint8_t internal_ADC_read_polling() {
 
 void internal_ADC_start_free_running_mode() {
 	ADCSRA |= (1 << ADATE);			//ADC Auto Trigger ENABLE
-	ADCSRB &= ~(0b111 << ADTS0);	//ADC Auto Trigger Source ro running mode
+	ADCSRB &= ~(0b111 << ADTS0);	//ADC Auto Trigger Source to running mode
 	ADCSRA |= (1<< ADSC); 
 
 }
@@ -46,11 +46,11 @@ void internal_ADC_set_channel(uint8_t analog_channel) {
 	}
 	if(analog_channel < 8) {
 		ADMUX = (ADMUX & 0B11100000) | analog_channel;		// Set MUX4:0 to channel
-		ADCSRB &= ~(1 << MUX5);						// Clear MUX5 bit
+		ADCSRB &= ~(1 << MUX5);								// Clear MUX5 bit
 		DIDR0 = 1 << analog_channel;						//Disable digital buffering
 	} else {
 		ADMUX = (ADMUX & 0B11100000) | analog_channel-8;	// Set MUX4:0 to channel
-		ADCSRB |= 1 << MUX5;						// Clear MUX5 bit
+		ADCSRB |= 1 << MUX5;								// Clear MUX5 bit
 		DIDR2 = 1 << analog_channel-8;						//Disable digital buffering
 	}
 	if(enable_free_running_mode) {

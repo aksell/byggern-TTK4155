@@ -26,10 +26,19 @@ typedef enum music_e {
 
 void music_init();
 
+//Initialize timer used for timing in music
 void music_timer_init();
+
+//Set beats per minute of music
 void music_set_bpm(uint16_t bpm);
+
+//Play song once
 void music_play(music_t music);
+
+//Play music and loop to start at the end
 void music_play_loop(music_t music);
+
+//Stop playing
 void music_reset();
 bool music_is_playing();
 void music_test();

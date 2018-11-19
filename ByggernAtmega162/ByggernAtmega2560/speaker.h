@@ -16,8 +16,15 @@
 //Initilize the speaker using Timer 4 and port PH3
 void speaker_init();
 
+//Set frequency of note in hertz
 void speaker_set_hz(uint16_t hz);
+
+//Turn of speaker
 void speaker_off();
+
+//Turn off speaker
 void speaker_on();
+
+//Convert frequency to value needed in pwm top register
 uint16_t hz_to_timer_top(uint16_t hz);
 #endif /* speaker_H_ */

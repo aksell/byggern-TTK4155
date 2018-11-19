@@ -18,8 +18,10 @@
 #include "ball_sensor.h"
 #include "uart.h"
 #include "solenoide.h"
-
+//Initialize state machine
 void state_machine_init();
+
+//Update state machine
 void state_machine_update();
 
 #endif /* STATE_MACHINE_H_ */

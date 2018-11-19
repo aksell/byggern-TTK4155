@@ -16,15 +16,19 @@
 #include "utilities.h"
 
 
-
+//Initialize uart in USART0
 void uart_init();
 
+//Transmit character over uart
 uint8_t uart_transmit(unsigned char data);
 
+//Receive character from uart
 uint8_t uart_recive();
 
+//Check if uart is ready
 bool uart_is_ready_read() ;
 
+//File stream used for printf()
 static FILE uart_stream = FDEV_SETUP_STREAM  (uart_transmit, uart_recive, _FDEV_SETUP_RW);
 
 #endif /* UART_H_ */

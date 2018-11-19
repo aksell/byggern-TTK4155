@@ -42,13 +42,12 @@ int main(void)
 	ball_sensor_init();
 	music_init();
 	solenoide_init();
-	timer0_init();
 	state_machine_init();
 	sei();
 
 
 
-	//timer0_enable();
+	//dc_motor_controller_enable();
 	music_set_bpm(80);
 	music_play_loop(GOT_MUSIC);
 	printf("Hei\n\r");
