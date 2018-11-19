@@ -490,22 +490,22 @@ uint8_t oled_printf_dummy_recieve(){
 
 void oled_print_char_of_size(char letter,  uint8_t size) {
 	uint8_t char_length = 0;
-	unsigned char ** letter_bitmap;
+	unsigned char * letter_bitmap;
 	if(size == FONT_SIZE_SMALL) {
 		char_length = 4;
-		letter_bitmap = font4;
+		letter_bitmap = font4[letter - ' '];
 	} else if(size == FONT_SIZE_MEDIUM) {
 		char_length = 5;
-		letter_bitmap = font5;
+		letter_bitmap = font5[letter - ' '];
 	} else{
 		char_length = 8;
-		letter_bitmap = font8;
+		letter_bitmap = font8[letter - ' '];
 	}
-	for(int i = 0; i < 8; i++) {
+	for(int i = 0; i < char_length; i++) {
 		if(!printf_inverted) {
-			oled_data_write(pgm_read_byte(&(font8[letter - ' '][i])));
+			oled_data_write(pgm_read_byte(&(letter_bitmap[i])));
 		} else {
-			oled_data_write(~pgm_read_byte(&(font8[letter - ' '][i])));
+			oled_data_write(~pgm_read_byte(&(letter_bitmap[i])));
 		}
 	}
 }
