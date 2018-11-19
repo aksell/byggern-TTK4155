@@ -13,9 +13,7 @@
 #include "external_mem.h"
 
 
-//takes a integer from 1 to 4 and returns the analog value of the corresponding channel of the ADC
+//Takes a integer from 1 to 4 and returns the analog value of the corresponding channel of the ADC
 uint8_t adc_read(uint8_t channel);
-
-
 
 #endif /* ADC_H_ */
